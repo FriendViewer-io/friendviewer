@@ -20,6 +20,11 @@ public class Server_Handler extends ChannelInboundHandlerAdapter{
     // Here is how we send out heart beat for idle to long
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+
+    }
+
+    @Override
+    public void channelActive(final ChannelHandlerContext ctx) { // (1)
         final ByteBuf time = ctx.alloc().buffer(4); // (2)
         time.writeInt((int) 0);
 
