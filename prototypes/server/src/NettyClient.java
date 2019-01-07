@@ -19,7 +19,7 @@ public class NettyClient {
             }
         });
 
-        String serverIp = "127.0.0.1";
+        String serverIp = "192.168.0.1";
         b.connect(serverIp, 19000);
     }
 }
