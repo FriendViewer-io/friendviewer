@@ -11,7 +11,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 
 import java.util.Scanner;
 
-public class Client {
+public class Host_Client {
 
     public static void main(String[] args) throws Exception {
         //String host = args[0];
@@ -19,7 +19,7 @@ public class Client {
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 
         try {
-            Client_Handler test = new Client_Handler();
+            Host_Client_Handler test = new Host_Client_Handler();
 
             Bootstrap b = new Bootstrap(); // (1)
             b.group(workerGroup); // (2)
@@ -37,7 +37,14 @@ public class Client {
             ChannelFuture f = b.connect(serverIp, 8080).sync(); // (5)
 
             //MY CODE
-            test.initiateConvo(1);
+            test.initiateConvo(0);
+            Scanner sc = new Scanner(System.in);
+            boolean stop = false;
+            while (!stop){
+                int next = sc.nextInt();
+                next += 1000;
+                test.initiateConvo(next);
+            }
 
             // Wait until the connection is closed.
             f.channel().closeFuture().sync();

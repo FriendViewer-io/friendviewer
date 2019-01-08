@@ -8,7 +8,7 @@ import io.netty.util.ReferenceCountUtil;
 
 import java.util.Date;
 
-public class Client_Handler extends ChannelInboundHandlerAdapter {
+public class Host_Client_Handler extends ChannelInboundHandlerAdapter {
 
     public int counter = 0;
     public ChannelHandlerContext context = null;
@@ -30,6 +30,8 @@ public class Client_Handler extends ChannelInboundHandlerAdapter {
         ByteBuf m = (ByteBuf) msg; // (1)
         int received = 0;
         try {
+            //long currentTimeMillis = (m.readUnsignedInt() - 2208988800L) * 1000L;
+            //System.out.println(new Date(currentTimeMillis));
             received = m.readInt();
             System.out.println(received);
         } finally {
