@@ -8,6 +8,7 @@ import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
 
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -16,21 +17,41 @@ public class Server_Handler extends ChannelInboundHandlerAdapter{
     int counter = 0;
     static HashMap<ChannelHandlerContext, Integer> contexts = new HashMap<>();
 
+    public void handleInt(ChannelHandlerContext ctx, Object msg) {
+        ByteBuf m = (ByteBuf) msg; // (1)
+        int received = 0;
+        received = m.readInt();
+        for (ChannelHandlerContext context: contexts.keySet()){
+            if (contexts.get(context) != 0){
+                final ByteBuf time = ctx.alloc().buffer(4);
+                time.writeInt((int) (received));
+                context.writeAndFlush(time);
+            }
+        }
+        m.release();
+    }
+
+    public void handleString(ChannelHandlerContext ctx, Object msg){
+        ByteBuf m = (ByteBuf) msg; // (1)
+        String received = "";
+        received = m.toString(Charset.forName("utf-8"));
+        for (ChannelHandlerContext context: contexts.keySet()){
+            if (contexts.get(context) != 0){
+                byte[] bytes = received.getBytes();
+                final ByteBuf text = context.alloc().buffer(bytes.length); // (2)
+                text.writeBytes(bytes);
+                context.writeAndFlush(text); // (3)
+            }
+        }
+        m.release();
+    }
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         if (contexts.containsKey(ctx)){
             if (contexts.get(ctx) == 0){
-                ByteBuf m = (ByteBuf) msg; // (1)
-                int received = 0;
-                received = m.readInt();
-                for (ChannelHandlerContext context: contexts.keySet()){
-                    if (contexts.get(context) != 0){
-                        final ByteBuf time = ctx.alloc().buffer(4);
-                        time.writeInt((int) (received));
-                        context.writeAndFlush(time);
-                    }
-                }
-                m.release();
+                //handleInt(ctx, msg);
+                handleString(ctx, msg);
             }
         }else{
             System.out.println("Client Connected");

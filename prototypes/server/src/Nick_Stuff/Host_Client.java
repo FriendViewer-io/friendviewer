@@ -41,9 +41,11 @@ public class Host_Client {
             Scanner sc = new Scanner(System.in);
             boolean stop = false;
             while (!stop){
-                int next = sc.nextInt();
-                next += 1000;
-                test.initiateConvo(next);
+                //int next = sc.nextInt();
+                //next += 1000;
+                //test.initiateConvo(next);
+                String text =  sc.nextLine();
+                test.sendString(text);
             }
 
             // Wait until the connection is closed.

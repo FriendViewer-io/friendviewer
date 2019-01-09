@@ -19,10 +19,17 @@ public class Host_Client_Handler extends ChannelInboundHandlerAdapter {
     }
 
     public void initiateConvo(int x){
-        final ByteBuf time = context.alloc().buffer(4); // (2)
+        final ByteBuf time = context.alloc().buffer(4);
         time.writeInt(x);
 
-        final ChannelFuture f = context.writeAndFlush(time); // (3)
+        final ChannelFuture f = context.writeAndFlush(time);
+    }
+
+    public void sendString(String x){
+        byte[] bytes = x.getBytes();
+        final ByteBuf text = context.alloc().buffer(bytes.length);
+        text.writeBytes(bytes);
+        context.writeAndFlush(text);
     }
 
     @Override

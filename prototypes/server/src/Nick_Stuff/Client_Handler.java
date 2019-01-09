@@ -6,6 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
 
+import java.nio.charset.Charset;
 import java.util.Date;
 
 public class Client_Handler extends ChannelInboundHandlerAdapter {
@@ -28,13 +29,12 @@ public class Client_Handler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         ByteBuf m = (ByteBuf) msg; // (1)
-        int received = 0;
-        try {
-            received = m.readInt();
-            System.out.println(received);
-        } finally {
-            m.release();
-        }
+
+        String received = "";
+        received = m.toString(Charset.forName("utf-8"));
+
+        System.out.println(received);
+        m.release();
     }
 
     @Override
