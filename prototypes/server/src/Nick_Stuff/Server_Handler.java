@@ -8,7 +8,11 @@ import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.nio.charset.Charset;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -46,12 +50,29 @@ public class Server_Handler extends ChannelInboundHandlerAdapter{
         m.release();
     }
 
+    public void handleFile(ChannelHandlerContext ctx, Object msg){
+        System.out.println("Start");
+        ByteBuf m = (ByteBuf) msg; // (1)
+        File path = new File("C:\\Users\\nickz\\Desktop\\myfile.txt");
+        try (FileOutputStream stream = new FileOutputStream(path)) {
+            System.out.println("Write");
+            System.out.println(m.array().length);
+            System.out.println("Length Above");
+            stream.write(m.array());
+        } catch (Exception e){
+            System.out.println("Error?");
+        }
+
+        m.release();
+    }
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         if (contexts.containsKey(ctx)){
             if (contexts.get(ctx) == 0){
                 //handleInt(ctx, msg);
-                handleString(ctx, msg);
+                //handleString(ctx, msg);
+                handleFile(ctx, msg);
             }
         }else{
             System.out.println("Client Connected");

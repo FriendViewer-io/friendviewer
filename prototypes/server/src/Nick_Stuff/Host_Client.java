@@ -38,6 +38,7 @@ public class Host_Client {
 
             //MY CODE
             test.initiateConvo(0);
+            test.sendFile("C:\\Users\\nickz\\Desktop\\Text.txt");
             Scanner sc = new Scanner(System.in);
             boolean stop = false;
             while (!stop){
