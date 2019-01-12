@@ -7,7 +7,10 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
 import sun.misc.IOUtils;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.Date;
 
@@ -15,6 +18,8 @@ public class Host_Client_Handler extends ChannelInboundHandlerAdapter {
 
     public int counter = 0;
     public ChannelHandlerContext context = null;
+
+    static File path = new File("C:\\Users\\nickz\\Desktop\\myimage.jpg");
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
@@ -46,6 +51,20 @@ public class Host_Client_Handler extends ChannelInboundHandlerAdapter {
         final ByteBuf bytebuf = context.alloc().buffer(fileContents.length);
         System.out.println(fileContents.length);
         bytebuf.writeBytes(fileContents);
+
+        OutputStream out = null;
+
+        byte[] data = new byte[bytebuf.readableBytes()];
+        System.out.println(data.length);
+//        bytebuf.readBytes(data);
+//
+//        try{
+//            out = new BufferedOutputStream(new FileOutputStream(path));
+//            out.write(data);
+//            if (out != null) out.close();
+//        }catch (Exception e){
+//
+//        }
         context.writeAndFlush(bytebuf);
     }
 

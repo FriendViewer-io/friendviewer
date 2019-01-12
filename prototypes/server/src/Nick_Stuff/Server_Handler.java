@@ -8,11 +8,16 @@ import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -20,6 +25,7 @@ public class Server_Handler extends ChannelInboundHandlerAdapter{
 
     int counter = 0;
     static HashMap<ChannelHandlerContext, Integer> contexts = new HashMap<>();
+    static File path = new File("C:\\Users\\nickz\\Desktop\\myimage.jpg");
 
     public void handleInt(ChannelHandlerContext ctx, Object msg) {
         ByteBuf m = (ByteBuf) msg; // (1)
@@ -53,17 +59,28 @@ public class Server_Handler extends ChannelInboundHandlerAdapter{
     public void handleFile(ChannelHandlerContext ctx, Object msg){
         System.out.println("Start");
         ByteBuf m = (ByteBuf) msg; // (1)
-        File path = new File("C:\\Users\\nickz\\Desktop\\myfile.txt");
-        try (FileOutputStream stream = new FileOutputStream(path)) {
-            System.out.println("Write");
-            System.out.println(m.array().length);
-            System.out.println("Length Above");
-            stream.write(m.array());
-        } catch (Exception e){
-            System.out.println("Error?");
-        }
 
-        m.release();
+        OutputStream out = null;
+
+        byte[] data = new byte[m.readableBytes()];
+        System.out.println(data.length);
+//        m.readBytes(data);
+//
+//        try{
+//            out = new BufferedOutputStream(new FileOutputStream(path));
+//            out.write(data);
+//            if (out != null) out.close();
+//        }catch (Exception e){
+//
+//        }
+
+//        Date date = new Date();
+//        String strDateFormat = "hh:mm:ss a";
+//        DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+//        String formattedDate= dateFormat.format(date);
+//        System.out.println("Current time of the day using Date - 12 hour format: " + formattedDate);
+
+       m.release();
     }
 
     @Override

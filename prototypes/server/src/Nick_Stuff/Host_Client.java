@@ -33,12 +33,13 @@ public class Host_Client {
             });
 
             // Start the client.
+            //String serverIp = "198.199.81.165";
             String serverIp = "127.0.0.1";
             ChannelFuture f = b.connect(serverIp, 8080).sync(); // (5)
 
             //MY CODE
             test.initiateConvo(0);
-            test.sendFile("C:\\Users\\nickz\\Desktop\\Text.txt");
+            test.sendFile("C:\\Users\\nickz\\Desktop\\File.txt");
             Scanner sc = new Scanner(System.in);
             boolean stop = false;
             while (!stop){
