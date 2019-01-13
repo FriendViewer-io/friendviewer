@@ -27,6 +27,19 @@ public class Server_Handler extends ChannelInboundHandlerAdapter{
     static HashMap<ChannelHandlerContext, Integer> contexts = new HashMap<>();
     static File path = new File("C:\\Users\\nickz\\Desktop\\myimage.jpg");
 
+    private ByteBuf buf;
+
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) {
+        buf = ctx.alloc().buffer(3016978); // (1)
+    }
+
+    @Override
+    public void handlerRemoved(ChannelHandlerContext ctx) {
+        buf.release(); // (1)
+        buf = null;
+    }
+
     public void handleInt(ChannelHandlerContext ctx, Object msg) {
         ByteBuf m = (ByteBuf) msg; // (1)
         int received = 0;
@@ -58,21 +71,24 @@ public class Server_Handler extends ChannelInboundHandlerAdapter{
 
     public void handleFile(ChannelHandlerContext ctx, Object msg){
         System.out.println("Start");
-        ByteBuf m = (ByteBuf) msg; // (1)
+        ByteBuf m = (ByteBuf) msg;
+        buf.writeBytes(m);
+        m.release();
 
-        OutputStream out = null;
+        if (buf.readableBytes() >= 3016978) {
+            OutputStream out = null;
+            byte[] data = new byte[buf.readableBytes()];
+            System.out.println(data.length);
+            buf.readBytes(data);
 
-        byte[] data = new byte[m.readableBytes()];
-        System.out.println(data.length);
-//        m.readBytes(data);
-//
-//        try{
-//            out = new BufferedOutputStream(new FileOutputStream(path));
-//            out.write(data);
-//            if (out != null) out.close();
-//        }catch (Exception e){
-//
-//        }
+            try {
+                out = new BufferedOutputStream(new FileOutputStream(path));
+                out.write(data);
+                if (out != null) out.close();
+            } catch (Exception e) {
+
+            }
+        }
 
 //        Date date = new Date();
 //        String strDateFormat = "hh:mm:ss a";
@@ -80,7 +96,6 @@ public class Server_Handler extends ChannelInboundHandlerAdapter{
 //        String formattedDate= dateFormat.format(date);
 //        System.out.println("Current time of the day using Date - 12 hour format: " + formattedDate);
 
-       m.release();
     }
 
     @Override

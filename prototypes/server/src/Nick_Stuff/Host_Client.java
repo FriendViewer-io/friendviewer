@@ -39,7 +39,7 @@ public class Host_Client {
 
             //MY CODE
             test.initiateConvo(0);
-            test.sendFile("C:\\Users\\nickz\\Desktop\\File.txt");
+            test.sendFile("C:\\Users\\nickz\\Desktop\\Ichigo.png");
             Scanner sc = new Scanner(System.in);
             boolean stop = false;
             while (!stop){
