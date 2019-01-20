@@ -1,0 +1,14 @@
+syntax = "proto2";
+
+option java_outer_classname = "AuthnRsSP";
+
+message response{
+    required int32 proto_type = 1;
+    required int64 proto_id = 2;
+    required int64 utc_time = 3;
+
+    required bool response = 4;
+    optional bool guests = 5 [default = false];
+    optional int32 wait_time = 6 [default = 30];
+
+}

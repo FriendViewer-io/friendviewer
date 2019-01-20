@@ -1,5 +1,9 @@
 package Nick_Stuff;
 
+import Nick_Stuff.Protocols.AuthnRqCP;
+import Nick_Stuff.Protocols.AuthnRqSP;
+import Nick_Stuff.Protocols.AuthnRsSP;
+import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
@@ -13,17 +17,26 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.Date;
+import java.util.Scanner;
 
 public class Host_Client_Handler extends ChannelInboundHandlerAdapter {
 
-    public int counter = 0;
     public ChannelHandlerContext context = null;
-
     static File path = new File("C:\\Users\\nickz\\Desktop\\myimage.jpg");
+
+    private ByteBuf buf;
+    static int size = 0;
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
         context = ctx;
+        buf = ctx.alloc().buffer(4); // (1)
+    }
+
+    @Override
+    public void handlerRemoved(ChannelHandlerContext ctx) {
+        buf.release(); // (1)
+        buf = null;
     }
 
     public void initiateConvo(int x){
@@ -48,14 +61,19 @@ public class Host_Client_Handler extends ChannelInboundHandlerAdapter {
         } catch(Exception e){
 
         }
-        final ByteBuf bytebuf = context.alloc().buffer(fileContents.length);
+        final ByteBuf bytebuf = context.alloc().buffer(fileContents.length + 4);
         System.out.println(fileContents.length);
+        bytebuf.writeInt(fileContents.length);
         bytebuf.writeBytes(fileContents);
 
-        OutputStream out = null;
 
-        byte[] data = new byte[bytebuf.readableBytes()];
-        System.out.println(data.length);
+
+//        OutputStream out = null;
+//
+//        byte[] data = new byte[bytebuf.readableBytes() - 4];
+//        System.out.println(bytebuf.readableBytes());
+//        int size = bytebuf.readInt();
+//        System.out.println(size);
 //        bytebuf.readBytes(data);
 //
 //        try{
@@ -70,16 +88,73 @@ public class Host_Client_Handler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        ByteBuf m = (ByteBuf) msg; // (1)
-        int received = 0;
-        try {
-            //long currentTimeMillis = (m.readUnsignedInt() - 2208988800L) * 1000L;
-            //System.out.println(new Date(currentTimeMillis));
-            received = m.readInt();
-            System.out.println(received);
-        } finally {
-            m.release();
+        ByteBuf m = (ByteBuf) msg;
+        buf.writeBytes(m);
+        m.release();
+
+        if (size == 0){
+            size = buf.readInt();
         }
+
+        if (buf.readableBytes() >= size && size != 0) {
+            int type = buf.readInt();
+
+            byte[] data = new byte[buf.readableBytes()];
+            buf.readBytes(data);
+
+            if (type == 1){ //Authentication Request Server Protocol
+                AuthnRqCP(data, ctx);
+            } else if (type == 3){ //Authentication Response Server Protocol
+                System.out.println("Response Recieved");
+                //Read the message
+                AuthnRsSP.response message = null;
+                try {
+                    message = AuthnRsSP.response.parseFrom(data);
+                } catch (InvalidProtocolBufferException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(new Date(message.getUtcTime()).toString());
+                System.out.println(message.getResponse());
+                System.out.println(message.getGuests());
+                System.out.println(message.getWaitTime());
+            }
+        }
+    }
+
+    public void AuthnRqCP(byte[] data, ChannelHandlerContext ctx){
+        //Reset the size
+        size = 0;
+
+        //Read the message
+        AuthnRqSP.response message = null;
+        try {
+            message = AuthnRqSP.response.parseFrom(data);
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
+        }
+        System.out.println(new Date(message.getUtcTime()).toString());
+
+        //Formulate a response
+        Scanner sc = new Scanner(System.in);
+
+        AuthnRqCP.request.Builder dataBuilder = AuthnRqCP.request.newBuilder();
+        dataBuilder.setProtoType(2);
+        dataBuilder.setProtoId(0);
+        dataBuilder.setUtcTime(new Date().getTime());
+        dataBuilder.setPassword(sc.nextLine());
+
+        AuthnRqCP.request request = dataBuilder.build();
+        byte[] bytes = request.toByteArray();
+
+        //Send the size of the protocol before sending the protocol itself
+        int size = bytes.length;
+        ByteBuf bytebuf = ctx.alloc().buffer(size + 8);
+        bytebuf.writeInt(size);
+        bytebuf.writeInt(2);
+
+        //Send the protocol
+        bytebuf.writeBytes(bytes);
+        ctx.writeAndFlush(bytebuf);
     }
 
     @Override

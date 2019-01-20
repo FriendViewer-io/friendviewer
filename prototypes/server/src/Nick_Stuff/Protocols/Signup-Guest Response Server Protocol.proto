@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+option java_outer_classname = "SignupGRsSP";
+
+message response{
+    required int32 proto_type = 1;
+    required int64 proto_id = 2;
+    required int64 utc_time = 3;
+
+    required bool reponse = 4;
+    optional string name = 5 [default = "Guest"];
+
+}

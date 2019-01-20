@@ -1,8 +1,5 @@
 syntax = "proto2";
 
-package tutorial;
-
-option java_package = "com.example.tutorial";
 option java_outer_classname = "AddressBookProtos";
 
 message Person {

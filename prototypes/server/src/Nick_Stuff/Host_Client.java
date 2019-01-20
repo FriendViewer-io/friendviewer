@@ -38,17 +38,14 @@ public class Host_Client {
             ChannelFuture f = b.connect(serverIp, 8080).sync(); // (5)
 
             //MY CODE
-            test.initiateConvo(0);
-            test.sendFile("C:\\Users\\nickz\\Desktop\\Ichigo.png");
-            Scanner sc = new Scanner(System.in);
-            boolean stop = false;
-            while (!stop){
-                //int next = sc.nextInt();
-                //next += 1000;
-                //test.initiateConvo(next);
-                String text =  sc.nextLine();
-                test.sendString(text);
-            }
+//            test.initiateConvo(0);
+//            test.sendFile("C:\\Users\\nickz\\Desktop\\Ichigo.png");
+//            Scanner sc = new Scanner(System.in);
+//            boolean stop = false;
+//            while (!stop){
+//                String text =  sc.nextLine();
+//                test.sendString(text);
+//            }
 
             // Wait until the connection is closed.
             f.channel().closeFuture().sync();

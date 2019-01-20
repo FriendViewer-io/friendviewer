@@ -1,0 +1,14 @@
+syntax = "proto2";
+
+option java_outer_classname = "PasskeyRqCP";
+
+message request{
+    required int32 proto_type = 1;
+    required int64 proto_id = 2;
+    required int64 utc_time = 3;
+
+    required string passkey = 4;
+    required int32 hwid = 5;
+    required int32 time = 6 [default = 24]; //Currently measured in hours
+
+}
