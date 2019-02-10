@@ -65,12 +65,12 @@ public final class AVInitHP {
     /**
      * <code>repeated .request.monitor monitors = 5;</code>
      */
-    java.util.List<AVInitHP.request.monitor> 
+    java.util.List<Nick_Stuff.Protocols.AVInitHP.request.monitor> 
         getMonitorsList();
     /**
      * <code>repeated .request.monitor monitors = 5;</code>
      */
-    AVInitHP.request.monitor getMonitors(int index);
+    Nick_Stuff.Protocols.AVInitHP.request.monitor getMonitors(int index);
     /**
      * <code>repeated .request.monitor monitors = 5;</code>
      */
@@ -78,12 +78,12 @@ public final class AVInitHP {
     /**
      * <code>repeated .request.monitor monitors = 5;</code>
      */
-    java.util.List<? extends AVInitHP.request.monitorOrBuilder> 
+    java.util.List<? extends Nick_Stuff.Protocols.AVInitHP.request.monitorOrBuilder> 
         getMonitorsOrBuilderList();
     /**
      * <code>repeated .request.monitor monitors = 5;</code>
      */
-    AVInitHP.request.monitorOrBuilder getMonitorsOrBuilder(
+    Nick_Stuff.Protocols.AVInitHP.request.monitorOrBuilder getMonitorsOrBuilder(
         int index);
 
     /**
@@ -220,11 +220,11 @@ public final class AVInitHP {
             }
             case 42: {
               if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
-                monitors_ = new java.util.ArrayList<AVInitHP.request.monitor>();
+                monitors_ = new java.util.ArrayList<Nick_Stuff.Protocols.AVInitHP.request.monitor>();
                 mutable_bitField0_ |= 0x00000010;
               }
               monitors_.add(
-                  input.readMessage(AVInitHP.request.monitor.PARSER, extensionRegistry));
+                  input.readMessage(Nick_Stuff.Protocols.AVInitHP.request.monitor.PARSER, extensionRegistry));
               break;
             }
             case 48: {
@@ -281,15 +281,15 @@ public final class AVInitHP {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return AVInitHP.internal_static_request_descriptor;
+      return Nick_Stuff.Protocols.AVInitHP.internal_static_request_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return AVInitHP.internal_static_request_fieldAccessorTable
+      return Nick_Stuff.Protocols.AVInitHP.internal_static_request_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              AVInitHP.request.class, AVInitHP.request.Builder.class);
+              Nick_Stuff.Protocols.AVInitHP.request.class, Nick_Stuff.Protocols.AVInitHP.request.Builder.class);
     }
 
     public interface monitorOrBuilder extends
@@ -401,15 +401,15 @@ public final class AVInitHP {
       }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return AVInitHP.internal_static_request_monitor_descriptor;
+        return Nick_Stuff.Protocols.AVInitHP.internal_static_request_monitor_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return AVInitHP.internal_static_request_monitor_fieldAccessorTable
+        return Nick_Stuff.Protocols.AVInitHP.internal_static_request_monitor_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                AVInitHP.request.monitor.class, AVInitHP.request.monitor.Builder.class);
+                Nick_Stuff.Protocols.AVInitHP.request.monitor.class, Nick_Stuff.Protocols.AVInitHP.request.monitor.Builder.class);
       }
 
       private int bitField0_;
@@ -524,10 +524,10 @@ public final class AVInitHP {
         if (obj == this) {
          return true;
         }
-        if (!(obj instanceof AVInitHP.request.monitor)) {
+        if (!(obj instanceof Nick_Stuff.Protocols.AVInitHP.request.monitor)) {
           return super.equals(obj);
         }
-        AVInitHP.request.monitor other = (AVInitHP.request.monitor) obj;
+        Nick_Stuff.Protocols.AVInitHP.request.monitor other = (Nick_Stuff.Protocols.AVInitHP.request.monitor) obj;
 
         boolean result = true;
         result = result && (hasHeight() == other.hasHeight());
@@ -574,69 +574,69 @@ public final class AVInitHP {
         return hash;
       }
 
-      public static AVInitHP.request.monitor parseFrom(
+      public static Nick_Stuff.Protocols.AVInitHP.request.monitor parseFrom(
           java.nio.ByteBuffer data)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data);
       }
-      public static AVInitHP.request.monitor parseFrom(
+      public static Nick_Stuff.Protocols.AVInitHP.request.monitor parseFrom(
           java.nio.ByteBuffer data,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data, extensionRegistry);
       }
-      public static AVInitHP.request.monitor parseFrom(
+      public static Nick_Stuff.Protocols.AVInitHP.request.monitor parseFrom(
           com.google.protobuf.ByteString data)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data);
       }
-      public static AVInitHP.request.monitor parseFrom(
+      public static Nick_Stuff.Protocols.AVInitHP.request.monitor parseFrom(
           com.google.protobuf.ByteString data,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data, extensionRegistry);
       }
-      public static AVInitHP.request.monitor parseFrom(byte[] data)
+      public static Nick_Stuff.Protocols.AVInitHP.request.monitor parseFrom(byte[] data)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data);
       }
-      public static AVInitHP.request.monitor parseFrom(
+      public static Nick_Stuff.Protocols.AVInitHP.request.monitor parseFrom(
           byte[] data,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data, extensionRegistry);
       }
-      public static AVInitHP.request.monitor parseFrom(java.io.InputStream input)
+      public static Nick_Stuff.Protocols.AVInitHP.request.monitor parseFrom(java.io.InputStream input)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseWithIOException(PARSER, input);
       }
-      public static AVInitHP.request.monitor parseFrom(
+      public static Nick_Stuff.Protocols.AVInitHP.request.monitor parseFrom(
           java.io.InputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseWithIOException(PARSER, input, extensionRegistry);
       }
-      public static AVInitHP.request.monitor parseDelimitedFrom(java.io.InputStream input)
+      public static Nick_Stuff.Protocols.AVInitHP.request.monitor parseDelimitedFrom(java.io.InputStream input)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseDelimitedWithIOException(PARSER, input);
       }
-      public static AVInitHP.request.monitor parseDelimitedFrom(
+      public static Nick_Stuff.Protocols.AVInitHP.request.monitor parseDelimitedFrom(
           java.io.InputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
       }
-      public static AVInitHP.request.monitor parseFrom(
+      public static Nick_Stuff.Protocols.AVInitHP.request.monitor parseFrom(
           com.google.protobuf.CodedInputStream input)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseWithIOException(PARSER, input);
       }
-      public static AVInitHP.request.monitor parseFrom(
+      public static Nick_Stuff.Protocols.AVInitHP.request.monitor parseFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
@@ -649,7 +649,7 @@ public final class AVInitHP {
       public static Builder newBuilder() {
         return DEFAULT_INSTANCE.toBuilder();
       }
-      public static Builder newBuilder(AVInitHP.request.monitor prototype) {
+      public static Builder newBuilder(Nick_Stuff.Protocols.AVInitHP.request.monitor prototype) {
         return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
       }
       @java.lang.Override
@@ -670,21 +670,21 @@ public final class AVInitHP {
       public static final class Builder extends
           com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
           // @@protoc_insertion_point(builder_implements:request.monitor)
-          AVInitHP.request.monitorOrBuilder {
+          Nick_Stuff.Protocols.AVInitHP.request.monitorOrBuilder {
         public static final com.google.protobuf.Descriptors.Descriptor
             getDescriptor() {
-          return AVInitHP.internal_static_request_monitor_descriptor;
+          return Nick_Stuff.Protocols.AVInitHP.internal_static_request_monitor_descriptor;
         }
 
         @java.lang.Override
         protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
             internalGetFieldAccessorTable() {
-          return AVInitHP.internal_static_request_monitor_fieldAccessorTable
+          return Nick_Stuff.Protocols.AVInitHP.internal_static_request_monitor_fieldAccessorTable
               .ensureFieldAccessorsInitialized(
-                  AVInitHP.request.monitor.class, AVInitHP.request.monitor.Builder.class);
+                  Nick_Stuff.Protocols.AVInitHP.request.monitor.class, Nick_Stuff.Protocols.AVInitHP.request.monitor.Builder.class);
         }
 
-        // Construct using AVInitHP.request.monitor.newBuilder()
+        // Construct using Nick_Stuff.Protocols.AVInitHP.request.monitor.newBuilder()
         private Builder() {
           maybeForceBuilderInitialization();
         }
@@ -714,17 +714,17 @@ public final class AVInitHP {
         @java.lang.Override
         public com.google.protobuf.Descriptors.Descriptor
             getDescriptorForType() {
-          return AVInitHP.internal_static_request_monitor_descriptor;
+          return Nick_Stuff.Protocols.AVInitHP.internal_static_request_monitor_descriptor;
         }
 
         @java.lang.Override
-        public AVInitHP.request.monitor getDefaultInstanceForType() {
-          return AVInitHP.request.monitor.getDefaultInstance();
+        public Nick_Stuff.Protocols.AVInitHP.request.monitor getDefaultInstanceForType() {
+          return Nick_Stuff.Protocols.AVInitHP.request.monitor.getDefaultInstance();
         }
 
         @java.lang.Override
-        public AVInitHP.request.monitor build() {
-          AVInitHP.request.monitor result = buildPartial();
+        public Nick_Stuff.Protocols.AVInitHP.request.monitor build() {
+          Nick_Stuff.Protocols.AVInitHP.request.monitor result = buildPartial();
           if (!result.isInitialized()) {
             throw newUninitializedMessageException(result);
           }
@@ -732,8 +732,8 @@ public final class AVInitHP {
         }
 
         @java.lang.Override
-        public AVInitHP.request.monitor buildPartial() {
-          AVInitHP.request.monitor result = new AVInitHP.request.monitor(this);
+        public Nick_Stuff.Protocols.AVInitHP.request.monitor buildPartial() {
+          Nick_Stuff.Protocols.AVInitHP.request.monitor result = new Nick_Stuff.Protocols.AVInitHP.request.monitor(this);
           int from_bitField0_ = bitField0_;
           int to_bitField0_ = 0;
           if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -787,16 +787,16 @@ public final class AVInitHP {
         }
         @java.lang.Override
         public Builder mergeFrom(com.google.protobuf.Message other) {
-          if (other instanceof AVInitHP.request.monitor) {
-            return mergeFrom((AVInitHP.request.monitor)other);
+          if (other instanceof Nick_Stuff.Protocols.AVInitHP.request.monitor) {
+            return mergeFrom((Nick_Stuff.Protocols.AVInitHP.request.monitor)other);
           } else {
             super.mergeFrom(other);
             return this;
           }
         }
 
-        public Builder mergeFrom(AVInitHP.request.monitor other) {
-          if (other == AVInitHP.request.monitor.getDefaultInstance()) return this;
+        public Builder mergeFrom(Nick_Stuff.Protocols.AVInitHP.request.monitor other) {
+          if (other == Nick_Stuff.Protocols.AVInitHP.request.monitor.getDefaultInstance()) return this;
           if (other.hasHeight()) {
             setHeight(other.getHeight());
           }
@@ -830,11 +830,11 @@ public final class AVInitHP {
             com.google.protobuf.CodedInputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws java.io.IOException {
-          AVInitHP.request.monitor parsedMessage = null;
+          Nick_Stuff.Protocols.AVInitHP.request.monitor parsedMessage = null;
           try {
             parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
           } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            parsedMessage = (AVInitHP.request.monitor) e.getUnfinishedMessage();
+            parsedMessage = (Nick_Stuff.Protocols.AVInitHP.request.monitor) e.getUnfinishedMessage();
             throw e.unwrapIOException();
           } finally {
             if (parsedMessage != null) {
@@ -957,12 +957,12 @@ public final class AVInitHP {
       }
 
       // @@protoc_insertion_point(class_scope:request.monitor)
-      private static final AVInitHP.request.monitor DEFAULT_INSTANCE;
+      private static final Nick_Stuff.Protocols.AVInitHP.request.monitor DEFAULT_INSTANCE;
       static {
-        DEFAULT_INSTANCE = new AVInitHP.request.monitor();
+        DEFAULT_INSTANCE = new Nick_Stuff.Protocols.AVInitHP.request.monitor();
       }
 
-      public static AVInitHP.request.monitor getDefaultInstance() {
+      public static Nick_Stuff.Protocols.AVInitHP.request.monitor getDefaultInstance() {
         return DEFAULT_INSTANCE;
       }
 
@@ -987,7 +987,7 @@ public final class AVInitHP {
       }
 
       @java.lang.Override
-      public AVInitHP.request.monitor getDefaultInstanceForType() {
+      public Nick_Stuff.Protocols.AVInitHP.request.monitor getDefaultInstanceForType() {
         return DEFAULT_INSTANCE;
       }
 
@@ -1063,17 +1063,17 @@ public final class AVInitHP {
     }
 
     public static final int MONITORS_FIELD_NUMBER = 5;
-    private java.util.List<AVInitHP.request.monitor> monitors_;
+    private java.util.List<Nick_Stuff.Protocols.AVInitHP.request.monitor> monitors_;
     /**
      * <code>repeated .request.monitor monitors = 5;</code>
      */
-    public java.util.List<AVInitHP.request.monitor> getMonitorsList() {
+    public java.util.List<Nick_Stuff.Protocols.AVInitHP.request.monitor> getMonitorsList() {
       return monitors_;
     }
     /**
      * <code>repeated .request.monitor monitors = 5;</code>
      */
-    public java.util.List<? extends AVInitHP.request.monitorOrBuilder> 
+    public java.util.List<? extends Nick_Stuff.Protocols.AVInitHP.request.monitorOrBuilder> 
         getMonitorsOrBuilderList() {
       return monitors_;
     }
@@ -1086,13 +1086,13 @@ public final class AVInitHP {
     /**
      * <code>repeated .request.monitor monitors = 5;</code>
      */
-    public AVInitHP.request.monitor getMonitors(int index) {
+    public Nick_Stuff.Protocols.AVInitHP.request.monitor getMonitors(int index) {
       return monitors_.get(index);
     }
     /**
      * <code>repeated .request.monitor monitors = 5;</code>
      */
-    public AVInitHP.request.monitorOrBuilder getMonitorsOrBuilder(
+    public Nick_Stuff.Protocols.AVInitHP.request.monitorOrBuilder getMonitorsOrBuilder(
         int index) {
       return monitors_.get(index);
     }
@@ -1351,10 +1351,10 @@ public final class AVInitHP {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof AVInitHP.request)) {
+      if (!(obj instanceof Nick_Stuff.Protocols.AVInitHP.request)) {
         return super.equals(obj);
       }
-      AVInitHP.request other = (AVInitHP.request) obj;
+      Nick_Stuff.Protocols.AVInitHP.request other = (Nick_Stuff.Protocols.AVInitHP.request) obj;
 
       boolean result = true;
       result = result && (hasProtoType() == other.hasProtoType());
@@ -1472,69 +1472,69 @@ public final class AVInitHP {
       return hash;
     }
 
-    public static AVInitHP.request parseFrom(
+    public static Nick_Stuff.Protocols.AVInitHP.request parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static AVInitHP.request parseFrom(
+    public static Nick_Stuff.Protocols.AVInitHP.request parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static AVInitHP.request parseFrom(
+    public static Nick_Stuff.Protocols.AVInitHP.request parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static AVInitHP.request parseFrom(
+    public static Nick_Stuff.Protocols.AVInitHP.request parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static AVInitHP.request parseFrom(byte[] data)
+    public static Nick_Stuff.Protocols.AVInitHP.request parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static AVInitHP.request parseFrom(
+    public static Nick_Stuff.Protocols.AVInitHP.request parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static AVInitHP.request parseFrom(java.io.InputStream input)
+    public static Nick_Stuff.Protocols.AVInitHP.request parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static AVInitHP.request parseFrom(
+    public static Nick_Stuff.Protocols.AVInitHP.request parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static AVInitHP.request parseDelimitedFrom(java.io.InputStream input)
+    public static Nick_Stuff.Protocols.AVInitHP.request parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static AVInitHP.request parseDelimitedFrom(
+    public static Nick_Stuff.Protocols.AVInitHP.request parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static AVInitHP.request parseFrom(
+    public static Nick_Stuff.Protocols.AVInitHP.request parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static AVInitHP.request parseFrom(
+    public static Nick_Stuff.Protocols.AVInitHP.request parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -1547,7 +1547,7 @@ public final class AVInitHP {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(AVInitHP.request prototype) {
+    public static Builder newBuilder(Nick_Stuff.Protocols.AVInitHP.request prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -1568,21 +1568,21 @@ public final class AVInitHP {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:request)
-        AVInitHP.requestOrBuilder {
+        Nick_Stuff.Protocols.AVInitHP.requestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return AVInitHP.internal_static_request_descriptor;
+        return Nick_Stuff.Protocols.AVInitHP.internal_static_request_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return AVInitHP.internal_static_request_fieldAccessorTable
+        return Nick_Stuff.Protocols.AVInitHP.internal_static_request_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                AVInitHP.request.class, AVInitHP.request.Builder.class);
+                Nick_Stuff.Protocols.AVInitHP.request.class, Nick_Stuff.Protocols.AVInitHP.request.Builder.class);
       }
 
-      // Construct using AVInitHP.request.newBuilder()
+      // Construct using Nick_Stuff.Protocols.AVInitHP.request.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -1633,17 +1633,17 @@ public final class AVInitHP {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return AVInitHP.internal_static_request_descriptor;
+        return Nick_Stuff.Protocols.AVInitHP.internal_static_request_descriptor;
       }
 
       @java.lang.Override
-      public AVInitHP.request getDefaultInstanceForType() {
-        return AVInitHP.request.getDefaultInstance();
+      public Nick_Stuff.Protocols.AVInitHP.request getDefaultInstanceForType() {
+        return Nick_Stuff.Protocols.AVInitHP.request.getDefaultInstance();
       }
 
       @java.lang.Override
-      public AVInitHP.request build() {
-        AVInitHP.request result = buildPartial();
+      public Nick_Stuff.Protocols.AVInitHP.request build() {
+        Nick_Stuff.Protocols.AVInitHP.request result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -1651,8 +1651,8 @@ public final class AVInitHP {
       }
 
       @java.lang.Override
-      public AVInitHP.request buildPartial() {
-        AVInitHP.request result = new AVInitHP.request(this);
+      public Nick_Stuff.Protocols.AVInitHP.request buildPartial() {
+        Nick_Stuff.Protocols.AVInitHP.request result = new Nick_Stuff.Protocols.AVInitHP.request(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -1743,16 +1743,16 @@ public final class AVInitHP {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof AVInitHP.request) {
-          return mergeFrom((AVInitHP.request)other);
+        if (other instanceof Nick_Stuff.Protocols.AVInitHP.request) {
+          return mergeFrom((Nick_Stuff.Protocols.AVInitHP.request)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(AVInitHP.request other) {
-        if (other == AVInitHP.request.getDefaultInstance()) return this;
+      public Builder mergeFrom(Nick_Stuff.Protocols.AVInitHP.request other) {
+        if (other == Nick_Stuff.Protocols.AVInitHP.request.getDefaultInstance()) return this;
         if (other.hasProtoType()) {
           setProtoType(other.getProtoType());
         }
@@ -1859,11 +1859,11 @@ public final class AVInitHP {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        AVInitHP.request parsedMessage = null;
+        Nick_Stuff.Protocols.AVInitHP.request parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (AVInitHP.request) e.getUnfinishedMessage();
+          parsedMessage = (Nick_Stuff.Protocols.AVInitHP.request) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -2021,22 +2021,22 @@ public final class AVInitHP {
         return this;
       }
 
-      private java.util.List<AVInitHP.request.monitor> monitors_ =
+      private java.util.List<Nick_Stuff.Protocols.AVInitHP.request.monitor> monitors_ =
         java.util.Collections.emptyList();
       private void ensureMonitorsIsMutable() {
         if (!((bitField0_ & 0x00000010) == 0x00000010)) {
-          monitors_ = new java.util.ArrayList<AVInitHP.request.monitor>(monitors_);
+          monitors_ = new java.util.ArrayList<Nick_Stuff.Protocols.AVInitHP.request.monitor>(monitors_);
           bitField0_ |= 0x00000010;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          AVInitHP.request.monitor, AVInitHP.request.monitor.Builder, AVInitHP.request.monitorOrBuilder> monitorsBuilder_;
+          Nick_Stuff.Protocols.AVInitHP.request.monitor, Nick_Stuff.Protocols.AVInitHP.request.monitor.Builder, Nick_Stuff.Protocols.AVInitHP.request.monitorOrBuilder> monitorsBuilder_;
 
       /**
        * <code>repeated .request.monitor monitors = 5;</code>
        */
-      public java.util.List<AVInitHP.request.monitor> getMonitorsList() {
+      public java.util.List<Nick_Stuff.Protocols.AVInitHP.request.monitor> getMonitorsList() {
         if (monitorsBuilder_ == null) {
           return java.util.Collections.unmodifiableList(monitors_);
         } else {
@@ -2056,7 +2056,7 @@ public final class AVInitHP {
       /**
        * <code>repeated .request.monitor monitors = 5;</code>
        */
-      public AVInitHP.request.monitor getMonitors(int index) {
+      public Nick_Stuff.Protocols.AVInitHP.request.monitor getMonitors(int index) {
         if (monitorsBuilder_ == null) {
           return monitors_.get(index);
         } else {
@@ -2067,7 +2067,7 @@ public final class AVInitHP {
        * <code>repeated .request.monitor monitors = 5;</code>
        */
       public Builder setMonitors(
-          int index, AVInitHP.request.monitor value) {
+          int index, Nick_Stuff.Protocols.AVInitHP.request.monitor value) {
         if (monitorsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2084,7 +2084,7 @@ public final class AVInitHP {
        * <code>repeated .request.monitor monitors = 5;</code>
        */
       public Builder setMonitors(
-          int index, AVInitHP.request.monitor.Builder builderForValue) {
+          int index, Nick_Stuff.Protocols.AVInitHP.request.monitor.Builder builderForValue) {
         if (monitorsBuilder_ == null) {
           ensureMonitorsIsMutable();
           monitors_.set(index, builderForValue.build());
@@ -2097,7 +2097,7 @@ public final class AVInitHP {
       /**
        * <code>repeated .request.monitor monitors = 5;</code>
        */
-      public Builder addMonitors(AVInitHP.request.monitor value) {
+      public Builder addMonitors(Nick_Stuff.Protocols.AVInitHP.request.monitor value) {
         if (monitorsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2114,7 +2114,7 @@ public final class AVInitHP {
        * <code>repeated .request.monitor monitors = 5;</code>
        */
       public Builder addMonitors(
-          int index, AVInitHP.request.monitor value) {
+          int index, Nick_Stuff.Protocols.AVInitHP.request.monitor value) {
         if (monitorsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2131,7 +2131,7 @@ public final class AVInitHP {
        * <code>repeated .request.monitor monitors = 5;</code>
        */
       public Builder addMonitors(
-          AVInitHP.request.monitor.Builder builderForValue) {
+          Nick_Stuff.Protocols.AVInitHP.request.monitor.Builder builderForValue) {
         if (monitorsBuilder_ == null) {
           ensureMonitorsIsMutable();
           monitors_.add(builderForValue.build());
@@ -2145,7 +2145,7 @@ public final class AVInitHP {
        * <code>repeated .request.monitor monitors = 5;</code>
        */
       public Builder addMonitors(
-          int index, AVInitHP.request.monitor.Builder builderForValue) {
+          int index, Nick_Stuff.Protocols.AVInitHP.request.monitor.Builder builderForValue) {
         if (monitorsBuilder_ == null) {
           ensureMonitorsIsMutable();
           monitors_.add(index, builderForValue.build());
@@ -2159,7 +2159,7 @@ public final class AVInitHP {
        * <code>repeated .request.monitor monitors = 5;</code>
        */
       public Builder addAllMonitors(
-          java.lang.Iterable<? extends AVInitHP.request.monitor> values) {
+          java.lang.Iterable<? extends Nick_Stuff.Protocols.AVInitHP.request.monitor> values) {
         if (monitorsBuilder_ == null) {
           ensureMonitorsIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -2199,14 +2199,14 @@ public final class AVInitHP {
       /**
        * <code>repeated .request.monitor monitors = 5;</code>
        */
-      public AVInitHP.request.monitor.Builder getMonitorsBuilder(
+      public Nick_Stuff.Protocols.AVInitHP.request.monitor.Builder getMonitorsBuilder(
           int index) {
         return getMonitorsFieldBuilder().getBuilder(index);
       }
       /**
        * <code>repeated .request.monitor monitors = 5;</code>
        */
-      public AVInitHP.request.monitorOrBuilder getMonitorsOrBuilder(
+      public Nick_Stuff.Protocols.AVInitHP.request.monitorOrBuilder getMonitorsOrBuilder(
           int index) {
         if (monitorsBuilder_ == null) {
           return monitors_.get(index);  } else {
@@ -2216,7 +2216,7 @@ public final class AVInitHP {
       /**
        * <code>repeated .request.monitor monitors = 5;</code>
        */
-      public java.util.List<? extends AVInitHP.request.monitorOrBuilder> 
+      public java.util.List<? extends Nick_Stuff.Protocols.AVInitHP.request.monitorOrBuilder> 
            getMonitorsOrBuilderList() {
         if (monitorsBuilder_ != null) {
           return monitorsBuilder_.getMessageOrBuilderList();
@@ -2227,31 +2227,31 @@ public final class AVInitHP {
       /**
        * <code>repeated .request.monitor monitors = 5;</code>
        */
-      public AVInitHP.request.monitor.Builder addMonitorsBuilder() {
+      public Nick_Stuff.Protocols.AVInitHP.request.monitor.Builder addMonitorsBuilder() {
         return getMonitorsFieldBuilder().addBuilder(
-            AVInitHP.request.monitor.getDefaultInstance());
+            Nick_Stuff.Protocols.AVInitHP.request.monitor.getDefaultInstance());
       }
       /**
        * <code>repeated .request.monitor monitors = 5;</code>
        */
-      public AVInitHP.request.monitor.Builder addMonitorsBuilder(
+      public Nick_Stuff.Protocols.AVInitHP.request.monitor.Builder addMonitorsBuilder(
           int index) {
         return getMonitorsFieldBuilder().addBuilder(
-            index, AVInitHP.request.monitor.getDefaultInstance());
+            index, Nick_Stuff.Protocols.AVInitHP.request.monitor.getDefaultInstance());
       }
       /**
        * <code>repeated .request.monitor monitors = 5;</code>
        */
-      public java.util.List<AVInitHP.request.monitor.Builder> 
+      public java.util.List<Nick_Stuff.Protocols.AVInitHP.request.monitor.Builder> 
            getMonitorsBuilderList() {
         return getMonitorsFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          AVInitHP.request.monitor, AVInitHP.request.monitor.Builder, AVInitHP.request.monitorOrBuilder> 
+          Nick_Stuff.Protocols.AVInitHP.request.monitor, Nick_Stuff.Protocols.AVInitHP.request.monitor.Builder, Nick_Stuff.Protocols.AVInitHP.request.monitorOrBuilder> 
           getMonitorsFieldBuilder() {
         if (monitorsBuilder_ == null) {
           monitorsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              AVInitHP.request.monitor, AVInitHP.request.monitor.Builder, AVInitHP.request.monitorOrBuilder>(
+              Nick_Stuff.Protocols.AVInitHP.request.monitor, Nick_Stuff.Protocols.AVInitHP.request.monitor.Builder, Nick_Stuff.Protocols.AVInitHP.request.monitorOrBuilder>(
                   monitors_,
                   ((bitField0_ & 0x00000010) == 0x00000010),
                   getParentForChildren(),
@@ -2485,12 +2485,12 @@ public final class AVInitHP {
     }
 
     // @@protoc_insertion_point(class_scope:request)
-    private static final AVInitHP.request DEFAULT_INSTANCE;
+    private static final Nick_Stuff.Protocols.AVInitHP.request DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new AVInitHP.request();
+      DEFAULT_INSTANCE = new Nick_Stuff.Protocols.AVInitHP.request();
     }
 
-    public static AVInitHP.request getDefaultInstance() {
+    public static Nick_Stuff.Protocols.AVInitHP.request getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -2515,7 +2515,7 @@ public final class AVInitHP {
     }
 
     @java.lang.Override
-    public AVInitHP.request getDefaultInstanceForType() {
+    public Nick_Stuff.Protocols.AVInitHP.request getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -2549,7 +2549,7 @@ public final class AVInitHP {
       "te\030\t \002(\005\022\024\n\014channelcount\030\n \002(\005\022\025\n\rchanne" +
       "llayout\030\013 \002(\003\032D\n\007monitor\022\016\n\006height\030\001 \002(\005" +
       "\022\r\n\005width\030\002 \002(\005\022\032\n\014availability\030\003 \002(\010:\004t" +
-      "rueB\nB\010AVInitHP"
+      "rueB \n\024Nick_Stuff.ProtocolsB\010AVInitHP"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

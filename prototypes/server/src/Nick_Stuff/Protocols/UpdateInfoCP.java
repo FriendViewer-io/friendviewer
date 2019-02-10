@@ -76,12 +76,12 @@ public final class UpdateInfoCP {
     /**
      * <code>repeated .data.passkey keys = 6;</code>
      */
-    java.util.List<UpdateInfoCP.data.passkey> 
+    java.util.List<Nick_Stuff.Protocols.UpdateInfoCP.data.passkey> 
         getKeysList();
     /**
      * <code>repeated .data.passkey keys = 6;</code>
      */
-    UpdateInfoCP.data.passkey getKeys(int index);
+    Nick_Stuff.Protocols.UpdateInfoCP.data.passkey getKeys(int index);
     /**
      * <code>repeated .data.passkey keys = 6;</code>
      */
@@ -89,23 +89,23 @@ public final class UpdateInfoCP {
     /**
      * <code>repeated .data.passkey keys = 6;</code>
      */
-    java.util.List<? extends UpdateInfoCP.data.passkeyOrBuilder> 
+    java.util.List<? extends Nick_Stuff.Protocols.UpdateInfoCP.data.passkeyOrBuilder> 
         getKeysOrBuilderList();
     /**
      * <code>repeated .data.passkey keys = 6;</code>
      */
-    UpdateInfoCP.data.passkeyOrBuilder getKeysOrBuilder(
+    Nick_Stuff.Protocols.UpdateInfoCP.data.passkeyOrBuilder getKeysOrBuilder(
         int index);
 
     /**
      * <code>repeated .data.hwid ids = 7;</code>
      */
-    java.util.List<UpdateInfoCP.data.hwid> 
+    java.util.List<Nick_Stuff.Protocols.UpdateInfoCP.data.hwid> 
         getIdsList();
     /**
      * <code>repeated .data.hwid ids = 7;</code>
      */
-    UpdateInfoCP.data.hwid getIds(int index);
+    Nick_Stuff.Protocols.UpdateInfoCP.data.hwid getIds(int index);
     /**
      * <code>repeated .data.hwid ids = 7;</code>
      */
@@ -113,12 +113,12 @@ public final class UpdateInfoCP {
     /**
      * <code>repeated .data.hwid ids = 7;</code>
      */
-    java.util.List<? extends UpdateInfoCP.data.hwidOrBuilder> 
+    java.util.List<? extends Nick_Stuff.Protocols.UpdateInfoCP.data.hwidOrBuilder> 
         getIdsOrBuilderList();
     /**
      * <code>repeated .data.hwid ids = 7;</code>
      */
-    UpdateInfoCP.data.hwidOrBuilder getIdsOrBuilder(
+    Nick_Stuff.Protocols.UpdateInfoCP.data.hwidOrBuilder getIdsOrBuilder(
         int index);
   }
   /**
@@ -196,20 +196,20 @@ public final class UpdateInfoCP {
             }
             case 50: {
               if (!((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
-                keys_ = new java.util.ArrayList<UpdateInfoCP.data.passkey>();
+                keys_ = new java.util.ArrayList<Nick_Stuff.Protocols.UpdateInfoCP.data.passkey>();
                 mutable_bitField0_ |= 0x00000020;
               }
               keys_.add(
-                  input.readMessage(UpdateInfoCP.data.passkey.PARSER, extensionRegistry));
+                  input.readMessage(Nick_Stuff.Protocols.UpdateInfoCP.data.passkey.PARSER, extensionRegistry));
               break;
             }
             case 58: {
               if (!((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
-                ids_ = new java.util.ArrayList<UpdateInfoCP.data.hwid>();
+                ids_ = new java.util.ArrayList<Nick_Stuff.Protocols.UpdateInfoCP.data.hwid>();
                 mutable_bitField0_ |= 0x00000040;
               }
               ids_.add(
-                  input.readMessage(UpdateInfoCP.data.hwid.PARSER, extensionRegistry));
+                  input.readMessage(Nick_Stuff.Protocols.UpdateInfoCP.data.hwid.PARSER, extensionRegistry));
               break;
             }
             default: {
@@ -239,15 +239,15 @@ public final class UpdateInfoCP {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return UpdateInfoCP.internal_static_data_descriptor;
+      return Nick_Stuff.Protocols.UpdateInfoCP.internal_static_data_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return UpdateInfoCP.internal_static_data_fieldAccessorTable
+      return Nick_Stuff.Protocols.UpdateInfoCP.internal_static_data_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              UpdateInfoCP.data.class, UpdateInfoCP.data.Builder.class);
+              Nick_Stuff.Protocols.UpdateInfoCP.data.class, Nick_Stuff.Protocols.UpdateInfoCP.data.Builder.class);
     }
 
     public interface passkeyOrBuilder extends
@@ -373,15 +373,15 @@ public final class UpdateInfoCP {
       }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return UpdateInfoCP.internal_static_data_passkey_descriptor;
+        return Nick_Stuff.Protocols.UpdateInfoCP.internal_static_data_passkey_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return UpdateInfoCP.internal_static_data_passkey_fieldAccessorTable
+        return Nick_Stuff.Protocols.UpdateInfoCP.internal_static_data_passkey_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                UpdateInfoCP.data.passkey.class, UpdateInfoCP.data.passkey.Builder.class);
+                Nick_Stuff.Protocols.UpdateInfoCP.data.passkey.class, Nick_Stuff.Protocols.UpdateInfoCP.data.passkey.Builder.class);
       }
 
       private int bitField0_;
@@ -530,10 +530,10 @@ public final class UpdateInfoCP {
         if (obj == this) {
          return true;
         }
-        if (!(obj instanceof UpdateInfoCP.data.passkey)) {
+        if (!(obj instanceof Nick_Stuff.Protocols.UpdateInfoCP.data.passkey)) {
           return super.equals(obj);
         }
-        UpdateInfoCP.data.passkey other = (UpdateInfoCP.data.passkey) obj;
+        Nick_Stuff.Protocols.UpdateInfoCP.data.passkey other = (Nick_Stuff.Protocols.UpdateInfoCP.data.passkey) obj;
 
         boolean result = true;
         result = result && (hasKey() == other.hasKey());
@@ -579,69 +579,69 @@ public final class UpdateInfoCP {
         return hash;
       }
 
-      public static UpdateInfoCP.data.passkey parseFrom(
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.passkey parseFrom(
           java.nio.ByteBuffer data)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data);
       }
-      public static UpdateInfoCP.data.passkey parseFrom(
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.passkey parseFrom(
           java.nio.ByteBuffer data,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data, extensionRegistry);
       }
-      public static UpdateInfoCP.data.passkey parseFrom(
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.passkey parseFrom(
           com.google.protobuf.ByteString data)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data);
       }
-      public static UpdateInfoCP.data.passkey parseFrom(
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.passkey parseFrom(
           com.google.protobuf.ByteString data,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data, extensionRegistry);
       }
-      public static UpdateInfoCP.data.passkey parseFrom(byte[] data)
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.passkey parseFrom(byte[] data)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data);
       }
-      public static UpdateInfoCP.data.passkey parseFrom(
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.passkey parseFrom(
           byte[] data,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data, extensionRegistry);
       }
-      public static UpdateInfoCP.data.passkey parseFrom(java.io.InputStream input)
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.passkey parseFrom(java.io.InputStream input)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseWithIOException(PARSER, input);
       }
-      public static UpdateInfoCP.data.passkey parseFrom(
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.passkey parseFrom(
           java.io.InputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseWithIOException(PARSER, input, extensionRegistry);
       }
-      public static UpdateInfoCP.data.passkey parseDelimitedFrom(java.io.InputStream input)
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.passkey parseDelimitedFrom(java.io.InputStream input)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseDelimitedWithIOException(PARSER, input);
       }
-      public static UpdateInfoCP.data.passkey parseDelimitedFrom(
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.passkey parseDelimitedFrom(
           java.io.InputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
       }
-      public static UpdateInfoCP.data.passkey parseFrom(
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.passkey parseFrom(
           com.google.protobuf.CodedInputStream input)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseWithIOException(PARSER, input);
       }
-      public static UpdateInfoCP.data.passkey parseFrom(
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.passkey parseFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
@@ -654,7 +654,7 @@ public final class UpdateInfoCP {
       public static Builder newBuilder() {
         return DEFAULT_INSTANCE.toBuilder();
       }
-      public static Builder newBuilder(UpdateInfoCP.data.passkey prototype) {
+      public static Builder newBuilder(Nick_Stuff.Protocols.UpdateInfoCP.data.passkey prototype) {
         return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
       }
       @java.lang.Override
@@ -675,21 +675,21 @@ public final class UpdateInfoCP {
       public static final class Builder extends
           com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
           // @@protoc_insertion_point(builder_implements:data.passkey)
-          UpdateInfoCP.data.passkeyOrBuilder {
+          Nick_Stuff.Protocols.UpdateInfoCP.data.passkeyOrBuilder {
         public static final com.google.protobuf.Descriptors.Descriptor
             getDescriptor() {
-          return UpdateInfoCP.internal_static_data_passkey_descriptor;
+          return Nick_Stuff.Protocols.UpdateInfoCP.internal_static_data_passkey_descriptor;
         }
 
         @java.lang.Override
         protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
             internalGetFieldAccessorTable() {
-          return UpdateInfoCP.internal_static_data_passkey_fieldAccessorTable
+          return Nick_Stuff.Protocols.UpdateInfoCP.internal_static_data_passkey_fieldAccessorTable
               .ensureFieldAccessorsInitialized(
-                  UpdateInfoCP.data.passkey.class, UpdateInfoCP.data.passkey.Builder.class);
+                  Nick_Stuff.Protocols.UpdateInfoCP.data.passkey.class, Nick_Stuff.Protocols.UpdateInfoCP.data.passkey.Builder.class);
         }
 
-        // Construct using UpdateInfoCP.data.passkey.newBuilder()
+        // Construct using Nick_Stuff.Protocols.UpdateInfoCP.data.passkey.newBuilder()
         private Builder() {
           maybeForceBuilderInitialization();
         }
@@ -719,17 +719,17 @@ public final class UpdateInfoCP {
         @java.lang.Override
         public com.google.protobuf.Descriptors.Descriptor
             getDescriptorForType() {
-          return UpdateInfoCP.internal_static_data_passkey_descriptor;
+          return Nick_Stuff.Protocols.UpdateInfoCP.internal_static_data_passkey_descriptor;
         }
 
         @java.lang.Override
-        public UpdateInfoCP.data.passkey getDefaultInstanceForType() {
-          return UpdateInfoCP.data.passkey.getDefaultInstance();
+        public Nick_Stuff.Protocols.UpdateInfoCP.data.passkey getDefaultInstanceForType() {
+          return Nick_Stuff.Protocols.UpdateInfoCP.data.passkey.getDefaultInstance();
         }
 
         @java.lang.Override
-        public UpdateInfoCP.data.passkey build() {
-          UpdateInfoCP.data.passkey result = buildPartial();
+        public Nick_Stuff.Protocols.UpdateInfoCP.data.passkey build() {
+          Nick_Stuff.Protocols.UpdateInfoCP.data.passkey result = buildPartial();
           if (!result.isInitialized()) {
             throw newUninitializedMessageException(result);
           }
@@ -737,8 +737,8 @@ public final class UpdateInfoCP {
         }
 
         @java.lang.Override
-        public UpdateInfoCP.data.passkey buildPartial() {
-          UpdateInfoCP.data.passkey result = new UpdateInfoCP.data.passkey(this);
+        public Nick_Stuff.Protocols.UpdateInfoCP.data.passkey buildPartial() {
+          Nick_Stuff.Protocols.UpdateInfoCP.data.passkey result = new Nick_Stuff.Protocols.UpdateInfoCP.data.passkey(this);
           int from_bitField0_ = bitField0_;
           int to_bitField0_ = 0;
           if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -792,16 +792,16 @@ public final class UpdateInfoCP {
         }
         @java.lang.Override
         public Builder mergeFrom(com.google.protobuf.Message other) {
-          if (other instanceof UpdateInfoCP.data.passkey) {
-            return mergeFrom((UpdateInfoCP.data.passkey)other);
+          if (other instanceof Nick_Stuff.Protocols.UpdateInfoCP.data.passkey) {
+            return mergeFrom((Nick_Stuff.Protocols.UpdateInfoCP.data.passkey)other);
           } else {
             super.mergeFrom(other);
             return this;
           }
         }
 
-        public Builder mergeFrom(UpdateInfoCP.data.passkey other) {
-          if (other == UpdateInfoCP.data.passkey.getDefaultInstance()) return this;
+        public Builder mergeFrom(Nick_Stuff.Protocols.UpdateInfoCP.data.passkey other) {
+          if (other == Nick_Stuff.Protocols.UpdateInfoCP.data.passkey.getDefaultInstance()) return this;
           if (other.hasKey()) {
             bitField0_ |= 0x00000001;
             key_ = other.key_;
@@ -837,11 +837,11 @@ public final class UpdateInfoCP {
             com.google.protobuf.CodedInputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws java.io.IOException {
-          UpdateInfoCP.data.passkey parsedMessage = null;
+          Nick_Stuff.Protocols.UpdateInfoCP.data.passkey parsedMessage = null;
           try {
             parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
           } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            parsedMessage = (UpdateInfoCP.data.passkey) e.getUnfinishedMessage();
+            parsedMessage = (Nick_Stuff.Protocols.UpdateInfoCP.data.passkey) e.getUnfinishedMessage();
             throw e.unwrapIOException();
           } finally {
             if (parsedMessage != null) {
@@ -1024,12 +1024,12 @@ public final class UpdateInfoCP {
       }
 
       // @@protoc_insertion_point(class_scope:data.passkey)
-      private static final UpdateInfoCP.data.passkey DEFAULT_INSTANCE;
+      private static final Nick_Stuff.Protocols.UpdateInfoCP.data.passkey DEFAULT_INSTANCE;
       static {
-        DEFAULT_INSTANCE = new UpdateInfoCP.data.passkey();
+        DEFAULT_INSTANCE = new Nick_Stuff.Protocols.UpdateInfoCP.data.passkey();
       }
 
-      public static UpdateInfoCP.data.passkey getDefaultInstance() {
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.passkey getDefaultInstance() {
         return DEFAULT_INSTANCE;
       }
 
@@ -1054,7 +1054,7 @@ public final class UpdateInfoCP {
       }
 
       @java.lang.Override
-      public UpdateInfoCP.data.passkey getDefaultInstanceForType() {
+      public Nick_Stuff.Protocols.UpdateInfoCP.data.passkey getDefaultInstanceForType() {
         return DEFAULT_INSTANCE;
       }
 
@@ -1169,15 +1169,15 @@ public final class UpdateInfoCP {
       }
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return UpdateInfoCP.internal_static_data_hwid_descriptor;
+        return Nick_Stuff.Protocols.UpdateInfoCP.internal_static_data_hwid_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return UpdateInfoCP.internal_static_data_hwid_fieldAccessorTable
+        return Nick_Stuff.Protocols.UpdateInfoCP.internal_static_data_hwid_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                UpdateInfoCP.data.hwid.class, UpdateInfoCP.data.hwid.Builder.class);
+                Nick_Stuff.Protocols.UpdateInfoCP.data.hwid.class, Nick_Stuff.Protocols.UpdateInfoCP.data.hwid.Builder.class);
       }
 
       private int bitField0_;
@@ -1292,10 +1292,10 @@ public final class UpdateInfoCP {
         if (obj == this) {
          return true;
         }
-        if (!(obj instanceof UpdateInfoCP.data.hwid)) {
+        if (!(obj instanceof Nick_Stuff.Protocols.UpdateInfoCP.data.hwid)) {
           return super.equals(obj);
         }
-        UpdateInfoCP.data.hwid other = (UpdateInfoCP.data.hwid) obj;
+        Nick_Stuff.Protocols.UpdateInfoCP.data.hwid other = (Nick_Stuff.Protocols.UpdateInfoCP.data.hwid) obj;
 
         boolean result = true;
         result = result && (hasDesktopVerification() == other.hasDesktopVerification());
@@ -1344,69 +1344,69 @@ public final class UpdateInfoCP {
         return hash;
       }
 
-      public static UpdateInfoCP.data.hwid parseFrom(
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.hwid parseFrom(
           java.nio.ByteBuffer data)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data);
       }
-      public static UpdateInfoCP.data.hwid parseFrom(
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.hwid parseFrom(
           java.nio.ByteBuffer data,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data, extensionRegistry);
       }
-      public static UpdateInfoCP.data.hwid parseFrom(
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.hwid parseFrom(
           com.google.protobuf.ByteString data)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data);
       }
-      public static UpdateInfoCP.data.hwid parseFrom(
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.hwid parseFrom(
           com.google.protobuf.ByteString data,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data, extensionRegistry);
       }
-      public static UpdateInfoCP.data.hwid parseFrom(byte[] data)
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.hwid parseFrom(byte[] data)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data);
       }
-      public static UpdateInfoCP.data.hwid parseFrom(
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.hwid parseFrom(
           byte[] data,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
         return PARSER.parseFrom(data, extensionRegistry);
       }
-      public static UpdateInfoCP.data.hwid parseFrom(java.io.InputStream input)
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.hwid parseFrom(java.io.InputStream input)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseWithIOException(PARSER, input);
       }
-      public static UpdateInfoCP.data.hwid parseFrom(
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.hwid parseFrom(
           java.io.InputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseWithIOException(PARSER, input, extensionRegistry);
       }
-      public static UpdateInfoCP.data.hwid parseDelimitedFrom(java.io.InputStream input)
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.hwid parseDelimitedFrom(java.io.InputStream input)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseDelimitedWithIOException(PARSER, input);
       }
-      public static UpdateInfoCP.data.hwid parseDelimitedFrom(
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.hwid parseDelimitedFrom(
           java.io.InputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
       }
-      public static UpdateInfoCP.data.hwid parseFrom(
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.hwid parseFrom(
           com.google.protobuf.CodedInputStream input)
           throws java.io.IOException {
         return com.google.protobuf.GeneratedMessageV3
             .parseWithIOException(PARSER, input);
       }
-      public static UpdateInfoCP.data.hwid parseFrom(
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.hwid parseFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
@@ -1419,7 +1419,7 @@ public final class UpdateInfoCP {
       public static Builder newBuilder() {
         return DEFAULT_INSTANCE.toBuilder();
       }
-      public static Builder newBuilder(UpdateInfoCP.data.hwid prototype) {
+      public static Builder newBuilder(Nick_Stuff.Protocols.UpdateInfoCP.data.hwid prototype) {
         return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
       }
       @java.lang.Override
@@ -1440,21 +1440,21 @@ public final class UpdateInfoCP {
       public static final class Builder extends
           com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
           // @@protoc_insertion_point(builder_implements:data.hwid)
-          UpdateInfoCP.data.hwidOrBuilder {
+          Nick_Stuff.Protocols.UpdateInfoCP.data.hwidOrBuilder {
         public static final com.google.protobuf.Descriptors.Descriptor
             getDescriptor() {
-          return UpdateInfoCP.internal_static_data_hwid_descriptor;
+          return Nick_Stuff.Protocols.UpdateInfoCP.internal_static_data_hwid_descriptor;
         }
 
         @java.lang.Override
         protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
             internalGetFieldAccessorTable() {
-          return UpdateInfoCP.internal_static_data_hwid_fieldAccessorTable
+          return Nick_Stuff.Protocols.UpdateInfoCP.internal_static_data_hwid_fieldAccessorTable
               .ensureFieldAccessorsInitialized(
-                  UpdateInfoCP.data.hwid.class, UpdateInfoCP.data.hwid.Builder.class);
+                  Nick_Stuff.Protocols.UpdateInfoCP.data.hwid.class, Nick_Stuff.Protocols.UpdateInfoCP.data.hwid.Builder.class);
         }
 
-        // Construct using UpdateInfoCP.data.hwid.newBuilder()
+        // Construct using Nick_Stuff.Protocols.UpdateInfoCP.data.hwid.newBuilder()
         private Builder() {
           maybeForceBuilderInitialization();
         }
@@ -1484,17 +1484,17 @@ public final class UpdateInfoCP {
         @java.lang.Override
         public com.google.protobuf.Descriptors.Descriptor
             getDescriptorForType() {
-          return UpdateInfoCP.internal_static_data_hwid_descriptor;
+          return Nick_Stuff.Protocols.UpdateInfoCP.internal_static_data_hwid_descriptor;
         }
 
         @java.lang.Override
-        public UpdateInfoCP.data.hwid getDefaultInstanceForType() {
-          return UpdateInfoCP.data.hwid.getDefaultInstance();
+        public Nick_Stuff.Protocols.UpdateInfoCP.data.hwid getDefaultInstanceForType() {
+          return Nick_Stuff.Protocols.UpdateInfoCP.data.hwid.getDefaultInstance();
         }
 
         @java.lang.Override
-        public UpdateInfoCP.data.hwid build() {
-          UpdateInfoCP.data.hwid result = buildPartial();
+        public Nick_Stuff.Protocols.UpdateInfoCP.data.hwid build() {
+          Nick_Stuff.Protocols.UpdateInfoCP.data.hwid result = buildPartial();
           if (!result.isInitialized()) {
             throw newUninitializedMessageException(result);
           }
@@ -1502,8 +1502,8 @@ public final class UpdateInfoCP {
         }
 
         @java.lang.Override
-        public UpdateInfoCP.data.hwid buildPartial() {
-          UpdateInfoCP.data.hwid result = new UpdateInfoCP.data.hwid(this);
+        public Nick_Stuff.Protocols.UpdateInfoCP.data.hwid buildPartial() {
+          Nick_Stuff.Protocols.UpdateInfoCP.data.hwid result = new Nick_Stuff.Protocols.UpdateInfoCP.data.hwid(this);
           int from_bitField0_ = bitField0_;
           int to_bitField0_ = 0;
           if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -1557,16 +1557,16 @@ public final class UpdateInfoCP {
         }
         @java.lang.Override
         public Builder mergeFrom(com.google.protobuf.Message other) {
-          if (other instanceof UpdateInfoCP.data.hwid) {
-            return mergeFrom((UpdateInfoCP.data.hwid)other);
+          if (other instanceof Nick_Stuff.Protocols.UpdateInfoCP.data.hwid) {
+            return mergeFrom((Nick_Stuff.Protocols.UpdateInfoCP.data.hwid)other);
           } else {
             super.mergeFrom(other);
             return this;
           }
         }
 
-        public Builder mergeFrom(UpdateInfoCP.data.hwid other) {
-          if (other == UpdateInfoCP.data.hwid.getDefaultInstance()) return this;
+        public Builder mergeFrom(Nick_Stuff.Protocols.UpdateInfoCP.data.hwid other) {
+          if (other == Nick_Stuff.Protocols.UpdateInfoCP.data.hwid.getDefaultInstance()) return this;
           if (other.hasDesktopVerification()) {
             setDesktopVerification(other.getDesktopVerification());
           }
@@ -1600,11 +1600,11 @@ public final class UpdateInfoCP {
             com.google.protobuf.CodedInputStream input,
             com.google.protobuf.ExtensionRegistryLite extensionRegistry)
             throws java.io.IOException {
-          UpdateInfoCP.data.hwid parsedMessage = null;
+          Nick_Stuff.Protocols.UpdateInfoCP.data.hwid parsedMessage = null;
           try {
             parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
           } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            parsedMessage = (UpdateInfoCP.data.hwid) e.getUnfinishedMessage();
+            parsedMessage = (Nick_Stuff.Protocols.UpdateInfoCP.data.hwid) e.getUnfinishedMessage();
             throw e.unwrapIOException();
           } finally {
             if (parsedMessage != null) {
@@ -1727,12 +1727,12 @@ public final class UpdateInfoCP {
       }
 
       // @@protoc_insertion_point(class_scope:data.hwid)
-      private static final UpdateInfoCP.data.hwid DEFAULT_INSTANCE;
+      private static final Nick_Stuff.Protocols.UpdateInfoCP.data.hwid DEFAULT_INSTANCE;
       static {
-        DEFAULT_INSTANCE = new UpdateInfoCP.data.hwid();
+        DEFAULT_INSTANCE = new Nick_Stuff.Protocols.UpdateInfoCP.data.hwid();
       }
 
-      public static UpdateInfoCP.data.hwid getDefaultInstance() {
+      public static Nick_Stuff.Protocols.UpdateInfoCP.data.hwid getDefaultInstance() {
         return DEFAULT_INSTANCE;
       }
 
@@ -1757,7 +1757,7 @@ public final class UpdateInfoCP {
       }
 
       @java.lang.Override
-      public UpdateInfoCP.data.hwid getDefaultInstanceForType() {
+      public Nick_Stuff.Protocols.UpdateInfoCP.data.hwid getDefaultInstanceForType() {
         return DEFAULT_INSTANCE;
       }
 
@@ -1894,17 +1894,17 @@ public final class UpdateInfoCP {
     }
 
     public static final int KEYS_FIELD_NUMBER = 6;
-    private java.util.List<UpdateInfoCP.data.passkey> keys_;
+    private java.util.List<Nick_Stuff.Protocols.UpdateInfoCP.data.passkey> keys_;
     /**
      * <code>repeated .data.passkey keys = 6;</code>
      */
-    public java.util.List<UpdateInfoCP.data.passkey> getKeysList() {
+    public java.util.List<Nick_Stuff.Protocols.UpdateInfoCP.data.passkey> getKeysList() {
       return keys_;
     }
     /**
      * <code>repeated .data.passkey keys = 6;</code>
      */
-    public java.util.List<? extends UpdateInfoCP.data.passkeyOrBuilder> 
+    public java.util.List<? extends Nick_Stuff.Protocols.UpdateInfoCP.data.passkeyOrBuilder> 
         getKeysOrBuilderList() {
       return keys_;
     }
@@ -1917,29 +1917,29 @@ public final class UpdateInfoCP {
     /**
      * <code>repeated .data.passkey keys = 6;</code>
      */
-    public UpdateInfoCP.data.passkey getKeys(int index) {
+    public Nick_Stuff.Protocols.UpdateInfoCP.data.passkey getKeys(int index) {
       return keys_.get(index);
     }
     /**
      * <code>repeated .data.passkey keys = 6;</code>
      */
-    public UpdateInfoCP.data.passkeyOrBuilder getKeysOrBuilder(
+    public Nick_Stuff.Protocols.UpdateInfoCP.data.passkeyOrBuilder getKeysOrBuilder(
         int index) {
       return keys_.get(index);
     }
 
     public static final int IDS_FIELD_NUMBER = 7;
-    private java.util.List<UpdateInfoCP.data.hwid> ids_;
+    private java.util.List<Nick_Stuff.Protocols.UpdateInfoCP.data.hwid> ids_;
     /**
      * <code>repeated .data.hwid ids = 7;</code>
      */
-    public java.util.List<UpdateInfoCP.data.hwid> getIdsList() {
+    public java.util.List<Nick_Stuff.Protocols.UpdateInfoCP.data.hwid> getIdsList() {
       return ids_;
     }
     /**
      * <code>repeated .data.hwid ids = 7;</code>
      */
-    public java.util.List<? extends UpdateInfoCP.data.hwidOrBuilder> 
+    public java.util.List<? extends Nick_Stuff.Protocols.UpdateInfoCP.data.hwidOrBuilder> 
         getIdsOrBuilderList() {
       return ids_;
     }
@@ -1952,13 +1952,13 @@ public final class UpdateInfoCP {
     /**
      * <code>repeated .data.hwid ids = 7;</code>
      */
-    public UpdateInfoCP.data.hwid getIds(int index) {
+    public Nick_Stuff.Protocols.UpdateInfoCP.data.hwid getIds(int index) {
       return ids_.get(index);
     }
     /**
      * <code>repeated .data.hwid ids = 7;</code>
      */
-    public UpdateInfoCP.data.hwidOrBuilder getIdsOrBuilder(
+    public Nick_Stuff.Protocols.UpdateInfoCP.data.hwidOrBuilder getIdsOrBuilder(
         int index) {
       return ids_.get(index);
     }
@@ -2071,10 +2071,10 @@ public final class UpdateInfoCP {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof UpdateInfoCP.data)) {
+      if (!(obj instanceof Nick_Stuff.Protocols.UpdateInfoCP.data)) {
         return super.equals(obj);
       }
-      UpdateInfoCP.data other = (UpdateInfoCP.data) obj;
+      Nick_Stuff.Protocols.UpdateInfoCP.data other = (Nick_Stuff.Protocols.UpdateInfoCP.data) obj;
 
       boolean result = true;
       result = result && (hasProtoType() == other.hasProtoType());
@@ -2152,69 +2152,69 @@ public final class UpdateInfoCP {
       return hash;
     }
 
-    public static UpdateInfoCP.data parseFrom(
+    public static Nick_Stuff.Protocols.UpdateInfoCP.data parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static UpdateInfoCP.data parseFrom(
+    public static Nick_Stuff.Protocols.UpdateInfoCP.data parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static UpdateInfoCP.data parseFrom(
+    public static Nick_Stuff.Protocols.UpdateInfoCP.data parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static UpdateInfoCP.data parseFrom(
+    public static Nick_Stuff.Protocols.UpdateInfoCP.data parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static UpdateInfoCP.data parseFrom(byte[] data)
+    public static Nick_Stuff.Protocols.UpdateInfoCP.data parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static UpdateInfoCP.data parseFrom(
+    public static Nick_Stuff.Protocols.UpdateInfoCP.data parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static UpdateInfoCP.data parseFrom(java.io.InputStream input)
+    public static Nick_Stuff.Protocols.UpdateInfoCP.data parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static UpdateInfoCP.data parseFrom(
+    public static Nick_Stuff.Protocols.UpdateInfoCP.data parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static UpdateInfoCP.data parseDelimitedFrom(java.io.InputStream input)
+    public static Nick_Stuff.Protocols.UpdateInfoCP.data parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static UpdateInfoCP.data parseDelimitedFrom(
+    public static Nick_Stuff.Protocols.UpdateInfoCP.data parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static UpdateInfoCP.data parseFrom(
+    public static Nick_Stuff.Protocols.UpdateInfoCP.data parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static UpdateInfoCP.data parseFrom(
+    public static Nick_Stuff.Protocols.UpdateInfoCP.data parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -2227,7 +2227,7 @@ public final class UpdateInfoCP {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(UpdateInfoCP.data prototype) {
+    public static Builder newBuilder(Nick_Stuff.Protocols.UpdateInfoCP.data prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -2248,21 +2248,21 @@ public final class UpdateInfoCP {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:data)
-        UpdateInfoCP.dataOrBuilder {
+        Nick_Stuff.Protocols.UpdateInfoCP.dataOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return UpdateInfoCP.internal_static_data_descriptor;
+        return Nick_Stuff.Protocols.UpdateInfoCP.internal_static_data_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return UpdateInfoCP.internal_static_data_fieldAccessorTable
+        return Nick_Stuff.Protocols.UpdateInfoCP.internal_static_data_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                UpdateInfoCP.data.class, UpdateInfoCP.data.Builder.class);
+                Nick_Stuff.Protocols.UpdateInfoCP.data.class, Nick_Stuff.Protocols.UpdateInfoCP.data.Builder.class);
       }
 
-      // Construct using UpdateInfoCP.data.newBuilder()
+      // Construct using Nick_Stuff.Protocols.UpdateInfoCP.data.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -2310,17 +2310,17 @@ public final class UpdateInfoCP {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return UpdateInfoCP.internal_static_data_descriptor;
+        return Nick_Stuff.Protocols.UpdateInfoCP.internal_static_data_descriptor;
       }
 
       @java.lang.Override
-      public UpdateInfoCP.data getDefaultInstanceForType() {
-        return UpdateInfoCP.data.getDefaultInstance();
+      public Nick_Stuff.Protocols.UpdateInfoCP.data getDefaultInstanceForType() {
+        return Nick_Stuff.Protocols.UpdateInfoCP.data.getDefaultInstance();
       }
 
       @java.lang.Override
-      public UpdateInfoCP.data build() {
-        UpdateInfoCP.data result = buildPartial();
+      public Nick_Stuff.Protocols.UpdateInfoCP.data build() {
+        Nick_Stuff.Protocols.UpdateInfoCP.data result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -2328,8 +2328,8 @@ public final class UpdateInfoCP {
       }
 
       @java.lang.Override
-      public UpdateInfoCP.data buildPartial() {
-        UpdateInfoCP.data result = new UpdateInfoCP.data(this);
+      public Nick_Stuff.Protocols.UpdateInfoCP.data buildPartial() {
+        Nick_Stuff.Protocols.UpdateInfoCP.data result = new Nick_Stuff.Protocols.UpdateInfoCP.data(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -2409,16 +2409,16 @@ public final class UpdateInfoCP {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof UpdateInfoCP.data) {
-          return mergeFrom((UpdateInfoCP.data)other);
+        if (other instanceof Nick_Stuff.Protocols.UpdateInfoCP.data) {
+          return mergeFrom((Nick_Stuff.Protocols.UpdateInfoCP.data)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(UpdateInfoCP.data other) {
-        if (other == UpdateInfoCP.data.getDefaultInstance()) return this;
+      public Builder mergeFrom(Nick_Stuff.Protocols.UpdateInfoCP.data other) {
+        if (other == Nick_Stuff.Protocols.UpdateInfoCP.data.getDefaultInstance()) return this;
         if (other.hasProtoType()) {
           setProtoType(other.getProtoType());
         }
@@ -2527,11 +2527,11 @@ public final class UpdateInfoCP {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        UpdateInfoCP.data parsedMessage = null;
+        Nick_Stuff.Protocols.UpdateInfoCP.data parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (UpdateInfoCP.data) e.getUnfinishedMessage();
+          parsedMessage = (Nick_Stuff.Protocols.UpdateInfoCP.data) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -2790,22 +2790,22 @@ public final class UpdateInfoCP {
         return this;
       }
 
-      private java.util.List<UpdateInfoCP.data.passkey> keys_ =
+      private java.util.List<Nick_Stuff.Protocols.UpdateInfoCP.data.passkey> keys_ =
         java.util.Collections.emptyList();
       private void ensureKeysIsMutable() {
         if (!((bitField0_ & 0x00000020) == 0x00000020)) {
-          keys_ = new java.util.ArrayList<UpdateInfoCP.data.passkey>(keys_);
+          keys_ = new java.util.ArrayList<Nick_Stuff.Protocols.UpdateInfoCP.data.passkey>(keys_);
           bitField0_ |= 0x00000020;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          UpdateInfoCP.data.passkey, UpdateInfoCP.data.passkey.Builder, UpdateInfoCP.data.passkeyOrBuilder> keysBuilder_;
+          Nick_Stuff.Protocols.UpdateInfoCP.data.passkey, Nick_Stuff.Protocols.UpdateInfoCP.data.passkey.Builder, Nick_Stuff.Protocols.UpdateInfoCP.data.passkeyOrBuilder> keysBuilder_;
 
       /**
        * <code>repeated .data.passkey keys = 6;</code>
        */
-      public java.util.List<UpdateInfoCP.data.passkey> getKeysList() {
+      public java.util.List<Nick_Stuff.Protocols.UpdateInfoCP.data.passkey> getKeysList() {
         if (keysBuilder_ == null) {
           return java.util.Collections.unmodifiableList(keys_);
         } else {
@@ -2825,7 +2825,7 @@ public final class UpdateInfoCP {
       /**
        * <code>repeated .data.passkey keys = 6;</code>
        */
-      public UpdateInfoCP.data.passkey getKeys(int index) {
+      public Nick_Stuff.Protocols.UpdateInfoCP.data.passkey getKeys(int index) {
         if (keysBuilder_ == null) {
           return keys_.get(index);
         } else {
@@ -2836,7 +2836,7 @@ public final class UpdateInfoCP {
        * <code>repeated .data.passkey keys = 6;</code>
        */
       public Builder setKeys(
-          int index, UpdateInfoCP.data.passkey value) {
+          int index, Nick_Stuff.Protocols.UpdateInfoCP.data.passkey value) {
         if (keysBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2853,7 +2853,7 @@ public final class UpdateInfoCP {
        * <code>repeated .data.passkey keys = 6;</code>
        */
       public Builder setKeys(
-          int index, UpdateInfoCP.data.passkey.Builder builderForValue) {
+          int index, Nick_Stuff.Protocols.UpdateInfoCP.data.passkey.Builder builderForValue) {
         if (keysBuilder_ == null) {
           ensureKeysIsMutable();
           keys_.set(index, builderForValue.build());
@@ -2866,7 +2866,7 @@ public final class UpdateInfoCP {
       /**
        * <code>repeated .data.passkey keys = 6;</code>
        */
-      public Builder addKeys(UpdateInfoCP.data.passkey value) {
+      public Builder addKeys(Nick_Stuff.Protocols.UpdateInfoCP.data.passkey value) {
         if (keysBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2883,7 +2883,7 @@ public final class UpdateInfoCP {
        * <code>repeated .data.passkey keys = 6;</code>
        */
       public Builder addKeys(
-          int index, UpdateInfoCP.data.passkey value) {
+          int index, Nick_Stuff.Protocols.UpdateInfoCP.data.passkey value) {
         if (keysBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -2900,7 +2900,7 @@ public final class UpdateInfoCP {
        * <code>repeated .data.passkey keys = 6;</code>
        */
       public Builder addKeys(
-          UpdateInfoCP.data.passkey.Builder builderForValue) {
+          Nick_Stuff.Protocols.UpdateInfoCP.data.passkey.Builder builderForValue) {
         if (keysBuilder_ == null) {
           ensureKeysIsMutable();
           keys_.add(builderForValue.build());
@@ -2914,7 +2914,7 @@ public final class UpdateInfoCP {
        * <code>repeated .data.passkey keys = 6;</code>
        */
       public Builder addKeys(
-          int index, UpdateInfoCP.data.passkey.Builder builderForValue) {
+          int index, Nick_Stuff.Protocols.UpdateInfoCP.data.passkey.Builder builderForValue) {
         if (keysBuilder_ == null) {
           ensureKeysIsMutable();
           keys_.add(index, builderForValue.build());
@@ -2928,7 +2928,7 @@ public final class UpdateInfoCP {
        * <code>repeated .data.passkey keys = 6;</code>
        */
       public Builder addAllKeys(
-          java.lang.Iterable<? extends UpdateInfoCP.data.passkey> values) {
+          java.lang.Iterable<? extends Nick_Stuff.Protocols.UpdateInfoCP.data.passkey> values) {
         if (keysBuilder_ == null) {
           ensureKeysIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -2968,14 +2968,14 @@ public final class UpdateInfoCP {
       /**
        * <code>repeated .data.passkey keys = 6;</code>
        */
-      public UpdateInfoCP.data.passkey.Builder getKeysBuilder(
+      public Nick_Stuff.Protocols.UpdateInfoCP.data.passkey.Builder getKeysBuilder(
           int index) {
         return getKeysFieldBuilder().getBuilder(index);
       }
       /**
        * <code>repeated .data.passkey keys = 6;</code>
        */
-      public UpdateInfoCP.data.passkeyOrBuilder getKeysOrBuilder(
+      public Nick_Stuff.Protocols.UpdateInfoCP.data.passkeyOrBuilder getKeysOrBuilder(
           int index) {
         if (keysBuilder_ == null) {
           return keys_.get(index);  } else {
@@ -2985,7 +2985,7 @@ public final class UpdateInfoCP {
       /**
        * <code>repeated .data.passkey keys = 6;</code>
        */
-      public java.util.List<? extends UpdateInfoCP.data.passkeyOrBuilder> 
+      public java.util.List<? extends Nick_Stuff.Protocols.UpdateInfoCP.data.passkeyOrBuilder> 
            getKeysOrBuilderList() {
         if (keysBuilder_ != null) {
           return keysBuilder_.getMessageOrBuilderList();
@@ -2996,31 +2996,31 @@ public final class UpdateInfoCP {
       /**
        * <code>repeated .data.passkey keys = 6;</code>
        */
-      public UpdateInfoCP.data.passkey.Builder addKeysBuilder() {
+      public Nick_Stuff.Protocols.UpdateInfoCP.data.passkey.Builder addKeysBuilder() {
         return getKeysFieldBuilder().addBuilder(
-            UpdateInfoCP.data.passkey.getDefaultInstance());
+            Nick_Stuff.Protocols.UpdateInfoCP.data.passkey.getDefaultInstance());
       }
       /**
        * <code>repeated .data.passkey keys = 6;</code>
        */
-      public UpdateInfoCP.data.passkey.Builder addKeysBuilder(
+      public Nick_Stuff.Protocols.UpdateInfoCP.data.passkey.Builder addKeysBuilder(
           int index) {
         return getKeysFieldBuilder().addBuilder(
-            index, UpdateInfoCP.data.passkey.getDefaultInstance());
+            index, Nick_Stuff.Protocols.UpdateInfoCP.data.passkey.getDefaultInstance());
       }
       /**
        * <code>repeated .data.passkey keys = 6;</code>
        */
-      public java.util.List<UpdateInfoCP.data.passkey.Builder> 
+      public java.util.List<Nick_Stuff.Protocols.UpdateInfoCP.data.passkey.Builder> 
            getKeysBuilderList() {
         return getKeysFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          UpdateInfoCP.data.passkey, UpdateInfoCP.data.passkey.Builder, UpdateInfoCP.data.passkeyOrBuilder> 
+          Nick_Stuff.Protocols.UpdateInfoCP.data.passkey, Nick_Stuff.Protocols.UpdateInfoCP.data.passkey.Builder, Nick_Stuff.Protocols.UpdateInfoCP.data.passkeyOrBuilder> 
           getKeysFieldBuilder() {
         if (keysBuilder_ == null) {
           keysBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              UpdateInfoCP.data.passkey, UpdateInfoCP.data.passkey.Builder, UpdateInfoCP.data.passkeyOrBuilder>(
+              Nick_Stuff.Protocols.UpdateInfoCP.data.passkey, Nick_Stuff.Protocols.UpdateInfoCP.data.passkey.Builder, Nick_Stuff.Protocols.UpdateInfoCP.data.passkeyOrBuilder>(
                   keys_,
                   ((bitField0_ & 0x00000020) == 0x00000020),
                   getParentForChildren(),
@@ -3030,22 +3030,22 @@ public final class UpdateInfoCP {
         return keysBuilder_;
       }
 
-      private java.util.List<UpdateInfoCP.data.hwid> ids_ =
+      private java.util.List<Nick_Stuff.Protocols.UpdateInfoCP.data.hwid> ids_ =
         java.util.Collections.emptyList();
       private void ensureIdsIsMutable() {
         if (!((bitField0_ & 0x00000040) == 0x00000040)) {
-          ids_ = new java.util.ArrayList<UpdateInfoCP.data.hwid>(ids_);
+          ids_ = new java.util.ArrayList<Nick_Stuff.Protocols.UpdateInfoCP.data.hwid>(ids_);
           bitField0_ |= 0x00000040;
          }
       }
 
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          UpdateInfoCP.data.hwid, UpdateInfoCP.data.hwid.Builder, UpdateInfoCP.data.hwidOrBuilder> idsBuilder_;
+          Nick_Stuff.Protocols.UpdateInfoCP.data.hwid, Nick_Stuff.Protocols.UpdateInfoCP.data.hwid.Builder, Nick_Stuff.Protocols.UpdateInfoCP.data.hwidOrBuilder> idsBuilder_;
 
       /**
        * <code>repeated .data.hwid ids = 7;</code>
        */
-      public java.util.List<UpdateInfoCP.data.hwid> getIdsList() {
+      public java.util.List<Nick_Stuff.Protocols.UpdateInfoCP.data.hwid> getIdsList() {
         if (idsBuilder_ == null) {
           return java.util.Collections.unmodifiableList(ids_);
         } else {
@@ -3065,7 +3065,7 @@ public final class UpdateInfoCP {
       /**
        * <code>repeated .data.hwid ids = 7;</code>
        */
-      public UpdateInfoCP.data.hwid getIds(int index) {
+      public Nick_Stuff.Protocols.UpdateInfoCP.data.hwid getIds(int index) {
         if (idsBuilder_ == null) {
           return ids_.get(index);
         } else {
@@ -3076,7 +3076,7 @@ public final class UpdateInfoCP {
        * <code>repeated .data.hwid ids = 7;</code>
        */
       public Builder setIds(
-          int index, UpdateInfoCP.data.hwid value) {
+          int index, Nick_Stuff.Protocols.UpdateInfoCP.data.hwid value) {
         if (idsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -3093,7 +3093,7 @@ public final class UpdateInfoCP {
        * <code>repeated .data.hwid ids = 7;</code>
        */
       public Builder setIds(
-          int index, UpdateInfoCP.data.hwid.Builder builderForValue) {
+          int index, Nick_Stuff.Protocols.UpdateInfoCP.data.hwid.Builder builderForValue) {
         if (idsBuilder_ == null) {
           ensureIdsIsMutable();
           ids_.set(index, builderForValue.build());
@@ -3106,7 +3106,7 @@ public final class UpdateInfoCP {
       /**
        * <code>repeated .data.hwid ids = 7;</code>
        */
-      public Builder addIds(UpdateInfoCP.data.hwid value) {
+      public Builder addIds(Nick_Stuff.Protocols.UpdateInfoCP.data.hwid value) {
         if (idsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -3123,7 +3123,7 @@ public final class UpdateInfoCP {
        * <code>repeated .data.hwid ids = 7;</code>
        */
       public Builder addIds(
-          int index, UpdateInfoCP.data.hwid value) {
+          int index, Nick_Stuff.Protocols.UpdateInfoCP.data.hwid value) {
         if (idsBuilder_ == null) {
           if (value == null) {
             throw new NullPointerException();
@@ -3140,7 +3140,7 @@ public final class UpdateInfoCP {
        * <code>repeated .data.hwid ids = 7;</code>
        */
       public Builder addIds(
-          UpdateInfoCP.data.hwid.Builder builderForValue) {
+          Nick_Stuff.Protocols.UpdateInfoCP.data.hwid.Builder builderForValue) {
         if (idsBuilder_ == null) {
           ensureIdsIsMutable();
           ids_.add(builderForValue.build());
@@ -3154,7 +3154,7 @@ public final class UpdateInfoCP {
        * <code>repeated .data.hwid ids = 7;</code>
        */
       public Builder addIds(
-          int index, UpdateInfoCP.data.hwid.Builder builderForValue) {
+          int index, Nick_Stuff.Protocols.UpdateInfoCP.data.hwid.Builder builderForValue) {
         if (idsBuilder_ == null) {
           ensureIdsIsMutable();
           ids_.add(index, builderForValue.build());
@@ -3168,7 +3168,7 @@ public final class UpdateInfoCP {
        * <code>repeated .data.hwid ids = 7;</code>
        */
       public Builder addAllIds(
-          java.lang.Iterable<? extends UpdateInfoCP.data.hwid> values) {
+          java.lang.Iterable<? extends Nick_Stuff.Protocols.UpdateInfoCP.data.hwid> values) {
         if (idsBuilder_ == null) {
           ensureIdsIsMutable();
           com.google.protobuf.AbstractMessageLite.Builder.addAll(
@@ -3208,14 +3208,14 @@ public final class UpdateInfoCP {
       /**
        * <code>repeated .data.hwid ids = 7;</code>
        */
-      public UpdateInfoCP.data.hwid.Builder getIdsBuilder(
+      public Nick_Stuff.Protocols.UpdateInfoCP.data.hwid.Builder getIdsBuilder(
           int index) {
         return getIdsFieldBuilder().getBuilder(index);
       }
       /**
        * <code>repeated .data.hwid ids = 7;</code>
        */
-      public UpdateInfoCP.data.hwidOrBuilder getIdsOrBuilder(
+      public Nick_Stuff.Protocols.UpdateInfoCP.data.hwidOrBuilder getIdsOrBuilder(
           int index) {
         if (idsBuilder_ == null) {
           return ids_.get(index);  } else {
@@ -3225,7 +3225,7 @@ public final class UpdateInfoCP {
       /**
        * <code>repeated .data.hwid ids = 7;</code>
        */
-      public java.util.List<? extends UpdateInfoCP.data.hwidOrBuilder> 
+      public java.util.List<? extends Nick_Stuff.Protocols.UpdateInfoCP.data.hwidOrBuilder> 
            getIdsOrBuilderList() {
         if (idsBuilder_ != null) {
           return idsBuilder_.getMessageOrBuilderList();
@@ -3236,31 +3236,31 @@ public final class UpdateInfoCP {
       /**
        * <code>repeated .data.hwid ids = 7;</code>
        */
-      public UpdateInfoCP.data.hwid.Builder addIdsBuilder() {
+      public Nick_Stuff.Protocols.UpdateInfoCP.data.hwid.Builder addIdsBuilder() {
         return getIdsFieldBuilder().addBuilder(
-            UpdateInfoCP.data.hwid.getDefaultInstance());
+            Nick_Stuff.Protocols.UpdateInfoCP.data.hwid.getDefaultInstance());
       }
       /**
        * <code>repeated .data.hwid ids = 7;</code>
        */
-      public UpdateInfoCP.data.hwid.Builder addIdsBuilder(
+      public Nick_Stuff.Protocols.UpdateInfoCP.data.hwid.Builder addIdsBuilder(
           int index) {
         return getIdsFieldBuilder().addBuilder(
-            index, UpdateInfoCP.data.hwid.getDefaultInstance());
+            index, Nick_Stuff.Protocols.UpdateInfoCP.data.hwid.getDefaultInstance());
       }
       /**
        * <code>repeated .data.hwid ids = 7;</code>
        */
-      public java.util.List<UpdateInfoCP.data.hwid.Builder> 
+      public java.util.List<Nick_Stuff.Protocols.UpdateInfoCP.data.hwid.Builder> 
            getIdsBuilderList() {
         return getIdsFieldBuilder().getBuilderList();
       }
       private com.google.protobuf.RepeatedFieldBuilderV3<
-          UpdateInfoCP.data.hwid, UpdateInfoCP.data.hwid.Builder, UpdateInfoCP.data.hwidOrBuilder> 
+          Nick_Stuff.Protocols.UpdateInfoCP.data.hwid, Nick_Stuff.Protocols.UpdateInfoCP.data.hwid.Builder, Nick_Stuff.Protocols.UpdateInfoCP.data.hwidOrBuilder> 
           getIdsFieldBuilder() {
         if (idsBuilder_ == null) {
           idsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
-              UpdateInfoCP.data.hwid, UpdateInfoCP.data.hwid.Builder, UpdateInfoCP.data.hwidOrBuilder>(
+              Nick_Stuff.Protocols.UpdateInfoCP.data.hwid, Nick_Stuff.Protocols.UpdateInfoCP.data.hwid.Builder, Nick_Stuff.Protocols.UpdateInfoCP.data.hwidOrBuilder>(
                   ids_,
                   ((bitField0_ & 0x00000040) == 0x00000040),
                   getParentForChildren(),
@@ -3286,12 +3286,12 @@ public final class UpdateInfoCP {
     }
 
     // @@protoc_insertion_point(class_scope:data)
-    private static final UpdateInfoCP.data DEFAULT_INSTANCE;
+    private static final Nick_Stuff.Protocols.UpdateInfoCP.data DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new UpdateInfoCP.data();
+      DEFAULT_INSTANCE = new Nick_Stuff.Protocols.UpdateInfoCP.data();
     }
 
-    public static UpdateInfoCP.data getDefaultInstance() {
+    public static Nick_Stuff.Protocols.UpdateInfoCP.data getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -3316,7 +3316,7 @@ public final class UpdateInfoCP {
     }
 
     @java.lang.Override
-    public UpdateInfoCP.data getDefaultInstanceForType() {
+    public Nick_Stuff.Protocols.UpdateInfoCP.data getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -3354,7 +3354,8 @@ public final class UpdateInfoCP {
       "passkey\022\013\n\003key\030\001 \002(\t\022\014\n\004time\030\002 \002(\005\022\014\n\004hw" +
       "id\030\003 \002(\005\032^\n\004hwid\022\"\n\024desktop_verification" +
       "\030\001 \002(\010:\004true\022\"\n\024passkey_verification\030\002 \002" +
-      "(\010:\004true\022\016\n\006hidden\030\003 \002(\010B\016B\014UpdateInfoCP"
+      "(\010:\004true\022\016\n\006hidden\030\003 \002(\010B$\n\024Nick_Stuff.P" +
+      "rotocolsB\014UpdateInfoCP"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

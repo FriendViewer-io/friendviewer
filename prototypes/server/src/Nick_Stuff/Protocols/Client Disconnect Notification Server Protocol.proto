@@ -1,6 +1,8 @@
 syntax = "proto2";
 
+option java_package = "Nick_Stuff.Protocols";
 option java_outer_classname = "CDiscNotifSP";
+
 
 message data{
     required int32 proto_type = 1;

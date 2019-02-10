@@ -144,15 +144,15 @@ public final class AuthnRqCP {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return AuthnRqCP.internal_static_request_descriptor;
+      return Nick_Stuff.Protocols.AuthnRqCP.internal_static_request_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return AuthnRqCP.internal_static_request_fieldAccessorTable
+      return Nick_Stuff.Protocols.AuthnRqCP.internal_static_request_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              AuthnRqCP.request.class, AuthnRqCP.request.Builder.class);
+              Nick_Stuff.Protocols.AuthnRqCP.request.class, Nick_Stuff.Protocols.AuthnRqCP.request.Builder.class);
     }
 
     private int bitField0_;
@@ -319,10 +319,10 @@ public final class AuthnRqCP {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof AuthnRqCP.request)) {
+      if (!(obj instanceof Nick_Stuff.Protocols.AuthnRqCP.request)) {
         return super.equals(obj);
       }
-      AuthnRqCP.request other = (AuthnRqCP.request) obj;
+      Nick_Stuff.Protocols.AuthnRqCP.request other = (Nick_Stuff.Protocols.AuthnRqCP.request) obj;
 
       boolean result = true;
       result = result && (hasProtoType() == other.hasProtoType());
@@ -379,69 +379,69 @@ public final class AuthnRqCP {
       return hash;
     }
 
-    public static AuthnRqCP.request parseFrom(
+    public static Nick_Stuff.Protocols.AuthnRqCP.request parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static AuthnRqCP.request parseFrom(
+    public static Nick_Stuff.Protocols.AuthnRqCP.request parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static AuthnRqCP.request parseFrom(
+    public static Nick_Stuff.Protocols.AuthnRqCP.request parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static AuthnRqCP.request parseFrom(
+    public static Nick_Stuff.Protocols.AuthnRqCP.request parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static AuthnRqCP.request parseFrom(byte[] data)
+    public static Nick_Stuff.Protocols.AuthnRqCP.request parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static AuthnRqCP.request parseFrom(
+    public static Nick_Stuff.Protocols.AuthnRqCP.request parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static AuthnRqCP.request parseFrom(java.io.InputStream input)
+    public static Nick_Stuff.Protocols.AuthnRqCP.request parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static AuthnRqCP.request parseFrom(
+    public static Nick_Stuff.Protocols.AuthnRqCP.request parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static AuthnRqCP.request parseDelimitedFrom(java.io.InputStream input)
+    public static Nick_Stuff.Protocols.AuthnRqCP.request parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static AuthnRqCP.request parseDelimitedFrom(
+    public static Nick_Stuff.Protocols.AuthnRqCP.request parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static AuthnRqCP.request parseFrom(
+    public static Nick_Stuff.Protocols.AuthnRqCP.request parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static AuthnRqCP.request parseFrom(
+    public static Nick_Stuff.Protocols.AuthnRqCP.request parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -454,7 +454,7 @@ public final class AuthnRqCP {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(AuthnRqCP.request prototype) {
+    public static Builder newBuilder(Nick_Stuff.Protocols.AuthnRqCP.request prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -475,21 +475,21 @@ public final class AuthnRqCP {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:request)
-        AuthnRqCP.requestOrBuilder {
+        Nick_Stuff.Protocols.AuthnRqCP.requestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return AuthnRqCP.internal_static_request_descriptor;
+        return Nick_Stuff.Protocols.AuthnRqCP.internal_static_request_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return AuthnRqCP.internal_static_request_fieldAccessorTable
+        return Nick_Stuff.Protocols.AuthnRqCP.internal_static_request_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                AuthnRqCP.request.class, AuthnRqCP.request.Builder.class);
+                Nick_Stuff.Protocols.AuthnRqCP.request.class, Nick_Stuff.Protocols.AuthnRqCP.request.Builder.class);
       }
 
-      // Construct using AuthnRqCP.request.newBuilder()
+      // Construct using Nick_Stuff.Protocols.AuthnRqCP.request.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -521,17 +521,17 @@ public final class AuthnRqCP {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return AuthnRqCP.internal_static_request_descriptor;
+        return Nick_Stuff.Protocols.AuthnRqCP.internal_static_request_descriptor;
       }
 
       @java.lang.Override
-      public AuthnRqCP.request getDefaultInstanceForType() {
-        return AuthnRqCP.request.getDefaultInstance();
+      public Nick_Stuff.Protocols.AuthnRqCP.request getDefaultInstanceForType() {
+        return Nick_Stuff.Protocols.AuthnRqCP.request.getDefaultInstance();
       }
 
       @java.lang.Override
-      public AuthnRqCP.request build() {
-        AuthnRqCP.request result = buildPartial();
+      public Nick_Stuff.Protocols.AuthnRqCP.request build() {
+        Nick_Stuff.Protocols.AuthnRqCP.request result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -539,8 +539,8 @@ public final class AuthnRqCP {
       }
 
       @java.lang.Override
-      public AuthnRqCP.request buildPartial() {
-        AuthnRqCP.request result = new AuthnRqCP.request(this);
+      public Nick_Stuff.Protocols.AuthnRqCP.request buildPartial() {
+        Nick_Stuff.Protocols.AuthnRqCP.request result = new Nick_Stuff.Protocols.AuthnRqCP.request(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -598,16 +598,16 @@ public final class AuthnRqCP {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof AuthnRqCP.request) {
-          return mergeFrom((AuthnRqCP.request)other);
+        if (other instanceof Nick_Stuff.Protocols.AuthnRqCP.request) {
+          return mergeFrom((Nick_Stuff.Protocols.AuthnRqCP.request)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(AuthnRqCP.request other) {
-        if (other == AuthnRqCP.request.getDefaultInstance()) return this;
+      public Builder mergeFrom(Nick_Stuff.Protocols.AuthnRqCP.request other) {
+        if (other == Nick_Stuff.Protocols.AuthnRqCP.request.getDefaultInstance()) return this;
         if (other.hasProtoType()) {
           setProtoType(other.getProtoType());
         }
@@ -649,11 +649,11 @@ public final class AuthnRqCP {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        AuthnRqCP.request parsedMessage = null;
+        Nick_Stuff.Protocols.AuthnRqCP.request parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (AuthnRqCP.request) e.getUnfinishedMessage();
+          parsedMessage = (Nick_Stuff.Protocols.AuthnRqCP.request) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -852,12 +852,12 @@ public final class AuthnRqCP {
     }
 
     // @@protoc_insertion_point(class_scope:request)
-    private static final AuthnRqCP.request DEFAULT_INSTANCE;
+    private static final Nick_Stuff.Protocols.AuthnRqCP.request DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new AuthnRqCP.request();
+      DEFAULT_INSTANCE = new Nick_Stuff.Protocols.AuthnRqCP.request();
     }
 
-    public static AuthnRqCP.request getDefaultInstance() {
+    public static Nick_Stuff.Protocols.AuthnRqCP.request getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -882,7 +882,7 @@ public final class AuthnRqCP {
     }
 
     @java.lang.Override
-    public AuthnRqCP.request getDefaultInstanceForType() {
+    public Nick_Stuff.Protocols.AuthnRqCP.request getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -905,7 +905,8 @@ public final class AuthnRqCP {
       "\n,Authentication Request Client Protocol" +
       ".proto\"S\n\007request\022\022\n\nproto_type\030\001 \002(\005\022\020\n" +
       "\010proto_id\030\002 \002(\003\022\020\n\010utc_time\030\003 \002(\003\022\020\n\010pas" +
-      "sword\030\004 \002(\tB\013B\tAuthnRqCP"
+      "sword\030\004 \002(\tB!\n\024Nick_Stuff.ProtocolsB\tAut" +
+      "hnRqCP"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

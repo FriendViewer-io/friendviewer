@@ -193,15 +193,15 @@ public final class HostVideoPP {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return HostVideoPP.internal_static_data_descriptor;
+      return Nick_Stuff.Protocols.HostVideoPP.internal_static_data_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return HostVideoPP.internal_static_data_fieldAccessorTable
+      return Nick_Stuff.Protocols.HostVideoPP.internal_static_data_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              HostVideoPP.data.class, HostVideoPP.data.Builder.class);
+              Nick_Stuff.Protocols.HostVideoPP.data.class, Nick_Stuff.Protocols.HostVideoPP.data.Builder.class);
     }
 
     private int bitField0_;
@@ -428,10 +428,10 @@ public final class HostVideoPP {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof HostVideoPP.data)) {
+      if (!(obj instanceof Nick_Stuff.Protocols.HostVideoPP.data)) {
         return super.equals(obj);
       }
-      HostVideoPP.data other = (HostVideoPP.data) obj;
+      Nick_Stuff.Protocols.HostVideoPP.data other = (Nick_Stuff.Protocols.HostVideoPP.data) obj;
 
       boolean result = true;
       result = result && (hasProtoType() == other.hasProtoType());
@@ -512,69 +512,69 @@ public final class HostVideoPP {
       return hash;
     }
 
-    public static HostVideoPP.data parseFrom(
+    public static Nick_Stuff.Protocols.HostVideoPP.data parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static HostVideoPP.data parseFrom(
+    public static Nick_Stuff.Protocols.HostVideoPP.data parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static HostVideoPP.data parseFrom(
+    public static Nick_Stuff.Protocols.HostVideoPP.data parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static HostVideoPP.data parseFrom(
+    public static Nick_Stuff.Protocols.HostVideoPP.data parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static HostVideoPP.data parseFrom(byte[] data)
+    public static Nick_Stuff.Protocols.HostVideoPP.data parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static HostVideoPP.data parseFrom(
+    public static Nick_Stuff.Protocols.HostVideoPP.data parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static HostVideoPP.data parseFrom(java.io.InputStream input)
+    public static Nick_Stuff.Protocols.HostVideoPP.data parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static HostVideoPP.data parseFrom(
+    public static Nick_Stuff.Protocols.HostVideoPP.data parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static HostVideoPP.data parseDelimitedFrom(java.io.InputStream input)
+    public static Nick_Stuff.Protocols.HostVideoPP.data parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static HostVideoPP.data parseDelimitedFrom(
+    public static Nick_Stuff.Protocols.HostVideoPP.data parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static HostVideoPP.data parseFrom(
+    public static Nick_Stuff.Protocols.HostVideoPP.data parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static HostVideoPP.data parseFrom(
+    public static Nick_Stuff.Protocols.HostVideoPP.data parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -587,7 +587,7 @@ public final class HostVideoPP {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(HostVideoPP.data prototype) {
+    public static Builder newBuilder(Nick_Stuff.Protocols.HostVideoPP.data prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -608,21 +608,21 @@ public final class HostVideoPP {
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:data)
-        HostVideoPP.dataOrBuilder {
+        Nick_Stuff.Protocols.HostVideoPP.dataOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return HostVideoPP.internal_static_data_descriptor;
+        return Nick_Stuff.Protocols.HostVideoPP.internal_static_data_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return HostVideoPP.internal_static_data_fieldAccessorTable
+        return Nick_Stuff.Protocols.HostVideoPP.internal_static_data_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                HostVideoPP.data.class, HostVideoPP.data.Builder.class);
+                Nick_Stuff.Protocols.HostVideoPP.data.class, Nick_Stuff.Protocols.HostVideoPP.data.Builder.class);
       }
 
-      // Construct using HostVideoPP.data.newBuilder()
+      // Construct using Nick_Stuff.Protocols.HostVideoPP.data.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -660,17 +660,17 @@ public final class HostVideoPP {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return HostVideoPP.internal_static_data_descriptor;
+        return Nick_Stuff.Protocols.HostVideoPP.internal_static_data_descriptor;
       }
 
       @java.lang.Override
-      public HostVideoPP.data getDefaultInstanceForType() {
-        return HostVideoPP.data.getDefaultInstance();
+      public Nick_Stuff.Protocols.HostVideoPP.data getDefaultInstanceForType() {
+        return Nick_Stuff.Protocols.HostVideoPP.data.getDefaultInstance();
       }
 
       @java.lang.Override
-      public HostVideoPP.data build() {
-        HostVideoPP.data result = buildPartial();
+      public Nick_Stuff.Protocols.HostVideoPP.data build() {
+        Nick_Stuff.Protocols.HostVideoPP.data result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -678,8 +678,8 @@ public final class HostVideoPP {
       }
 
       @java.lang.Override
-      public HostVideoPP.data buildPartial() {
-        HostVideoPP.data result = new HostVideoPP.data(this);
+      public Nick_Stuff.Protocols.HostVideoPP.data buildPartial() {
+        Nick_Stuff.Protocols.HostVideoPP.data result = new Nick_Stuff.Protocols.HostVideoPP.data(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -750,16 +750,16 @@ public final class HostVideoPP {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof HostVideoPP.data) {
-          return mergeFrom((HostVideoPP.data)other);
+        if (other instanceof Nick_Stuff.Protocols.HostVideoPP.data) {
+          return mergeFrom((Nick_Stuff.Protocols.HostVideoPP.data)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(HostVideoPP.data other) {
-        if (other == HostVideoPP.data.getDefaultInstance()) return this;
+      public Builder mergeFrom(Nick_Stuff.Protocols.HostVideoPP.data other) {
+        if (other == Nick_Stuff.Protocols.HostVideoPP.data.getDefaultInstance()) return this;
         if (other.hasProtoType()) {
           setProtoType(other.getProtoType());
         }
@@ -821,11 +821,11 @@ public final class HostVideoPP {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        HostVideoPP.data parsedMessage = null;
+        Nick_Stuff.Protocols.HostVideoPP.data parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (HostVideoPP.data) e.getUnfinishedMessage();
+          parsedMessage = (Nick_Stuff.Protocols.HostVideoPP.data) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -1116,12 +1116,12 @@ public final class HostVideoPP {
     }
 
     // @@protoc_insertion_point(class_scope:data)
-    private static final HostVideoPP.data DEFAULT_INSTANCE;
+    private static final Nick_Stuff.Protocols.HostVideoPP.data DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new HostVideoPP.data();
+      DEFAULT_INSTANCE = new Nick_Stuff.Protocols.HostVideoPP.data();
     }
 
-    public static HostVideoPP.data getDefaultInstance() {
+    public static Nick_Stuff.Protocols.HostVideoPP.data getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
@@ -1146,7 +1146,7 @@ public final class HostVideoPP {
     }
 
     @java.lang.Override
-    public HostVideoPP.data getDefaultInstanceForType() {
+    public Nick_Stuff.Protocols.HostVideoPP.data getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -1170,7 +1170,8 @@ public final class HostVideoPP {
       "\n\nproto_type\030\001 \002(\005\022\020\n\010proto_id\030\002 \002(\003\022\020\n\010" +
       "utc_time\030\003 \002(\003\022\013\n\003pts\030\004 \002(\005\022\013\n\003dts\030\005 \002(\005" +
       "\022\027\n\017H246_video_data\030\006 \003(\014\022\022\n\nmonitor_ID\030" +
-      "\007 \002(\005B\rB\013HostVideoPP"
+      "\007 \002(\005B#\n\024Nick_Stuff.ProtocolsB\013HostVideo" +
+      "PP"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
