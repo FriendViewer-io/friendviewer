@@ -2,6 +2,7 @@ package Nick_Stuff;
 import Nick_Stuff.Protocols.AuthnRqCP;
 import Nick_Stuff.Protocols.AuthnRqSP;
 import Nick_Stuff.Protocols.AuthnRsSP;
+import Nick_Stuff.Protocols.Test_Protocol;
 import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;
@@ -140,6 +141,35 @@ public class Server_Handler extends ChannelInboundHandlerAdapter{
                     }
                 }
 
+            }else if (type == 0){
+                size = 0;
+
+                Test_Protocol.dataChunk message = null;
+                try {
+                    message = Test_Protocol.dataChunk.parseFrom(data);
+                } catch (InvalidProtocolBufferException e) {
+                    e.printStackTrace();
+                }
+
+                System.out.println("Name: " + message.getName());
+                System.out.println("ID: " + message.getId());
+                System.out.println("Description: " + message.getDescription());
+
+                for (String text : message.getTextList()) {
+                    System.out.println(text);
+                }
+
+                byte[] image = message.getImage().toByteArray();
+
+                try {
+                    //File path = new File("root/friendviewer/Received.jpg");
+                    File path = new File("C:\\Users\\nickz\\Desktop\\Received.jpg");
+                    OutputStream  out = new BufferedOutputStream(new FileOutputStream(path));
+                    out.write(image);
+                    if (out != null) out.close();
+                } catch (Exception e) {
+
+                }
             }
         }
 
@@ -209,6 +239,7 @@ public class Server_Handler extends ChannelInboundHandlerAdapter{
         dataBuilder.setResponse(verify);
         if (verify){
             contexts.put(ctx, 0);
+            dataBuilder.setWaitTime(0);
         }
 
         AuthnRsSP.response data = dataBuilder.build();

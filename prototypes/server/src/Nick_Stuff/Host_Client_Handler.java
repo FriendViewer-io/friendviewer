@@ -3,6 +3,8 @@ package Nick_Stuff;
 import Nick_Stuff.Protocols.AuthnRqCP;
 import Nick_Stuff.Protocols.AuthnRqSP;
 import Nick_Stuff.Protocols.AuthnRsSP;
+import Nick_Stuff.Protocols.Test_Protocol;
+import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;
@@ -16,6 +18,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -117,6 +120,46 @@ public class Host_Client_Handler extends ChannelInboundHandlerAdapter {
                 System.out.println(message.getResponse());
                 System.out.println(message.getGuests());
                 System.out.println(message.getWaitTime());
+
+
+                //Sending a large protobuf message
+                Test_Protocol.dataChunk.Builder dataBuilder = Test_Protocol.dataChunk.newBuilder();
+                dataBuilder.setName("Example 1");
+                dataBuilder.setId(001);
+                dataBuilder.setDescription("The very first protobuf sent. How very exciting!");
+
+                //File file = new File("C:\\Users\\nickz\\Desktop\\Cake.png");
+                File file = new File("~/Received.jpg");
+                byte[] fileContents = new byte[10];
+                try {
+                    fileContents = Files.readAllBytes(file.toPath());
+                } catch(Exception e){
+
+                }
+                ByteString s = ByteString.copyFrom(fileContents);
+                dataBuilder.setImage(s);
+
+                ArrayList<String> text = new ArrayList<>();
+                text.add("Paragraph 1");
+                text.add("Textfield 2");
+                text.add("Salaam, ALLAHU AKBAR!");
+                text.add("Glory to the faithful! Death to the infidels! ALLAHU AKBAR!!!");
+                text.add("pew pew pew");
+                dataBuilder.addAllText(text);
+
+                Test_Protocol.dataChunk big_file = dataBuilder.build();
+
+                byte[] bytes = big_file.toByteArray();
+
+                //Send the size of the protocol before sending the protocol itself
+                int size = bytes.length;
+                ByteBuf bytebuf = ctx.alloc().buffer(size + 8);
+                bytebuf.writeInt(size);
+                bytebuf.writeInt(0);
+
+                //Send the protocol
+                bytebuf.writeBytes(bytes);
+                ctx.writeAndFlush(bytebuf);
             }
         }
     }
