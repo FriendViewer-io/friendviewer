@@ -33,8 +33,8 @@ public class Host_Client {
             });
 
             // Start the client.
-            //String serverIp = "127.0.0.1";
-            String serverIp = "198.199.81.165";
+            String serverIp = "127.0.0.1";
+            //String serverIp = "198.199.81.165";
             ChannelFuture f = b.connect(serverIp, 8080).sync(); // (5)
 
             //MY CODE

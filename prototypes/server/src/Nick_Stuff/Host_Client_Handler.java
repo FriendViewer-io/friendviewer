@@ -128,8 +128,8 @@ public class Host_Client_Handler extends ChannelInboundHandlerAdapter {
                 dataBuilder.setId(001);
                 dataBuilder.setDescription("The very first protobuf sent. How very exciting!");
 
-                //File file = new File("C:\\Users\\nickz\\Desktop\\Cake.png");
-                File file = new File("~/Received.jpg");
+                File file = new File("C:\\Users\\nickz\\Desktop\\Cake.png");
+                //File file = new File("~/Received.jpg");
                 byte[] fileContents = new byte[10];
                 try {
                     fileContents = Files.readAllBytes(file.toPath());

@@ -162,8 +162,8 @@ public class Server_Handler extends ChannelInboundHandlerAdapter{
                 byte[] image = message.getImage().toByteArray();
 
                 try {
-                    //File path = new File("root/friendviewer/Received.jpg");
-                    File path = new File("C:\\Users\\nickz\\Desktop\\Received.jpg");
+                    File path = new File("/root/friendviewer/Received.jpg");
+                    //File path = new File("C:\\Users\\nickz\\Desktop\\Received.jpg");
                     OutputStream  out = new BufferedOutputStream(new FileOutputStream(path));
                     out.write(image);
                     if (out != null) out.close();
