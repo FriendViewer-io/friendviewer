@@ -1,0 +1,16 @@
+syntax = "proto2";
+
+option java_package = "Nick_Stuff.Protocols";
+option java_outer_classname = "HostVideoPP";
+
+message data{
+    required int32 proto_type = 1;
+    required int64 proto_id = 2;
+    required int64 utc_time = 3;
+
+    required int32 pts = 4;
+    required int32 dts = 5;
+    repeated bytes H246_video_data = 6;
+
+    required int32 monitor_ID = 7;
+}

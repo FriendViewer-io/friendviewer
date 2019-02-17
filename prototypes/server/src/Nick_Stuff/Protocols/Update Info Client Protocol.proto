@@ -1,0 +1,29 @@
+syntax = "proto2";
+
+option java_package = "Nick_Stuff.Protocols";
+option java_outer_classname = "UpdateInfoCP";
+
+message data{
+    required int32 proto_type = 1;
+    required int64 proto_id = 2;
+    required int64 utc_time = 3;
+
+    required string password = 4;
+    optional string display_name = 5 [default = ""];
+
+    message passkey{
+        required string key = 1;
+        required int32 time = 2; //Datatype subject to change
+        required int32 hwid = 3;
+    }
+
+    repeated passkey keys = 6;
+
+    message hwid{
+        required bool desktop_verification = 1 [default = true];
+        required bool passkey_verification = 2 [default = true];
+        required bool hidden = 3;
+    }
+
+    repeated hwid ids = 7;
+}

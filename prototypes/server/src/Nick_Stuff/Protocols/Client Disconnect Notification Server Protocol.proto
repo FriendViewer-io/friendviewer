@@ -1,0 +1,14 @@
+syntax = "proto2";
+
+option java_package = "Nick_Stuff.Protocols";
+option java_outer_classname = "CDiscNotifSP";
+
+
+message data{
+    required int32 proto_type = 1;
+    required int64 proto_id = 2;
+    required int64 utc_time = 3;
+
+    required string user = 4; //More can be added, but I think the only thing the host needs to know is their user-ID
+
+}
