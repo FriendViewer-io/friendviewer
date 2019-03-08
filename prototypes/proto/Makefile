@@ -1,12 +1,14 @@
-CPP_OUT = --cpp_out=out/cpp
-JS_OUT = --js_out=out/js
+CC = --cpp_out=
+JS = --js_out=
 SRC_PATH = --proto_path=src
-ALL_PROTO = src/demuxer.proto
 
-all: make_proto_cpp make_proto_js
+all: make_out_directories demuxer_proto
 
-make_proto_cpp: $(ALL_PROTO)
-	protoc $(SRC_PATH) $(CPP_OUT) $(ALL_PROTO)
+make_out_directories:
+	mkdir -p out/demuxer/cpp
+	mkdir -p out/demuxer/js
+#...
 
-make_proto_js: $(ALL_PROTO)
-	protoc $(SRC_PATH) $(JS_OUT) $(ALL_PROTO)
+demuxer_proto: src/demuxer/demuxer.proto
+	protoc $(SRC_PATH)/demuxer $(CC)out/demuxer/cpp src/demuxer/demuxer.proto
+	protoc $(SRC_PATH)/demuxer $(JS)out/demuxer/js src/demuxer/demuxer.proto
