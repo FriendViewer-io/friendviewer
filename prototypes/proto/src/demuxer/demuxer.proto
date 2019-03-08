@@ -1,0 +1,42 @@
+syntax = "proto2";
+
+message av_packet
+{
+    enum av_type
+    {
+        VIDEO = 0;
+        AUDIO = 1;
+    }
+
+    required int32 pts = 1;
+    required int32 dts = 2;
+    required bytes data = 3;
+    required av_type type = 4;
+}
+
+message video_params
+{
+    required int32 width = 1;
+    required int32 height = 2;
+    required int32 bit_rate = 3;
+    required int32 framerate_numerator = 4;
+    required bytes pps_sps = 5;
+}
+
+message audio_params
+{
+    required int32 bit_rate = 1;
+    required int32 sample_rate = 2;
+    required int32 channel_count = 3;
+    required int64 channel_layout = 4;
+}
+
+message data_packet
+{
+    oneof data_option
+    {
+        av_packet av_data = 1;
+        audio_params a_params = 2;
+        video_params v_params = 3;
+    }
+}
