@@ -1,0 +1,42 @@
+syntax = "proto2";
+
+option java_package = "";
+option java_outer_classname = "";
+
+message handshake {									//(bidirectional)
+	required int64 magic_number = 1;
+}
+
+//(generic response)
+message server_message {							//(server->client)
+	required int32 type = 1;
+	required bool success = 2;
+	optional string message = 3;
+}
+/*
+	Message types:
+	NAME_TAKEN
+	USER_NOT_FOUND
+	SESSION_STARTING
+	USER_ALREADY_IN_SESSION
+*/
+
+message new_user_packet{							//(client->server)
+	required string username = 1;
+}
+
+message user_list_packet {							(server->client)
+	repeated string users = 1;
+}
+
+message session_request_packet {					//(client->server)
+	required string name = 1;
+}
+
+
+message session_close_packet {						//(bidirectional)
+}
+
+message heartbeat {									//(bidirectional)
+	required int64 utc_time = 1;
+} 

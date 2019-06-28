@@ -1,0 +1,22 @@
+syntax = "proto2";
+
+option java_package = "";
+option java_outer_classname = "";
+
+message video_params {							//(host->server->client / server->client)
+	required int32 width = 1;
+	required int32 height = 2;
+	repeated required bytes pps_sps = 3;
+	int framerate_num, framerate_denom
+}
+
+message data (host->server->client){
+	int pts, dts
+	bytes video_data
+}
+
+message control input (client->server->host){
+	float x, y
+	bool[5] mouse_buttons
+	int virtual_key	
+}
