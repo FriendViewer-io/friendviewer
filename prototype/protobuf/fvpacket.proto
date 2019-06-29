@@ -1,9 +1,0 @@
-syntax = "proto2";
-
-option java_package = "";
-option java_outer_classname = "";
-
-message fv_packet {
-	required int32 type = 1;
-	required repeated bytes inner_packet = 2;
-}

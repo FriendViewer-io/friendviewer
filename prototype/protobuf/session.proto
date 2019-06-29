@@ -1,22 +1,35 @@
 syntax = "proto2";
 
-option java_package = "";
-option java_outer_classname = "";
+package prototype.protobuf;
 
-message video_params {							//(host->server->client / server->client)
+option java_package = "prototype.protobuf";
+option java_outer_classname = "Session";
+
+// Host to server to client(s)
+// Host to client(s)
+// Host stores a copy of this
+message VideoParams {
 	required int32 width = 1;
 	required int32 height = 2;
-	repeated required bytes pps_sps = 3;
-	int framerate_num, framerate_denom
+	required bytes pps_sps = 3;
+	required int32 framerate_num = 4;
+	required int32 framerate_denom = 5;
 }
 
-message data (host->server->client){
-	int pts, dts
-	bytes video_data
+// Host to server to client(s)
+message Data {
+	required int32 pts = 1;
+	required int32 dts = 2;
+	required bytes encoded_frame = 3;
 }
 
-message control input (client->server->host){
-	float x, y
-	bool[5] mouse_buttons
-	int virtual_key	
+// Client to server to host
+// Specifies inputs 
+message ControlInput {
+	required float abs_x = 1;
+	required float abs_y = 2;
+	// Based on windows virtual key codes
+	required int32 mouse_bitfield = 3;
+	// Based on windows virtual key codes
+	required int32 virtual_key = 4;
 }
