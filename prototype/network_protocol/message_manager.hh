@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#include <forward_list>
+#include <queue>
 #include <vector>
 
 namespace prototype {
@@ -33,7 +33,7 @@ class MessageManager {
     bool retrieve_message(std::vector<uint8_t> &message_out);
 
  private:
-    std::forward_list<std::vector<uint8_t>> message_buffers_;
+    std::queue<std::vector<uint8_t>> message_buffers_;
     bool reading_length_;
     int32_t next_message_;
     std::vector<uint8_t> partial_message_buffer_;
