@@ -67,6 +67,14 @@ winsdk_library(
     static_libraries = ["dxgi.lib"],
 )
 
+winsdk_library(
+    name = "user32",
+    sdk_lib_subfolder = "um",
+    sdk_include_subfolder = "um",
+    headers = ["Windows.h"],
+    static_libraries = ["User32.lib"],
+)
+
 # Using Zeranthoe win64 prebuilt for ffmpeg
 ffmpeg_windows_import(
     name = "ffmpeg_win64",
