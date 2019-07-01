@@ -1,42 +1,52 @@
 syntax = "proto2";
 
-option java_package = "";
-option java_outer_classname = "";
+package prototype.protobuf;
 
-message handshake {									//(bidirectional)
-	required int64 magic_number = 1;
+option java_package = "prototype.protobuf";
+option java_outer_classname = "Control";
+
+// Bidirectional
+message Handshake {
+    required int64 magic_number = 1;
 }
 
-//(generic response)
-message server_message {							//(server->client)
-	required int32 type = 1;
-	required bool success = 2;
-	optional string message = 3;
-}
-/*
-	Message types:
-	NAME_TAKEN
-	USER_NOT_FOUND
-	SESSION_STARTING
-	USER_ALREADY_IN_SESSION
-*/
-
-message new_user_packet{							//(client->server)
-	required string username = 1;
+enum ServerMessageType {
+    SUCCESS = 0;
+    NAME_TAKEN = 1;
+    USER_NOT_FOUND = 2;
+    SESSION_STARTING = 3;
+    USER_ALREADY_IN_SESSION = 4;
 }
 
-message user_list_packet {							(server->client)
-	repeated string users = 1;
+// Server to client
+// Generic message which has many uses
+message ServerMessage {
+    required ServerMessageType type = 1;
+    required bool success = 2;
+    optional string message = 3;
 }
 
-message session_request_packet {					//(client->server)
-	required string name = 1;
+// Client to server
+message NewUser {
+    required string username = 1;
 }
 
-
-message session_close_packet {						//(bidirectional)
+// Server to client
+message UserList {
+    repeated string users = 1;
 }
 
-message heartbeat {									//(bidirectional)
-	required int64 utc_time = 1;
-} 
+// Client to server
+message SessionRequest {
+    required string name = 1;
+}
+
+// Bidirectional
+message SessionClose {
+	optional string reason = 1;
+}
+
+// Bidirectional
+message Heartbeat {
+    required int64 utc_time = 1;
+}
