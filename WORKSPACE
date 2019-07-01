@@ -71,3 +71,26 @@ winsdk_library(
 ffmpeg_windows_import(
     name = "ffmpeg_win64",
 )
+
+RULES_JVM_EXTERNAL_TAG = "2.2"
+RULES_JVM_EXTERNAL_SHA = "f1203ce04e232ab6fdd81897cf0ff76f2c04c0741424d192f28e65ae752ce2d6"
+
+http_archive(
+    name = "rules_jvm_external",
+    strip_prefix = "rules_jvm_external-%s" % RULES_JVM_EXTERNAL_TAG,
+    sha256 = RULES_JVM_EXTERNAL_SHA,
+    url = "https://github.com/bazelbuild/rules_jvm_external/archive/%s.zip" % RULES_JVM_EXTERNAL_TAG,
+)
+
+load("@rules_jvm_external//:defs.bzl", "maven_install")
+
+maven_install(
+    artifacts = [
+        "junit:junit:4.12",
+        "io.netty:netty-all:4.1.1.Final",
+    ],
+    repositories = [
+        "https://repo1.maven.org/maven2",
+        "https://mvnrepository.com/artifact",
+    ],
+)
