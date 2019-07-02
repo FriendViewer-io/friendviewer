@@ -7,13 +7,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     // called when message recieved
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println("message recieved");
 
-        ByteBuf byteBuf = ctx.alloc().buffer(4);
-
-        byteBuf.writeInt(0);
-
-        ctx.writeAndFlush(byteBuf);
     }
 
     @Override
@@ -24,13 +18,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     // called when connection is started
     @Override
     public void channelActive(final ChannelHandlerContext ctx) {
-        System.out.println("server active");
 
-        ByteBuf byteBuf = ctx.alloc().buffer(4);
-
-        byteBuf.writeInt(0);
-
-        ctx.writeAndFlush(byteBuf);
     }
 
     @Override
