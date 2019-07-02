@@ -1,17 +1,20 @@
+package prototype.distributor;
+
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.util.ReferenceCountUtil;
 
-import java.nio.charset.Charset;
-import java.util.Date;
 import java.util.Scanner;
 
 public class ClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
+    }
+
+    @Override
+    public void channelActive(final ChannelHandlerContext ctx) {
+        System.out.println("input text: ");
         Scanner scanner = new Scanner(System.in);
         String reply = scanner.nextLine();
 
