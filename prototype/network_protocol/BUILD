@@ -15,3 +15,8 @@ cc_test(
         "@gtest//:gtest_main",
     ],
 )
+
+java_library(
+    name = "message_manager_java",
+    srcs = ["MessageManager.java"],
+)
