@@ -26,6 +26,6 @@ public class Server {
         });
 
         bootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
-        bootstrap.bind(19000).sync();
+        bootstrap.bind(8080).sync();
     }
 }
