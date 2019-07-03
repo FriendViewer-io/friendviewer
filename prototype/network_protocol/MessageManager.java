@@ -16,18 +16,18 @@ public class MessageManager {
         parseData(data);
     }
 
-    boolean hasPacket(){
+    public boolean hasPacket(){
         return !packets.isEmpty();
     }
 
-    int nextPacketLength(){
+    public int nextPacketLength(){
         if (hasPacket()) {
             return packets.peek().length;
         }
         return -1;
     }
 
-    byte[] nextPacket(){
+    public byte[] nextPacket(){
         if (packets.isEmpty()){
             return null;
         }
@@ -40,7 +40,7 @@ public class MessageManager {
         return buf.limit() - buf.position();
     }
 
-    void parseData(byte[] data){
+    public void parseData(byte[] data){
         ByteBuffer data_buf = ByteBuffer.allocate(data.length + unreadBytes(bytes));
         data_buf.put(bytes).put(data);
 
