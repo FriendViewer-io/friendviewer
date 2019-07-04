@@ -7,7 +7,7 @@
 namespace prototype {
 namespace daemon {
 
-void ChunkBuffer::dequeue_chunk(chunk_type &chunk_out) {
+bool ChunkBuffer::dequeue_chunk(chunk_type &chunk_out) {
     std::lock_guard<std::mutex> lock(queue_mutex_);
     if (queue_.size() == 0) {
         return false;
