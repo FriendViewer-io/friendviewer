@@ -1,34 +1,76 @@
 package prototype.distributor;
 
+import com.google.protobuf.InvalidProtocolBufferException;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
+import prototype.protobuf.Control;
+import prototype.protobuf.General;
+import prototype.networkProtocol.MessageManager;
+
+import java.util.HashMap;
+
 public class ServerHandler extends ChannelInboundHandlerAdapter {
 
-    // called when message recieved
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ByteBuf buf = (ByteBuf) msg;
-        byte[] message = new byte[buf.capacity()];
-        buf.getBytes(0, message);
-        System.out.println(new String(message));
-    }
+    private ByteBuf buf;
+    private HashMap<ChannelHandlerContext, MessageManager> managers = new HashMap<ChannelHandlerContext, MessageManager>();
 
-    @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
-        System.out.println("Handler added");
+        buf = ctx.alloc().buffer();
+        MessageManager manager = new MessageManager();
+        managers.put(ctx, manager);
     }
 
-    // called when connection is started
-    @Override
+    public void handlerRemoved(ChannelHandlerContext ctx) {
+        buf.release();
+        buf = null;
+        managers.remove(ctx);
+    }
+
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        System.out.println("Message Recieved");
+
+        ByteBuf m = (ByteBuf) msg;
+        byte[] x = new byte[m.readableBytes()];
+        m.readBytes(x);
+        managers.get(ctx).parseData(x);
+        m.release();
+
+        if (managers.get(ctx).hasPacket()) {
+            byte[] data = managers.get(ctx).nextPacket();
+
+            try {
+                General.FvPacket outer_packet = General.FvPacket.parseFrom(data);
+                General.FvPacketType type = outer_packet.getType();
+
+                System.out.println(type);
+                switch (type) {
+                case UNSPECIFIED:
+                    System.out.println("Unspecified: " + type.getNumber());
+                    Control.ServerMessage inner_packer = Control.ServerMessage.parseFrom(outer_packet.getInnerPacket());
+                    System.out.println(inner_packer.getMessage());
+                    break;
+                case HANDSHAKE:
+                    System.out.println("Handshake: " + type.getNumber());
+                    break;
+                default:
+                    System.out.println("Protocol not defined");
+                    break;
+                }
+
+            } catch (InvalidProtocolBufferException e) {
+                System.out.println("Invalid Protocol");
+            }
+        }
+    }
+
     public void channelActive(final ChannelHandlerContext ctx) {
 
     }
 
-    @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        // Close the connection when an exception is raised.
         cause.printStackTrace();
         ctx.close();
     }
