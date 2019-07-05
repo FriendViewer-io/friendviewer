@@ -21,6 +21,8 @@ class H264Encoder {
         int width;
         int height;
         int64_t bit_rate;
+        int framerate_num;
+        int framerate_den;
     };
 
     H264Encoder();

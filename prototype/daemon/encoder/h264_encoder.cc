@@ -23,10 +23,10 @@ const uint8_t *seek_nalu(const uint8_t *data, int num_nalu) {
     for (int i = 0; i < num_nalu; i++) {
         auto tmp = off + 2;
         for (;; tmp++) {
-            if (*(data + off) == 0 && *(data + off + 1) == 0 && *(data + off + 2) == 0 &&
-                *(data + off + 3) == 1) {
+            if (*(data + tmp) == 0 && *(data + tmp + 1) == 0 && *(data + tmp + 2) == 0 &&
+                *(data + tmp + 3) == 1) {
                 break;
-            } else if (*(data + off) == 0 && *(data + off + 1) == 0 && *(data + off + 2) == 1) {
+            } else if (*(data + tmp) == 0 && *(data + tmp + 1) == 0 && *(data + tmp + 2) == 1) {
                 break;
             }
         }
@@ -57,6 +57,9 @@ bool H264Encoder::init(const H264Params &params) {
     encoder_context_->height = params.height;
     encoder_context_->bit_rate = params.bit_rate;
     encoder_context_->codec_type = AVMEDIA_TYPE_VIDEO;
+    encoder_context_->time_base = {params.framerate_den, params.framerate_num};
+    encoder_context_->framerate = {params.framerate_num, params.framerate_den};
+
     // 1 I-frame per 10 P-frames, should be tuned
     encoder_context_->gop_size = 10;
     // Standard h264 format
@@ -93,14 +96,11 @@ int H264Encoder::encode_frame(const std::vector<uint8_t> &frame_in,
                               std::vector<uint8_t> &packet_out) {
     int stride[1] = {-4 * params_.width};
     auto image_end = frame_in.data() + ((params_.height - 1) * 4 * params_.width);
-    auto status = sws_scale(sws_context_.get(), &image_end, stride, 0, params_.height,
-                            frame_buffer_->data, frame_buffer_->linesize);
-    if (status) {
-        return status;
-    }
+    sws_scale(sws_context_.get(), &image_end, stride, 0, params_.height, frame_buffer_->data,
+              frame_buffer_->linesize);
 
     frame_buffer_->pts = pts_;
-    status = avcodec_send_frame(encoder_context_.get(), frame_buffer_.get());
+    auto status = avcodec_send_frame(encoder_context_.get(), frame_buffer_.get());
     if (status) {
         return status;
     }
@@ -119,7 +119,7 @@ int H264Encoder::encode_frame(const std::vector<uint8_t> &frame_in,
         pps_sps_.insert(pps_sps_.end(), packet_data, pps_sps_end);
         packet_data = pps_sps_end;
     }
-
+    pts_++;
     packet_out.insert(packet_out.end(), packet_data, packet_data_end);
     return 0;
 }
