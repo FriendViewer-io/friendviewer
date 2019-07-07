@@ -31,7 +31,7 @@ TEST(MessageManager, retrieve_normal) {
 
     mgr.parse_blob(test_data_1);
     EXPECT_EQ(mgr.next_message_length(), 250);
-    EXPECT_FALSE(mgr.retrieve_message(check_data));
+    EXPECT_TRUE(mgr.retrieve_message(check_data));
     EXPECT_EQ(mgr.next_message_length(), -1);
     EXPECT_TRUE(0 == std::memcmp(check_data.data(), test_data_1.data() + 4, 250));
     EXPECT_FALSE(mgr.retrieve_message(check_data));
@@ -41,7 +41,7 @@ TEST(MessageManager, retrieve_normal) {
     check_data.emplace_back(1);
     mgr.parse_blob(test_data_2);
     EXPECT_EQ(mgr.next_message_length(), 0);
-    EXPECT_FALSE(mgr.retrieve_message(check_data));
+    EXPECT_TRUE(mgr.retrieve_message(check_data));
     EXPECT_EQ(mgr.next_message_length(), -1);
     EXPECT_EQ(check_data.size(), 0);
     EXPECT_FALSE(mgr.retrieve_message(check_data));
@@ -49,7 +49,7 @@ TEST(MessageManager, retrieve_normal) {
 
     mgr.parse_blob(test_data_3);
     EXPECT_EQ(mgr.next_message_length(), 66000);
-    EXPECT_FALSE(mgr.retrieve_message(check_data));
+    EXPECT_TRUE(mgr.retrieve_message(check_data));
     EXPECT_EQ(mgr.next_message_length(), -1);
     EXPECT_TRUE(0 == std::memcmp(check_data.data(), test_data_3.data() + 4, 66000));
     EXPECT_FALSE(mgr.retrieve_message(check_data));
@@ -87,10 +87,12 @@ TEST(MessageManager, retrieve_cutoff) {
     EXPECT_EQ(mgr.next_message_length(), 70);
     EXPECT_TRUE(0 == std::memcmp(check_data.data(), original.data() + 4, 60));
 
-    EXPECT_FALSE(mgr.retrieve_message(check_data));
+    EXPECT_TRUE(mgr.retrieve_message(check_data));
     EXPECT_EQ(check_data.size(), 70);
     EXPECT_EQ(mgr.next_message_length(), -1);
     EXPECT_TRUE(0 == std::memcmp(check_data.data(), original.data() + 68, 70));
+
+    EXPECT_FALSE(mgr.retrieve_message(check_data));
 }
 
 // Multiple messages in a single blob. This would likely be caused by nagle
@@ -120,9 +122,11 @@ TEST(MessageManager, retrieve_nagle) {
     EXPECT_EQ(check_data.size(), 0);
 
     EXPECT_EQ(mgr.next_message_length(), 3000);
-    EXPECT_FALSE(mgr.retrieve_message(check_data));
+    EXPECT_TRUE(mgr.retrieve_message(check_data));
     EXPECT_EQ(check_data.size(), 3000);
     EXPECT_TRUE(0 == std::memcmp(check_data.data(), test_data.data() + 4 + 4 + 255 + 4 + 4, 3000));
+
+    EXPECT_FALSE(mgr.retrieve_message(check_data));
 }
 
 }  // namespace network_protocol

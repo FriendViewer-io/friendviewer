@@ -26,9 +26,8 @@ class MessageManager {
     // if there are no available messages left.
     int32_t next_message_length() const;
 
-    // Outputs the next available message to message_out, returns true if more
-    // messages are available to be retrieved immediately, otherwise returns
-    // false.
+    // Outputs the next available message to message_out, returns true if a message was
+    // available, false otherwise.
     // Each successful call clears out the retrieved message from the internal buffer.
     bool retrieve_message(std::vector<uint8_t> &message_out);
 
