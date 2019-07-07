@@ -62,7 +62,7 @@ bool MessageManager::retrieve_message(std::vector<uint8_t> &message_out) {
     }
     message_out.swap(message_buffers_.front());
     message_buffers_.pop();
-    return next_message_length() != -1;
+    return true;
 }
 
 }  // namespace network_protocol
