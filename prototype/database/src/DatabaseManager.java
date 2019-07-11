@@ -112,7 +112,6 @@ public class DatabaseManager {
                 sql = sql.substring(0, sql.length() - 2);
             }
             sql += ");";
-            System.out.println(sql);
             stmt.executeUpdate(sql);
             stmt.close();
         } catch (SQLException e) {
@@ -149,7 +148,6 @@ public class DatabaseManager {
             stmt = c.createStatement();
             String sql = "ALTER TABLE " + table
                     + " ADD " + name + " " + type;
-            System.out.println(sql);
             stmt.executeUpdate(sql);
             stmt.close();
         } catch (SQLException e) {
@@ -166,7 +164,6 @@ public class DatabaseManager {
             stmt = c.createStatement();
             String sql = "ALTER TABLE " + table
                     + " DROP COLUMN " + colID;
-            System.out.println(sql);
             stmt.executeUpdate(sql);
             stmt.close();
         } catch (SQLException e) {
@@ -217,7 +214,6 @@ public class DatabaseManager {
             }
             sql += " " + columns.substring(0, columns.length() - 2) + ")";
             sql += " VALUES " + row_values.substring(0, row_values.length() - 2) + ");";
-            System.out.println(sql);
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -232,8 +228,12 @@ public class DatabaseManager {
         Statement stmt = null;
         try{
             stmt = c.createStatement();
-            String sql = "DELETE FROM " + table + " WHERE " + colID + " = " + colValue;
-            System.out.println(sql);
+            String sql = "DELETE FROM " + table + " WHERE " + colID + " = ";
+            if (colValue.getClass() == String.class){
+                sql += "'" + colValue + "'";
+            }else{
+                sql += colValue;
+            }
             stmt.executeUpdate(sql);
         }catch (SQLException e){
             e.printStackTrace();
@@ -277,7 +277,6 @@ public class DatabaseManager {
                 sql += conditionVals.substring(0, conditionVals.length() - 4);
             }
 
-            System.out.println(sql);
             stmt.executeUpdate(sql);
         }catch (SQLException e){
             e.printStackTrace();
@@ -308,7 +307,6 @@ public class DatabaseManager {
             }
             sql += conditionVals;
 
-            System.out.println(sql);
             stmt.executeUpdate(sql);
         }catch (SQLException e){
             e.printStackTrace();
@@ -330,7 +328,6 @@ public class DatabaseManager {
             }
             sql += newVals.substring(0, newVals.length() - 2);
 
-            System.out.println(sql);
             stmt.executeUpdate(sql);
         }catch (SQLException e){
             e.printStackTrace();
@@ -356,7 +353,6 @@ public class DatabaseManager {
             }
             sql += columns.substring(0, columns.length() - 2) + " FROM " + table;
 
-            System.out.println(sql);
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 HashMap<String, Object> rowData = new HashMap<String, Object>();
@@ -409,7 +405,6 @@ public class DatabaseManager {
                 sql += conditionVals.substring(0, conditionVals.length() - 4);
             }
 
-            System.out.println(sql);
             rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 HashMap<String, Object> rowData = new HashMap<String, Object>();

@@ -74,31 +74,137 @@ public class DBTester {
         newRow.put("ID", 3);
         newRow.put("Love", 6.5);
         newRow.put("Target", "League");
-        newRow.put("Description", "A pastime of old. Just how much money hav e I spent on this game?");
+        newRow.put("Description", "A pastime of old. Just how much money have I spent on this game?");
         newRow.put("Progression", 0);
         newRow.put("Importance", 2);
         manager.addRow("Amor", newRow);
-    }
 
-    public static void main(String[]args){
-        oldCode();
-        DatabaseManager manager = new DatabaseManager("jdbc:sqlite:test.db");
-
-        HashMap<String, Object> newVals;
-
-        ArrayList<String> queryCols = new ArrayList<String>();
+        queryCols = new ArrayList<String>();
         queryCols.add("Target");
         queryCols.add("Love");
         queryCols.add("Importance");
-        HashMap<String, Object> conditions = new HashMap<String, Object>();
+        conditions = new HashMap<String, Object>();
         conditions.put("Love", 6.5);
-        ArrayList<HashMap<String, Object>> results = manager.queryElements("Amor", queryCols, conditions, true);
+        results = manager.queryElements("Amor", queryCols, conditions, true);
         conditions.put("Importance", 5);
         results = manager.queryElements("Amor", queryCols, conditions, false);
         results = manager.queryElements("Amor", queryCols, conditions, true);
+    }
 
-        //Code that works but I don't want to run
-        //manager.removeRow("Amor", "ID", 1);
-        //manager.deleteTable("Amor");
+    public static void Test2(){
+        DatabaseManager manager = new DatabaseManager("jdbc:sqlite:test.db");
+        manager.deleteTable("Characters");
+
+        //Creating the Table
+        ArrayList<DatabaseManager.Column> columns = new ArrayList<DatabaseManager.Column>();
+        columns.add(new DatabaseManager.Column("Name", DatabaseManager.Type.TEXT, true, true, true));
+        manager.createTable("Characters", columns);
+
+        //Adding fresh columns
+        manager.addColumn("Characters", "Faction", DatabaseManager.Type.TEXT);
+        manager.addColumn("Characters", "Role", DatabaseManager.Type.TEXT);
+        manager.addColumn("Characters", "Importance", DatabaseManager.Type.INTEGER);
+        manager.addColumn("Characters", new DatabaseManager.Column("Loyalty", DatabaseManager.Type.REAL, false, false, true));
+
+        //Adding Data
+        HashMap<String, Object> rowData = new HashMap<String, Object>();
+
+        //Albedo
+        rowData.put("Name", "Albedo");
+        rowData.put("Role", "Guardian Overseer");
+        rowData.put("Faction", "Ainz Ooal Gown");
+        rowData.put("Importance", 9);
+        rowData.put("Loyalty", 10.1);
+        manager.addRow("Characters", rowData);
+
+        //Sejuani
+        rowData.put("Name", "Sejuani");
+        rowData.put("Role", "The Wrath of Winter");
+        rowData.put("Faction", "Freljord");
+        rowData.put("Importance", 8);
+        rowData.put("Loyalty", 3.12);
+        manager.addRow("Characters", rowData);
+
+        //Lycindria
+        rowData.put("Name", "Lycindria");
+        rowData.put("Role", "Apostle of Armadyl");
+        rowData.put("Faction", "Gielinor");
+        rowData.put("Importance", 2);
+        rowData.put("Loyalty", 6);
+        manager.addRow("Characters", rowData);
+
+        //Climb
+        rowData.put("Name", "Climb");
+        rowData.remove("Role");
+        rowData.put("Faction", "Re Estize");
+        rowData.put("Importance", 4);
+        rowData.put("Loyalty", 9.8);
+        manager.addRow("Characters", rowData);
+
+        //Holo
+        rowData.put("Name", "Holo");
+        rowData.put("Role", "Wise Wolf");
+        rowData.put("Faction", "Rowen Trading Guild");
+        rowData.put("Importance", 7);
+        rowData.put("Loyalty", 3);
+        manager.addRow("Characters", rowData);
+
+        //Lawrence
+        rowData.put("Name", "Lawrence");
+        rowData.put("Role", "Wandering Merchant");
+        rowData.put("Faction", "Rowen Trading Guild");
+        rowData.put("Importance", 4);
+        rowData.put("Loyalty", 5.4);
+        manager.addRow("Characters", rowData);
+
+        //Fermi Amarti
+        rowData.put("Name", "Fermi Amarti");
+        rowData.remove("Role");
+        rowData.put("Faction", "Rowen Trading Guild");
+        rowData.remove("Importance");
+        rowData.remove("Loyalty");
+        manager.addRow("Characters", rowData);
+
+        //Full Query and print of data in table
+        printAll(manager.queryElements("Characters", manager.getColumns("Characters")));
+
+        //Remove Row element
+        manager.removeRow("Characters", "Faction", "Re Estize");
+        printAll(manager.queryElements("Characters", manager.getColumns("Characters")));
+
+        //Selection Queries
+        HashMap<String, Object> conditions = new HashMap<String, Object>();
+        conditions.put("Faction", "Rowen Trading Guild");
+        printAll(manager.queryElements("Characters", manager.getColumns("Characters"), conditions, true));
+
+        conditions.put("Name", "Albedo");
+        printAll(manager.queryElements("Characters", manager.getColumns("Characters"), conditions, true));
+        printAll(manager.queryElements("Characters", manager.getColumns("Characters"), conditions, false));
+
+        conditions.put("Faction", "Ainz Ooal Gown");
+        conditions.put("Name", "Climb");
+        conditions.put("Loyalty", 3);
+        conditions.put("Importance", 4);
+        conditions.put("Role", "Apostle of Armadyl");
+        conditions.put("Role", "Queen of Freljord");
+        printAll(manager.queryElements("Characters", manager.getColumns("Characters"), conditions, false));
+    }
+
+    private static void printAll( ArrayList<HashMap<String, Object>> results){
+        for (HashMap<String, Object> row : results){
+            for (String col : row.keySet()){
+                System.out.print(col + ": " + row.get(col) + ", \t");
+            }
+            System.out.println();
+        }
+        System.out.println("End of Query\n\n\n");
+    }
+
+    public static void main(String[]args){
+        //oldCode();
+        Test2();
+
+        DatabaseManager manager = new DatabaseManager("jdbc:sqlite:test.db");
+
     }
 }
