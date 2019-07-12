@@ -36,7 +36,7 @@ void NetworkManager::poll_network() {
         prototype::protobuf::FvPacket packet;
         packet.ParseFromArray(buffer.data(), buffer.size());
         for (auto &&cb : handlers_[packet.type()]) {
-            cb(this, packet.inner_packet().data());
+            cb(this, packet.inner_packet().data(), packet.inner_packet().length());
         }
     }
 }
@@ -63,7 +63,7 @@ void NetworkManager::poll_network_async(bool block_completion) {
         packet.ParseFromArray(buffer.data(), buffer.size());
         for (auto &&cb : handlers_[packet.type()]) {
             auto future = std::async(std::launch::async, [cb, &packet, this] {
-                cb(this, packet.inner_packet().data());
+                cb(this, packet.inner_packet().data(), packet.inner_packet().length());
             });
             if (block_completion) {
                 tasks.emplace_front(std::move(future));

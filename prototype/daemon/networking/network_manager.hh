@@ -14,7 +14,7 @@ namespace networking {
 
 class NetworkManager {
  public:
-    using SubCb = std::function<void(NetworkManager *, const void *)>;
+    using SubCb = std::function<void(NetworkManager *, const void *, uint32_t)>;
     NetworkManager();
     // Forwards to ClientSocket::connect
     bool connect(const char *address, uint16_t port) {
