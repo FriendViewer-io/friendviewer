@@ -8,8 +8,11 @@ import io.netty.buffer.ByteBuf;
 // import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+
+import java.nio.ByteOrder;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Map;
 import prototype.networkProtocol.MessageManager;
 import prototype.protobuf.Control;
@@ -20,7 +23,9 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     private HashMap<ChannelHandlerContext, MessageManager> managers = new HashMap<ChannelHandlerContext, MessageManager>();
     // private Control.UserList userList = Control.UserList.newBuilder().build();
 
-    private Control.UserList.Builder userListBuilder = Control.UserList.newBuilder();
+    // private Control.UserList.Builder userListBuilder =
+    // Control.UserList.newBuilder();
+    private ArrayList<String> userList = new ArrayList<String>();
     private HashMap<String, ChannelHandlerContext> userChannels = new HashMap<String, ChannelHandlerContext>();
     // channel only was messed up for me
 
@@ -36,25 +41,31 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         managers.remove(ctx);
     }
 
+    public void sendProto(Message proto, ChannelHandlerContext ctx) {
+        byte[] bytes = proto.toByteArray();
+        ByteBuf buf = ctx.alloc().buffer(bytes.length + 4);
+        buf.writeIntLE(bytes.length);
+        buf.writeBytes(bytes);
+        ctx.writeAndFlush(buf);
+    }
+
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         System.out.println("Message Recieved");
+        System.out.println(this);
 
         ByteBuf m = (ByteBuf) msg;
         byte[] x = new byte[m.readableBytes()];
         m.readBytes(x);
         managers.get(ctx).parseData(x);
         m.release();
-        System.out.println("Packet of len " + x.length + " received");
 
         if (managers.get(ctx).hasPacket()) {
-            System.out.println("Packet received");
             byte[] data = managers.get(ctx).nextPacket();
 
             try {
                 General.FvPacket outer_packet = General.FvPacket.parseFrom(data);
                 General.FvPacketType type = outer_packet.getType();
 
-                System.out.println(type);
                 switch (type) {
                 case UNSPECIFIED:
                     System.out.println("Unspecified packet");
@@ -62,14 +73,25 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                 case HANDSHAKE:
                     Control.Handshake hs = Control.Handshake.parseFrom(outer_packet.getInnerPacket());
                     System.out.println("Handshake value: " + hs.getMagicNumber());
+                // set server message
+                {
+                    Control.Handshake reply = Control.Handshake.newBuilder().setMagicNumber(0x123432101234567l).build();
+
+                    // set outer packet
+                    General.FvPacket replyOuter = General.FvPacket.newBuilder().setType(General.FvPacketType.HANDSHAKE)
+                            .setInnerPacket(ByteString.copyFrom(reply.toByteArray())).build();
+                    sendProto(replyOuter, ctx);
+                }
                     break;
                 case NEW_USER:
                     Control.NewUser user_packet = Control.NewUser.parseFrom(outer_packet.getInnerPacket());
 
                     System.out.println("New User requested name: " + user_packet.getUsername());
-                    if (!userListBuilder.getUsersList().contains(user_packet.getUsername())) {
-                        userListBuilder.addUsers(user_packet.getUsername());
-
+                    for (String u : userList) {
+                        System.out.println("User name: " + u);
+                    }
+                    if (!userList.contains(user_packet.getUsername())) {
+                        userList.add(user_packet.getUsername());
                         // add channel to list
 
                         userChannels.put(user_packet.getUsername(), ctx);
@@ -86,23 +108,15 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                                 .setInnerPacket(ByteString.copyFrom(reply.toByteArray())).build();
 
                         // send outer packet
-                        byte[] bytes = replyOuter.toByteArray();
-                        ByteBuf buf = ctx.alloc().buffer(bytes.length);
-                        buf.writeBytes(bytes);
-                        ctx.writeAndFlush(buf);
-
+                        sendProto(replyOuter, ctx);
                         // send user list to all users
+                        Control.UserList userListProto = Control.UserList.newBuilder().addAllUsers(userList).build();
                         General.FvPacket listOuter = General.FvPacket.newBuilder()
                                 .setType(General.FvPacketType.USER_LIST)
-                                .setInnerPacket(ByteString.copyFrom(userListBuilder.build().toByteArray())).build();
-
-                        bytes = listOuter.toByteArray();
-                        buf = ctx.alloc().buffer(bytes.length); // hoping this works for all channels
-                        buf.writeBytes(bytes);
-                        ctx.writeAndFlush(buf);
+                                .setInnerPacket(ByteString.copyFrom(userListProto.toByteArray())).build();
 
                         for (Map.Entry<String, ChannelHandlerContext> entry : userChannels.entrySet()) {
-                            entry.getValue().writeAndFlush(buf);
+                            sendProto(listOuter, entry.getValue());
                         }
                     } else {
                         // send new user failure
@@ -117,10 +131,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                                 .setInnerPacket(ByteString.copyFrom(reply.toByteArray())).build();
 
                         // send outer packet
-                        byte[] bytes = replyOuter.toByteArray();
-                        ByteBuf buf = ctx.alloc().buffer(bytes.length);
-                        buf.writeBytes(bytes);
-                        ctx.writeAndFlush(buf);
+                        sendProto(replyOuter, ctx);
                     }
 
                     break;
@@ -150,11 +161,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                     General.FvPacket replyOuter = General.FvPacket.newBuilder().setType(General.FvPacketType.HEARTBEAT)
                             .setInnerPacket(ByteString.copyFrom(heartbeat.toByteArray())).build();
 
-                    byte[] bytes = replyOuter.toByteArray();
-                    ByteBuf buf = ctx.alloc().buffer(bytes.length);
-                    buf.writeBytes(bytes);
-                    ctx.writeAndFlush(buf);
-
+                    sendProto(replyOuter, ctx);
                     break;
                 default:
                     System.out.println("Protocol not defined");
