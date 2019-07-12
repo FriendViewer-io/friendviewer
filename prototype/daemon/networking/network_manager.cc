@@ -11,6 +11,8 @@ namespace prototype {
 namespace daemon {
 namespace networking {
 
+NetworkManager::NetworkManager() {}
+
 void NetworkManager::subscribe_to_packet(prototype::protobuf::FvPacketType type, SubCb &&handler) {
     handlers_[type].emplace_front(handler);
 }
