@@ -1,6 +1,7 @@
 package prototype.networkProtocol;
 
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.LinkedList;
 
 public class MessageManager {
@@ -49,6 +50,7 @@ public class MessageManager {
                 if (unreadBytes(message_buffer) == 0) {
                     reading_length = false;
                     message_buffer.position(0);
+                    message_buffer.order(ByteOrder.LITTLE_ENDIAN);
                     int next_len = message_buffer.getInt();
                     // Safeguard against zero-length messages
                     if (next_len == 0) {
