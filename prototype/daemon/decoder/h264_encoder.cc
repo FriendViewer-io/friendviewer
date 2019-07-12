@@ -1,4 +1,4 @@
-#include "prototype/daemon/encoder/h264_encoder.hh"
+#include "prototype/daemon/decoder/h264_encoder.hh"
 
 extern "C" {
 #include "third_party/libav/libavcodec/avcodec.h"
@@ -9,7 +9,7 @@ extern "C" {
 
 namespace prototype {
 namespace daemon {
-namespace encoder {
+namespace decoder {
 
 namespace {
 void delete_encoder_ctx(void *ctx) {}
@@ -134,6 +134,6 @@ bool H264Encoder::get_pps_sps(std::vector<uint8_t> &packet_out) const {
     return true;
 }
 
-}  // namespace encoder
+}  // namespace decoder
 }  // namespace daemon
 }  // namespace prototype

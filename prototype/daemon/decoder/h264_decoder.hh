@@ -10,13 +10,19 @@ extern "C" {
 
 namespace prototype {
 namespace daemon {
-namespace encoder {
+namespace decoder {
 
-// Takes in frames of video, transforms into YUV420P and spits back a packet
-// Encoder should be configured for zerolatency, so if sending a frame in doesn't
-// immediately give a packet back, there's a problem
-class H264Encoder {
+class H264Decoder {
  public:
+    enum DecodeStatus {
+        kSuccess = 1,
+        kSendFail = 2,
+        kAgain = 3,
+        kEof = 4,
+        kOther = 5,
+    };
+
+    // DUPLICATE STRUCT
     struct H264Params {
         int width;
         int height;
@@ -25,28 +31,27 @@ class H264Encoder {
         int framerate_den;
     };
 
-    H264Encoder();
+    H264Decoder();
 
     bool init(const H264Params &params);
 
-    // NOTE: first frame will exclude the pps & sps, retrieve it from get_pps_sps
-    int encode_frame(const std::vector<uint8_t> &frame_in, std::vector<uint8_t> &packet_out);
+    DecodeStatus decode_packet(const std::vector<uint8_t> &packet_in,
+                               std::vector<uint8_t> &frame_out);
+    // Gets the apparent PTS of the last received frame
     int32_t get_pts() const;
-    bool get_pps_sps(std::vector<uint8_t> &packet_out) const;
 
  private:
     using libav_deleter = void (*)(void *);
 
-    std::unique_ptr<AVCodecContext, libav_deleter> encoder_context_;
+    std::unique_ptr<AVCodecContext, libav_deleter> decoder_context_;
     std::unique_ptr<SwsContext, libav_deleter> sws_context_;
     std::unique_ptr<AVFrame, libav_deleter> frame_buffer_;
     std::unique_ptr<AVPacket, libav_deleter> packet_buffer_;
-    H264Params params_;
 
     int32_t pts_ = 0;
-    std::vector<uint8_t> pps_sps_;
+    int32_t width_, height_;
 };
 
-}  // namespace encoder
+}  // namespace decoder
 }  // namespace daemon
 }  // namespace prototype
