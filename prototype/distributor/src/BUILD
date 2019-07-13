@@ -6,7 +6,6 @@ java_binary(
 		"//prototype/protobuf:control_java",
 		"//prototype/protobuf:session_java",
 		"//prototype/protobuf:fv_packet_java",
-		"@com_google_protobuf//:protobuf_java",
 		"//prototype/network_protocol:message_manager_java"
 	],
     main_class = "prototype.distributor.Server"
