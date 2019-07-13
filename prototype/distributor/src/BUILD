@@ -1,6 +1,6 @@
 java_binary(
     name = "server",
-    srcs = ["Server.java", "ServerHandler.java"],
+    srcs = ["Server.java", "ServerHandler.java", "ServerData.java"],
     deps = [
     	"@maven//:io_netty_netty_all",
 		"//prototype/protobuf:control_java",
