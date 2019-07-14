@@ -157,7 +157,6 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     }
 
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        System.out.println("Message Recieved");
         ByteBuf buffer = (ByteBuf) msg;
         byte[] raw_packet = new byte[buffer.readableBytes()];
         buffer.readBytes(raw_packet);
@@ -184,10 +183,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                     if (timeMs - getLastHeartbeat() > 7000) {
                         removeSelf();
                         channel.close();
-                        System.out.println("Heartbeat OOD closing");
                         return;
-                    } else {
-                        System.out.println("Heartbeat ok");
                     }
                     try {
                         Thread.sleep(1000);
