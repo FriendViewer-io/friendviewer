@@ -10,7 +10,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
-import prototype.distributor.ServerData;
+import prototype.distributor.UsersData;
 import prototype.networkProtocol.MessageManager;
 import prototype.protobuf.Control;
 import prototype.protobuf.General;
@@ -20,6 +20,17 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     private String selfName = "";
     private MessageManager mgr = new MessageManager();
     private long lastHeartbeat;
+    // TODO: THIS
+    private Thread heartbeatThread;
+    private boolean running = true;
+
+    private synchronized long getLastHeartbeat() {
+        return lastHeartbeat;
+    }
+
+    private synchronized void setLastHeartbeat(long hb) {
+        lastHeartbeat = hb;
+    }
 
     public void sendProto(Message proto) {
         byte[] bytes = proto.toByteArray();
@@ -54,8 +65,8 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     }
 
     public void onNewUser(Control.NewUser user_packet) {
-        if (!ServerData.users.containsKey(user_packet.getUsername())) {
-            ServerData.users.put(user_packet.getUsername(), channel);
+        if (UsersData.getUser(user_packet.getUsername()) == null) {
+            UsersData.addUser(user_packet.getUsername(), channel);
             Control.ServerMessage reply = Control.ServerMessage.newBuilder()
                                               .setType(Control.ServerMessageType.SUCCESS)
                                               .setSuccess(true)
@@ -67,14 +78,14 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                     .build();
             sendProto(replyOuter);
             Control.UserList userListProto =
-                Control.UserList.newBuilder().addAllUsers(ServerData.users.keySet()).build();
+                Control.UserList.newBuilder().addAllUsers(UsersData.keySet()).build();
             General.FvPacket listOuter =
                 General.FvPacket.newBuilder()
                     .setType(General.FvPacketType.USER_LIST)
                     .setInnerPacket(ByteString.copyFrom(userListProto.toByteArray()))
                     .build();
 
-            for (Channel target : ServerData.users.values()) {
+            for (Channel target : UsersData.values()) {
                 sendProto(listOuter, target);
             }
             selfName = user_packet.getUsername();
@@ -93,9 +104,9 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     }
 
     public void onHeartbeat(Control.Heartbeat heartbeat_in) {
-        lastHeartbeat = heartbeat_in.getUtcTime();
+        lastHeartbeat = new Date().getTime();
         Control.Heartbeat heartbeat =
-            Control.Heartbeat.newBuilder().setUtcTime(new Date().getTime()).build();
+            Control.Heartbeat.newBuilder().setUtcTime(lastHeartbeat).build();
 
         General.FvPacket replyOuter =
             General.FvPacket.newBuilder()
@@ -134,7 +145,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                 System.out.println("Session Close packet");
                 break;
             case HEARTBEAT:
-                System.out.println("Heartbeat received" + type.getNumber());
+                System.out.println("Heartbeat packet");
                 Control.Heartbeat hb = Control.Heartbeat.parseFrom(outer_packet.getInnerPacket());
                 System.out.println("Timestamp: " + hb.getUtcTime());
                 onHeartbeat(hb);
@@ -164,13 +175,36 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     public void channelActive(final ChannelHandlerContext ctx) {
         channel = ctx.channel();
+        lastHeartbeat = (new Date()).getTime();
+        heartbeatThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (running) {
+                    long timeMs = (new Date()).getTime();
+                    if (timeMs - getLastHeartbeat() > 7000) {
+                        removeSelf();
+                        channel.close();
+                        System.out.println("Heartbeat OOD closing");
+                        return;
+                    } else {
+                        System.out.println("Heartbeat ok");
+                    }
+                    try {
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
+                    }
+                }
+            }
+        });
+        heartbeatThread.start();
     }
 
     private void removeSelf() {
+        running = false;
         if (selfName.equals("")) {
             return;
         }
-        ServerData.users.remove(selfName);
+        UsersData.remove(selfName);
     }
 
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {

@@ -1,12 +1,13 @@
 java_binary(
     name = "server",
-    srcs = ["Server.java", "ServerHandler.java", "ServerData.java"],
+    srcs = ["Server.java", "ServerHandler.java", "UsersData.java"],
     deps = [
     	"@maven//:io_netty_netty_all",
 		"//prototype/protobuf:control_java",
 		"//prototype/protobuf:session_java",
 		"//prototype/protobuf:fv_packet_java",
-		"//prototype/network_protocol:message_manager_java"
+		"//prototype/network_protocol:message_manager_java",
+		"@com_google_protobuf//:protobuf_java",
 	],
     main_class = "prototype.distributor.Server"
 )
