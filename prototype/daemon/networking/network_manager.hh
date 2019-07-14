@@ -3,6 +3,9 @@
 #include <array>
 #include <forward_list>
 #include <functional>
+#include <future>
+#include <mutex>
+#include <thread>
 
 #include "prototype/daemon/networking/client_socket.hh"
 #include "prototype/network_protocol/message_manager.hh"
@@ -33,10 +36,18 @@ class NetworkManager {
     const ClientSocket &get_socket() const { return socket_; }
 
  private:
+    void async_task_processor();
+
     ClientSocket socket_;
     prototype::network_protocol::MessageManager decode_mgr_;
     std::array<std::forward_list<SubCb>, prototype::protobuf::FvPacketType_MAX> handlers_;
     bool connected_;
+
+    std::mutex task_mutex_;
+    // ORDERING IMPORTANT
+    std::atomic_bool task_processor_active_;
+    std::vector<std::future<void>> nonblocking_tasks_;
+    std::thread task_processor_;
 };
 
 }  // namespace networking
