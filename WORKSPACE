@@ -75,6 +75,14 @@ winsdk_library(
     static_libraries = ["User32.lib"],
 )
 
+winsdk_library(
+    name = "winsock2",
+    sdk_lib_subfolder = "um",
+    sdk_include_subfolder = "um",
+    headers = ["WinSock2.h"],
+    static_libraries = ["ws2_32.lib"],
+)
+
 # Using Zeranthoe win64 prebuilt for ffmpeg
 ffmpeg_windows_import(
     name = "ffmpeg_win64",

@@ -1,0 +1,31 @@
+syntax = "proto2";
+
+package prototype.protobuf;
+
+option java_package = "prototype.protobuf";
+option java_outer_classname = "General";
+
+enum FvPacketType {
+	UNSPECIFIED = 0;
+
+	// Control packet types
+	HANDSHAKE = 1;
+	SERVER_MESSAGE = 2;
+	NEW_USER = 3;
+	USER_LIST = 4;
+	SESSION_REQUEST = 5;
+	SESSION_CLOSE = 6;
+	HEARTBEAT = 7;
+
+	// Session packet types
+	VIDEO_PARAMS = 8;
+	DATA = 9;
+	CONTROL_INPUT = 10;
+}
+
+// Wrapper for all packets, where inner_packet is a serialized packet, and type
+// describes what specifically inner_packet is
+message FvPacket {
+	required FvPacketType type = 1;
+	required bytes inner_packet = 2;
+}
