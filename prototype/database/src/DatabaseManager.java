@@ -27,15 +27,23 @@ public class DatabaseManager {
 
     static class Column {
         public String name;
+        //The name of the column is used as a key of sorts. Currently, adding _Hash to the end of the name indicates
+        //that columns as a 'hash column', where all of its values are salted and hashed before stored in the database
         public Type dataType;
 
         public boolean key = false;
         public boolean unique = false;
         public boolean notNull = false;
 
+        private boolean hash = false;
+
         public Column(String name, Type type) {
             this.name = name;
             this.dataType = type;
+
+            if (this.name.endsWith("_Hash")){
+                hash = true;
+            }
         }
 
         public Column(String name, Type type, boolean key, boolean unique, boolean notNull) {
@@ -44,14 +52,23 @@ public class DatabaseManager {
             this.key = key;
             this.unique = unique;
             this.notNull = notNull;
+
+            if (this.name.endsWith("_Hash")){
+                hash = true;
+            }
         }
 
+
         public String getBasicInsertStatement() {
-            return name + " " + dataType;
+            String statement = name;
+            statement += " " + dataType;
+
+            return statement;
         }
 
         public String getInsertStatement() {
-            String statement = name + " " + dataType;
+            String statement = name;
+            statement += " " + dataType;
             if (notNull) {
                 statement += " NOT NULL";
             }
@@ -70,7 +87,7 @@ public class DatabaseManager {
             Class.forName("org.sqlite.JDBC");
             //A call to Class.forName("X") causes the class named X to be dynamically loaded (at runtime).
 
-            c = DriverManager.getConnection(database);
+            c = DriverManager.getConnection("jdbc:sqlite:" + database);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -105,6 +122,11 @@ public class DatabaseManager {
                 if (col.key) {
                     primaryKey += col.name + ",";
                 }
+
+                //Is the column a hash column?
+                if (col.hash){
+                    sql += new Column(col.name.substring(0, col.name.length() - 5) + "_Salt", Type.TEXT).getInsertStatement() + ", ";
+                }
             }
             if (primaryKey.length() > 12) {
                 sql += primaryKey.substring(0, primaryKey.length() - 1) + ")";
@@ -112,6 +134,7 @@ public class DatabaseManager {
                 sql = sql.substring(0, sql.length() - 2);
             }
             sql += ");";
+
             stmt.executeUpdate(sql);
             stmt.close();
         } catch (SQLException e) {
@@ -123,6 +146,9 @@ public class DatabaseManager {
     }
 
     //Add a new column using the column class as input
+    //Note that the unique/not null/primary key descriptions cannot be applied to an existing table.
+    //A new column must be added with no descriptors, its values filled up, only then can descriptors be added
+    //However, sqlite only support limited 'ALTER' commands. Some features, such as removing columns, are not supported
     public boolean addColumn(String table, Column column) {
         Statement stmt = null;
         try {
@@ -131,6 +157,9 @@ public class DatabaseManager {
                     + " ADD " + column.getBasicInsertStatement();
             stmt.executeUpdate(sql);
             stmt.close();
+            if (column.hash){
+                addColumn(table, column.name.substring(0, column.name.length() - 5) + "_Salt", Type.TEXT);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -138,10 +167,7 @@ public class DatabaseManager {
         return true;
     }
 
-    //Add a new column using manual inputs -
-    //Note that the unique/not null/primary key descriptions cannot be applied to an existing table.
-    //A new column must be added with no descriptors, its values filled up, only then can descriptors be added
-    //However, sqlite only support limited 'ALTER' commands. Some features, such as removing columns, are not supported
+    //Add a new column using manual inputs
     public boolean addColumn(String table, String name, Type type) {
         Statement stmt = null;
         try {
@@ -150,6 +176,9 @@ public class DatabaseManager {
                     + " ADD " + name + " " + type;
             stmt.executeUpdate(sql);
             stmt.close();
+            if (name.endsWith("_Hash")){
+                addColumn(table, name.substring(0, name.length() - 5) + "_Salt", Type.TEXT);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -197,7 +226,7 @@ public class DatabaseManager {
 
     //Adds the row to the specified table. Column values are stored in a hashmap. The method does not require
     //all columns to be filled, but will fail and return false if the "Not Null" columns are not included
-    public boolean addRow(String table, HashMap<String, Object> colVals) {
+    public boolean addRow(String table, HashMap<String, Object> colVals){
         Statement stmt = null;
         try {
             stmt = c.createStatement();
@@ -205,11 +234,21 @@ public class DatabaseManager {
             String columns = "(";
             String row_values = "(";
             for (String col_name : colVals.keySet()){
-                columns += col_name + ", ";
-                if (colVals.get(col_name).getClass() == String.class){
-                    row_values += "'" + colVals.get(col_name) + "', ";
-                }else{
-                    row_values += colVals.get(col_name) + ", ";
+                if (col_name.endsWith("_Hash")){
+                    SaltHasher.HashResult result = SaltHasher.hash((String) colVals.get(col_name));
+
+                    columns += col_name + ", ";
+                    row_values += "'" + result.hash + "', ";
+
+                    columns += col_name.substring(0, col_name.length() - 5) + "_Salt, ";
+                    row_values += "'" + result.salt + "', ";
+                }else {
+                    columns += col_name + ", ";
+                    if (colVals.get(col_name).getClass() == String.class){
+                        row_values += "'" + colVals.get(col_name) + "', ";
+                    }else{
+                        row_values += colVals.get(col_name) + ", ";
+                    }
                 }
             }
             sql += " " + columns.substring(0, columns.length() - 2) + ")";
@@ -226,6 +265,7 @@ public class DatabaseManager {
     //Removes row(s) from the table that match a specific column value (Ex: ID = X)
     public boolean removeRow(String table, String colID, Object colValue){
         Statement stmt = null;
+
         try{
             stmt = c.createStatement();
             String sql = "DELETE FROM " + table + " WHERE " + colID + " = ";
@@ -245,7 +285,7 @@ public class DatabaseManager {
 
     //Modifies row elements that match specific column value(s) given in the conditions Hashmap to those given in colVals
     //The 'all' parameter represents the AND/OR for the WHERE clause. True = and, False = or
-    public boolean modifyRows(String table, HashMap<String, Object> colVals, HashMap<String, Object> conditions, boolean all){
+    public boolean modifyRows(String table, HashMap<String, Object> colVals, HashMap<String, Object> conditions, boolean all) {
         Statement stmt = null;
         try{
             stmt = c.createStatement();
@@ -253,7 +293,18 @@ public class DatabaseManager {
 
             String newVals = " SET ";
             for (String col : colVals.keySet()){
-                newVals += col + " = " + colVals.get(col) + ", ";
+                if (col.endsWith("_Hash")){
+                    SaltHasher.HashResult result = SaltHasher.hash((String) colVals.get(col));
+
+                    newVals += col + " = " + "'" + result.hash + "', ";
+                    newVals += col.substring(0, col.length() - 5) + "_Salt = " + "'" + result.salt + "', ";
+                }else {
+                    if (colVals.get(col).getClass() == String.class){
+                        newVals += col + " = " + "'" + colVals.get(col) + "', ";
+                    }else{
+                        newVals += col + " = " + colVals.get(col) + ", ";
+                    }
+                }
             }
             sql += newVals.substring(0, newVals.length() - 2);
 
@@ -271,10 +322,13 @@ public class DatabaseManager {
                     conditionVals += " OR ";
                 }
             }
-            if (all){
-                sql += conditionVals.substring(0, conditionVals.length() - 5);
-            }else{
-                sql += conditionVals.substring(0, conditionVals.length() - 4);
+
+            if (conditionVals.length() > 7){
+                if (all){
+                    sql += conditionVals.substring(0, conditionVals.length() - 5);
+                }else{
+                    sql += conditionVals.substring(0, conditionVals.length() - 4);
+                }
             }
 
             stmt.executeUpdate(sql);
@@ -288,52 +342,14 @@ public class DatabaseManager {
 
     //Modifies row elements that matches the specified condition
     public boolean modifyRows(String table, HashMap<String, Object> colVals, String colID, Object colVal){
-        Statement stmt = null;
-        try{
-            stmt = c.createStatement();
-            String sql = "UPDATE " + table;
-
-            String newVals = " SET ";
-            for (String col : colVals.keySet()){
-                newVals += col + " = " + colVals.get(col) + ", ";
-            }
-            sql += newVals.substring(0, newVals.length() - 2);
-
-            String conditionVals = " WHERE ";
-            if (colVal.getClass() == String.class){
-                conditionVals += colID + " = " + "'" + colVal + "'";
-            }else{
-                conditionVals += colID + " = " + colVal;
-            }
-            sql += conditionVals;
-
-            stmt.executeUpdate(sql);
-        }catch (SQLException e){
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+        HashMap<String, Object> conditions = new HashMap<String, Object>();
+        conditions.put(colID, colVal);
+        return modifyRows(table, colVals, conditions, true);
     }
 
     //Modifies all row elements with the new column values
     public boolean modifyRows(String table, HashMap<String, Object> colVals){
-        Statement stmt = null;
-        try{
-            stmt = c.createStatement();
-            String sql = "UPDATE " + table;
-
-            String newVals = " SET ";
-            for (String col : colVals.keySet()){
-                newVals += col + " = " + colVals.get(col) + ", ";
-            }
-            sql += newVals.substring(0, newVals.length() - 2);
-
-            stmt.executeUpdate(sql);
-        }catch (SQLException e){
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+        return modifyRows(table, colVals, new HashMap<String, Object>(), true);
     }
 
     //Returns all elements in the target columns
@@ -349,7 +365,11 @@ public class DatabaseManager {
             String sql = "SELECT  ";
             String columns = "";
             for (String col : targetCols){
-                columns += col + ", ";
+                if (getColumns(table).contains(col)){
+                    columns += col + ", ";
+                }else{
+                    columns += col + "_Hash, ";
+                }
             }
             sql += columns.substring(0, columns.length() - 2) + " FROM " + table;
 
