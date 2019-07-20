@@ -25,8 +25,8 @@ class NetworkManager {
     }
 
     void subscribe_to_packet(prototype::protobuf::FvPacketType type, SubCb &&handler);
-    // Polls socket for all available data and invokes corresponding callbacks for all
-    // received packets
+    // Polls socket for all available data and invokes corresponding callbacks for
+    // all received packets
     void poll_network();
     // Ditto from above, but invokes callbacks asynchronously
     void poll_network_async(bool block_completion);
@@ -35,12 +35,14 @@ class NetworkManager {
 
     const ClientSocket &get_socket() const { return socket_; }
 
+    bool connected() const { return connected_; }
+
  private:
     void async_task_processor();
 
     ClientSocket socket_;
     prototype::network_protocol::MessageManager decode_mgr_;
-    std::array<std::forward_list<SubCb>, prototype::protobuf::FvPacketType_MAX> handlers_;
+    std::array<std::forward_list<SubCb>, prototype::protobuf::FvPacketType_MAX + 1> handlers_;
     bool connected_;
 
     std::mutex task_mutex_;

@@ -1,5 +1,7 @@
 #include "prototype/daemon/networking/client_socket.hh"
 
+#include <WinSock2.h>
+
 namespace prototype {
 namespace daemon {
 namespace networking {
@@ -18,6 +20,7 @@ bool ClientSocket::connect(const char *address, uint16_t port) {
     if (socket_ != INVALID_SOCKET) {
         close();
     }
+
     socket_ = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (socket_ == INVALID_SOCKET) {
         return false;

@@ -19,7 +19,9 @@ static constexpr auto process_wait_time = 500ms;
 }  // namespace
 
 NetworkManager::NetworkManager()
-    : task_processor_active_(true), task_processor_(&NetworkManager::async_task_processor, this) {}
+    : connected_(false),
+      task_processor_active_(true),
+      task_processor_(&NetworkManager::async_task_processor, this) {}
 
 void NetworkManager::subscribe_to_packet(prototype::protobuf::FvPacketType type, SubCb &&handler) {
     handlers_[type].emplace_front(handler);

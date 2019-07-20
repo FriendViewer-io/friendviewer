@@ -1,3 +1,5 @@
+package(default_visibility = ["//visibility:public"])
+
 cc_library(
     name = "h264_decoder",
     srcs = ["h264_decoder.cc"],

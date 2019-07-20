@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 #include <vector>
 
 extern "C" {
@@ -37,10 +38,15 @@ class H264Decoder {
 
     DecodeStatus decode_packet(const std::vector<uint8_t> &packet_in,
                                std::vector<uint8_t> &frame_out);
+    DecodeStatus decode_packet(const std::string &packet_in, std::vector<uint8_t> &frame_out);
     // Gets the apparent PTS of the last received frame
     int32_t get_pts() const;
+    void set_pts(int32_t pts) { pts_ = pts; }
+
+    void shutdown();
 
  private:
+    DecodeStatus decode_packet_internal(uint8_t *data, int len, std::vector<uint8_t> &frame_out);
     using libav_deleter = void (*)(void *);
 
     std::unique_ptr<AVCodecContext, libav_deleter> decoder_context_;
