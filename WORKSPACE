@@ -49,6 +49,46 @@ cc_library(
     """,
 )
 
+http_archive(
+    name = "glfw3",
+    urls = ["https://github.com/glfw/glfw/releases/download/3.3/glfw-3.3.bin.WIN64.zip"],
+    sha256 = "b7ceae85dce2f3e2552f74564cb05a7500e3f1caa5d68ddbcf2ecf18f4036774",
+    strip_prefix = "glfw-3.3.bin.WIN64",
+    build_file_content = 
+    """
+cc_library(
+    name = "all",
+    srcs = [
+        "lib-vc2017/glfw3.dll",
+        "lib-vc2017/glfw3dll.lib",
+    ],
+    hdrs = glob(["include/**"]),
+    includes = ["include/."],
+    visibility = ["//visibility:public"],
+)
+"""
+)
+
+http_archive(
+    name = "glew",
+    urls = ["https://pilotfiber.dl.sourceforge.net/project/glew/glew/2.1.0/glew-2.1.0-win32.zip"],
+    sha256 = "80cfc88fd295426b49001a9dc521da793f8547ac10aebfc8bdc91ddc06c5566c",
+    strip_prefix = "glew-2.1.0",
+    build_file_content =
+    """
+cc_library(
+    name = "all",
+    srcs = [
+        "lib/release/x64/glew32.lib",
+        "bin/release/x64/glew32.dll",
+    ],
+    hdrs = glob(["include/**"]),
+    includes = ["include/."],
+    visibility = ["//visibility:public"],
+)
+"""
+)
+
 # Search DX11 in windows sdk (version 10.0.17134.0 only)
 winsdk_library(
     name = "directx_11",
@@ -65,6 +105,25 @@ winsdk_library(
     sdk_include_subfolder = "shared",
     headers = ["dxgi.h", "dxgi1_2.h"],
     static_libraries = ["dxgi.lib"],
+)
+
+winsdk_library(
+    name = "winsock2",
+    sdk_lib_subfolder = "um",
+    sdk_include_subfolder = "um",
+    headers = ["WinSock2.h"],
+    static_libraries = ["ws2_32.lib"],
+)
+
+winsdk_library(
+    name = "opengl",
+    sdk_lib_subfolder = "um",
+    sdk_include_subfolder = "um",
+    headers = [
+        "gl/GL.h",
+        "gl/GLU.h",
+    ],
+    static_libraries = ["OpenGL32.lib"],
 )
 
 winsdk_library(

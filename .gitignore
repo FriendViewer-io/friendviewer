@@ -22,3 +22,5 @@ change
 /.sass-cache
 # VSCode gitignore
 .vscode/*
+# Test for h264
+*.h264
