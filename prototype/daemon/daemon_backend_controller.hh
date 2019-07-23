@@ -13,6 +13,7 @@
 #include "prototype/daemon/decoder/h264_encoder.hh"
 #include "prototype/daemon/input/input_control.hh"
 #include "prototype/daemon/networking/network_manager.hh"
+#include "prototype/daemon/renderer/gl_window.hh"
 #include "prototype/protobuf/control.pb.h"
 #include "prototype/protobuf/session.pb.h"
 
@@ -40,6 +41,7 @@ class DaemonBackendController {
 
     void handle_encode();
     void handle_cli();
+    void handle_render(uint32_t w, uint32_t h);
     void send_initial_hs();
 
     // control type
@@ -54,6 +56,8 @@ class DaemonBackendController {
     void handle_video_params(const protobuf::VideoParams &param);
     void handle_data(const protobuf::Data &data);
     void handle_input(const protobuf::ControlInput &input);
+
+    void close_session_inner();
 
     // If false, attempts a smooth shutdown
     std::atomic_bool running_;
@@ -77,11 +81,15 @@ class DaemonBackendController {
     SessionState state_;
 
     uint32_t width_, height_;
+    
+    renderer::GlWindow window_;
     decoder::H264Decoder decoder_;
     decoder::H264Encoder encoder_;
     capture::DxgiCapture screen_cap_;
     std::atomic_bool encoder_running_;
+    std::atomic_bool renderer_running_;
     std::thread *encoding_thread_;
+    std::thread *rendering_thread_;
 };
 
 }  // namespace daemon

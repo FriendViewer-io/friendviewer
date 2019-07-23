@@ -9,7 +9,8 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import java.io.IOException;
 
 public class Server {
-        
+    public static final int FV_PORT = 61235;
+
     public static void main(String[] args) throws IOException, InterruptedException {
         NioEventLoopGroup bossGroup = new NioEventLoopGroup();
         NioEventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -26,6 +27,6 @@ public class Server {
         });
 
         bootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
-        bootstrap.bind(8080).sync();
+        bootstrap.bind(FV_PORT).sync();
     }
 }

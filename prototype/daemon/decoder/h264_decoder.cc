@@ -107,8 +107,8 @@ H264Decoder::DecodeStatus H264Decoder::decode_packet_internal(uint8_t *data, int
     }
 
     uint8_t *lines_out[1];
-    lines_out[0] = (&frame_out[0]) + (height_ - 1) * 3 * width_;
-    const int stride[1] = {-width_ * 3};
+    lines_out[0] = (&frame_out[0]);
+    const int stride[1] = {width_ * 3};
 
     sws_scale(sws_context_.get(), frame_buffer_->data, frame_buffer_->linesize, 0, height_,
               lines_out, stride);

@@ -17,6 +17,7 @@ cc_library(
         "//prototype/daemon/decoder:h264_encoder",
         "//prototype/daemon/input:input_control",
         "//prototype/daemon/networking:network_manager",
+        "//prototype/daemon/renderer:gl_window",
         "//prototype/protobuf:control_cc",
         "//prototype/protobuf:session_cc",
     ],

@@ -32,6 +32,8 @@ DaemonBackendController::DaemonBackendController()
       connect_signal_(false) {}
 
 bool DaemonBackendController::init(uint32_t scr_w, uint32_t scr_h) {
+    width_ = scr_w;
+    height_ = scr_h;
     screen_cap_.init(scr_w, scr_h, 30);
     net_mgr_.subscribe_to_packet(prototype::protobuf::FvPacketType::HANDSHAKE,
                                  [this](auto net_mgr, auto pkt, auto len) {
@@ -135,6 +137,11 @@ void DaemonBackendController::handle_cli() {
             enqueue_msg(protobuf::FvPacketType::SESSION_CLOSE, sc.SerializeAsString());
         } else if (tokens[0] == "exit") {
             stop();
+        } else if (tokens[0] == "userlist") {
+            std::cout << "Available users:\n";
+            for (auto &&user : remote_users_) {
+                std::cout << user << "\n";
+            }
         } else {
             std::cout << "Invalid command" << std::endl;
         }
@@ -218,14 +225,21 @@ void DaemonBackendController::handle_user_list(const protobuf::UserList &ul) {
 }
 
 void DaemonBackendController::handle_session_close(const protobuf::SessionClose &sc) {
+    close_session_inner();
+}
+
+void DaemonBackendController::close_session_inner() {
     if (state_ == LOBBY) {
         return;
     }
     if (state_ == CLIENT) {
+        renderer_running_.exchange(false);
+        rendering_thread_->join();
+        window_.close_window();
         decoder_.shutdown();
         state_ = LOBBY;
         decode_buffer_.clear();
-        // CLOSE WINDOW!!
+        delete rendering_thread_;
     } else if (state_ == HOST) {
         encoder_running_.exchange(false);
         encoding_thread_->join();
@@ -254,23 +268,40 @@ void DaemonBackendController::handle_encode() {
             param.set_framerate_denom(1);
 
             enqueue_msg(protobuf::FvPacketType::VIDEO_PARAMS, param.SerializeAsString());
+            sent_param = true;
         }
         protobuf::Data data;
         data.set_pts(pts++);
         data.set_dts(0);
         data.set_encoded_frame(std::move(packet_out));
         enqueue_msg(protobuf::FvPacketType::DATA, data.SerializeAsString());
+        std::this_thread::sleep_for(std::chrono::milliseconds(32));
+    }
+}
+
+void DaemonBackendController::handle_render(uint32_t w, uint32_t h) {
+    window_.create_window(w, h);
+    std::vector<uint8_t> raw_frame;
+    std::vector<uint8_t> garbage(1920 * 1080 * 3);
+    std::fill(garbage.begin(), garbage.end(), 128);
+    while (renderer_running_.load()) {
+        if (decode_buffer_.dequeue_chunk(raw_frame)) {
+            window_.render_frame(raw_frame);
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(2));
     }
 }
 
 void DaemonBackendController::handle_session_request(const protobuf::SessionRequest &sr) {
     decoder::H264Encoder::H264Params param;
+    std::cout << width_ << ", " << height_ << std::endl;
     param.width = width_;
     param.height = height_;
     param.bit_rate = 4000000;
     param.framerate_num = 30;
     param.framerate_den = 1;
     encoder_.init(param);
+    encoder_running_ = true;
     encoding_thread_ = new std::thread(&DaemonBackendController::handle_encode, this);
 }
 
@@ -286,6 +317,9 @@ void DaemonBackendController::handle_video_params(const protobuf::VideoParams &p
     }
     std::vector<uint8_t> junk;
     decoder_.decode_packet(param.pps_sps(), junk);
+    renderer_running_ = true;
+    rendering_thread_ =
+        new std::thread(&DaemonBackendController::handle_render, this, p.width, p.height);
 }
 
 void DaemonBackendController::handle_data(const protobuf::Data &data) {
