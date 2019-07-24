@@ -95,11 +95,16 @@ bool GlWindow::create_window(uint32_t width, uint32_t height) {
         return false;
     }
     glfwMakeContextCurrent(window_);
+    glfwSetWindowUserPointer(window_, this);
     glewExperimental = true;
     if (glewInit() != GLEW_OK) {
         return false;
     }
     glfwSetInputMode(window_, GLFW_STICKY_KEYS, GL_TRUE);
+
+    glfwSetKeyCallback(window_, key_cb);
+    glfwSetMouseButtonCallback(window_, mouse_cb);
+    glfwSetCursorPosCallback(window_, mouse_pos_cb);
 
     shader_id_ = load_shader(vertex_shader, fragment_shader);
 
@@ -181,6 +186,121 @@ void GlWindow::close_window() {
     glDeleteVertexArrays(1, &vertex_array_id_);
     glfwDestroyWindow(window_);
     glfwTerminate();
+}
+
+int GlWindow::get_key_mapping(int glfw) {
+    switch (glfw) {
+        case GLFW_KEY_APOSTROPHE:
+            return 0xDE;
+        case GLFW_KEY_COMMA:
+            return 0xBC;
+        case GLFW_KEY_MINUS:
+            return 0xBD;
+        case GLFW_KEY_PERIOD:
+            return 0xBE;
+        case GLFW_KEY_SLASH:
+            return 0xBF;
+        case GLFW_KEY_SEMICOLON:
+            return 0xBA;
+        case GLFW_KEY_EQUAL:
+            return 0xBB;
+        case GLFW_KEY_LEFT_BRACKET:
+            return 0xDB;
+        case GLFW_KEY_BACKSLASH:
+            return 0xE2;
+        case GLFW_KEY_RIGHT_BRACKET:
+            return 0xDD;
+        case GLFW_KEY_GRAVE_ACCENT:
+            return 0xC0;
+        case GLFW_KEY_ESCAPE:
+            return 0x1B;
+        case GLFW_KEY_ENTER:
+            return 0x0D;
+        case GLFW_KEY_TAB:
+            return 0x09;
+        case GLFW_KEY_BACKSPACE:
+            return 0x08;
+        case GLFW_KEY_INSERT:
+            return 0x2D;
+        case GLFW_KEY_DELETE:
+            return 0x2E;
+        case GLFW_KEY_RIGHT:
+            return 0x27;
+        case GLFW_KEY_LEFT:
+            return 0x25;
+        case GLFW_KEY_DOWN:
+            return 0x28;
+        case GLFW_KEY_UP:
+            return 0x26;
+        case GLFW_KEY_PAGE_UP:
+            return 0x21;
+        case GLFW_KEY_PAGE_DOWN:
+            return 0x22;
+        case GLFW_KEY_HOME:
+            return 0x24;
+        case GLFW_KEY_END:
+            return 0x23;
+        case GLFW_KEY_CAPS_LOCK:
+            return 0x14;
+        case GLFW_KEY_SCROLL_LOCK:
+        case GLFW_KEY_NUM_LOCK:
+        case GLFW_KEY_PRINT_SCREEN:
+        case GLFW_KEY_PAUSE:
+        case GLFW_KEY_F1:
+        case GLFW_KEY_F2:
+        case GLFW_KEY_F3:
+        case GLFW_KEY_F4:
+        case GLFW_KEY_F5:
+        case GLFW_KEY_F6:
+        case GLFW_KEY_F7:
+        case GLFW_KEY_F8:
+        case GLFW_KEY_F9:
+        case GLFW_KEY_F10:
+        case GLFW_KEY_F11:
+        case GLFW_KEY_F12:
+        case GLFW_KEY_F13:
+        case GLFW_KEY_F14:
+        case GLFW_KEY_F15:
+        case GLFW_KEY_F16:
+        case GLFW_KEY_F17:
+        case GLFW_KEY_F18:
+        case GLFW_KEY_F19:
+        case GLFW_KEY_F20:
+        case GLFW_KEY_F21:
+        case GLFW_KEY_F22:
+        case GLFW_KEY_F23:
+        case GLFW_KEY_F24:
+        case GLFW_KEY_F25:
+        case GLFW_KEY_KP_0:
+        case GLFW_KEY_KP_1:
+        case GLFW_KEY_KP_2:
+        case GLFW_KEY_KP_3:
+        case GLFW_KEY_KP_4:
+        case GLFW_KEY_KP_5:
+        case GLFW_KEY_KP_6:
+        case GLFW_KEY_KP_7:
+        case GLFW_KEY_KP_8:
+        case GLFW_KEY_KP_9:
+        case GLFW_KEY_KP_DECIMAL:
+        case GLFW_KEY_KP_DIVIDE:
+        case GLFW_KEY_KP_MULTIPLY:
+        case GLFW_KEY_KP_SUBTRACT:
+        case GLFW_KEY_KP_ADD:
+        case GLFW_KEY_KP_ENTER:
+        case GLFW_KEY_KP_EQUAL:
+        case GLFW_KEY_LEFT_SHIFT:
+        case GLFW_KEY_LEFT_CONTROL:
+        case GLFW_KEY_LEFT_ALT:
+        case GLFW_KEY_LEFT_SUPER:
+        case GLFW_KEY_RIGHT_SHIFT:
+        case GLFW_KEY_RIGHT_CONTROL:
+        case GLFW_KEY_RIGHT_ALT:
+        case GLFW_KEY_RIGHT_SUPER:
+        case GLFW_KEY_MENU:
+            return 0;
+        default:
+            return glfw;
+    }
 }
 
 }  // namespace renderer

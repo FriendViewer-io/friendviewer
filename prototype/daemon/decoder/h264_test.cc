@@ -56,6 +56,7 @@ int capture_and_encode() {
         std::fill(sample_data.begin(), sample_data.end(), i);
     }
     video_file.flush();
+    encoder.shutdown();
     return 0;
 }
 
@@ -84,6 +85,7 @@ bool attempt_decode() {
         }
         packet_idx++;
     }
+    decoder.shutdown();
     return decoded_succesfully;
 }
 

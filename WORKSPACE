@@ -108,6 +108,14 @@ winsdk_library(
 )
 
 winsdk_library(
+    name = "user32",
+    sdk_lib_subfolder = "um",
+    sdk_include_subfolder = "um",
+    headers = ["Windows.h"],
+    static_libraries = ["User32.lib"],
+)
+
+winsdk_library(
     name = "winsock2",
     sdk_lib_subfolder = "um",
     sdk_include_subfolder = "um",
@@ -155,6 +163,7 @@ maven_install(
     artifacts = [
         "junit:junit:4.12",
         "io.netty:netty-all:4.1.1.Final",
+        "org.xerial:sqlite-jdbc:3.27.2.1",
     ],
     repositories = [
         "https://repo1.maven.org/maven2",

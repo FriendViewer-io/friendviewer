@@ -7,6 +7,7 @@ cc_library(
         "@glfw3//:all",
         "@glew//:all",
     ],
+    visibility = ["//visibility:public"],
 )
 
 cc_binary(

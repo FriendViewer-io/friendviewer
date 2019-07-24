@@ -12,11 +12,26 @@ namespace daemon {
 namespace decoder {
 
 namespace {
-void delete_encoder_ctx(void *ctx) {}
-void delete_sws(void *sws) {}
-void delete_frame(void *frame) {}
-void delete_packet(void *ctx) {}
-
+void delete_encoder_ctx(void *ctx) {
+    if (ctx) {
+        avcodec_free_context(&reinterpret_cast<AVCodecContext *>(ctx));
+    }
+}
+void delete_sws(void *sws) {
+    if (sws) {
+        sws_freeContext(reinterpret_cast<SwsContext *>(sws));
+    }
+}
+void delete_frame(void *frame) {
+    if (frame) {
+        av_frame_free(&reinterpret_cast<AVFrame *>(frame));
+    }
+}
+void delete_packet(void *pkt) {
+    if (pkt) {
+        av_packet_free(&reinterpret_cast<AVPacket *>(pkt));
+    }
+}
 // Assume data starts at a nalu
 const uint8_t *seek_nalu(const uint8_t *data, int num_nalu) {
     std::ptrdiff_t off = 0;
@@ -61,7 +76,7 @@ bool H264Encoder::init(const H264Params &params) {
     encoder_context_->framerate = {params.framerate_num, params.framerate_den};
 
     // 1 I-frame per 10 P-frames, should be tuned
-    encoder_context_->gop_size = 10;
+    encoder_context_->gop_size = 40;
     // Standard h264 format
     encoder_context_->pix_fmt = AV_PIX_FMT_YUV420P;
     // Disable B-frames to get zerolatency
@@ -122,6 +137,46 @@ int H264Encoder::encode_frame(const std::vector<uint8_t> &frame_in,
     pts_++;
     packet_out.insert(packet_out.end(), packet_data, packet_data_end);
     return 0;
+}
+
+int H264Encoder::encode_frame(const std::vector<uint8_t> &frame_in, std::string &packet_out) {
+    int stride[1] = {-4 * params_.width};
+    auto image_end = frame_in.data() + ((params_.height - 1) * 4 * params_.width);
+    sws_scale(sws_context_.get(), &image_end, stride, 0, params_.height, frame_buffer_->data,
+              frame_buffer_->linesize);
+
+    frame_buffer_->pts = pts_;
+    auto status = avcodec_send_frame(encoder_context_.get(), frame_buffer_.get());
+    if (status) {
+        return status;
+    }
+
+    // No matter what, a full frame of video should immediately encode
+    status = avcodec_receive_packet(encoder_context_.get(), packet_buffer_.get());
+    if (status) {
+        return status;
+    }
+
+    const uint8_t *packet_data = packet_buffer_->data;
+    const uint8_t *packet_data_end = packet_buffer_->data + packet_buffer_->size;
+    // First received packet contains pps and sps
+    if (pts_ == 0) {
+        const uint8_t *pps_sps_end = seek_nalu(packet_buffer_->data, 2);
+        pps_sps_.insert(pps_sps_.end(), packet_data, pps_sps_end);
+        packet_data = pps_sps_end;
+    }
+    pts_++;
+    packet_out.insert(packet_out.end(), packet_data, packet_data_end);
+    return 0;
+}
+
+void H264Encoder::shutdown() {
+    encoder_context_ = std::unique_ptr<AVCodecContext, libav_deleter>(nullptr, delete_encoder_ctx);
+    sws_context_ = std::unique_ptr<SwsContext, libav_deleter>(nullptr, delete_sws);
+    frame_buffer_ = std::unique_ptr<AVFrame, libav_deleter>(nullptr, delete_frame);
+    packet_buffer_ = std::unique_ptr<AVPacket, libav_deleter>(nullptr, delete_packet);
+    pts_ = 0;
+    pps_sps_.clear();
 }
 
 int32_t H264Encoder::get_pts() const { return pts_; }
