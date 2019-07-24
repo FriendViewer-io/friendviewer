@@ -31,8 +31,11 @@ class H264Encoder {
 
     // NOTE: first frame will exclude the pps & sps, retrieve it from get_pps_sps
     int encode_frame(const std::vector<uint8_t> &frame_in, std::vector<uint8_t> &packet_out);
+    int encode_frame(const std::vector<uint8_t> &frame_in, std::string &packet_out);
     int32_t get_pts() const;
     bool get_pps_sps(std::vector<uint8_t> &packet_out) const;
+
+    void shutdown();
 
  private:
     using libav_deleter = void (*)(void *);

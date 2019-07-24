@@ -6,6 +6,7 @@
 #include <future>
 #include <mutex>
 #include <thread>
+#include <utility>
 
 #include "prototype/daemon/networking/client_socket.hh"
 #include "prototype/network_protocol/message_manager.hh"
@@ -24,23 +25,23 @@ class NetworkManager {
         return connected_ = socket_.connect(address, port);
     }
 
-    void subscribe_to_packet(prototype::protobuf::FvPacketType type, SubCb &&handler);
-    // Polls socket for all available data and invokes corresponding callbacks for all
-    // received packets
-    void poll_network();
+    void subscribe_to_packet(prototype::protobuf::FvPacketType type, SubCb &&handler, bool task);
     // Ditto from above, but invokes callbacks asynchronously
-    void poll_network_async(bool block_completion);
+    void poll_network(bool block_completion);
 
     void send_message(const std::string &message) { socket_.send_data(message); }
 
     const ClientSocket &get_socket() const { return socket_; }
+
+    bool connected() const { return connected_; }
 
  private:
     void async_task_processor();
 
     ClientSocket socket_;
     prototype::network_protocol::MessageManager decode_mgr_;
-    std::array<std::forward_list<SubCb>, prototype::protobuf::FvPacketType_MAX> handlers_;
+    std::array<std::forward_list<std::pair<bool, SubCb>>, prototype::protobuf::FvPacketType_MAX + 1>
+        handlers_;
     bool connected_;
 
     std::mutex task_mutex_;

@@ -12,17 +12,33 @@ namespace daemon {
 namespace decoder {
 
 namespace {
-void delete_decoder_ctx(void *ctx) {}
-void delete_sws(void *sws) {}
-void delete_frame(void *frame) {}
-void delete_packet(void *ctx) {}
+void delete_decoder_ctx(void *ctx) {
+    if (ctx) {
+        avcodec_free_context(&reinterpret_cast<AVCodecContext *>(ctx));
+    }
+}
+void delete_sws(void *sws) {
+    if (sws) {
+        sws_freeContext(reinterpret_cast<SwsContext *>(sws));
+    }
+}
+void delete_frame(void *frame) {
+    if (frame) {
+        av_frame_free(&reinterpret_cast<AVFrame *>(frame));
+    }
+}
+void delete_packet(void *pkt) {
+    if (pkt) {
+        av_packet_free(&reinterpret_cast<AVPacket *>(pkt));
+    }
+}
 }  // namespace
 
 H264Decoder::H264Decoder()
     : decoder_context_(nullptr, delete_decoder_ctx),
       sws_context_(nullptr, delete_sws),
       frame_buffer_(nullptr, delete_frame),
-      packet_buffer_(nullptr, delete_packet) {}
+      packet_buffer_(nullptr, delete_packet) {pts_ = -2;}
 
 bool H264Decoder::init(const H264Params &params) {
     width_ = params.width;
@@ -68,10 +84,10 @@ bool H264Decoder::init(const H264Params &params) {
     return true;
 }
 
-H264Decoder::DecodeStatus H264Decoder::decode_packet(const std::vector<uint8_t> &packet_in,
-                                                     std::vector<uint8_t> &frame_out) {
-    packet_buffer_->data = const_cast<uint8_t *>(&packet_in[0]);
-    packet_buffer_->size = packet_in.size();
+H264Decoder::DecodeStatus H264Decoder::decode_packet_internal(uint8_t *data, int len,
+                                                              std::vector<uint8_t> &frame_out) {
+    packet_buffer_->data = data;
+    packet_buffer_->size = len;
 
     int ret = avcodec_send_packet(decoder_context_.get(), packet_buffer_.get());
     if (ret < 0) {
@@ -91,13 +107,34 @@ H264Decoder::DecodeStatus H264Decoder::decode_packet(const std::vector<uint8_t> 
     }
 
     uint8_t *lines_out[1];
-    lines_out[0] = (&frame_out[0]) + (height_ - 1) * 3 * width_;
-    const int stride[1] = {-width_ * 3};
+    lines_out[0] = (&frame_out[0]);
+    const int stride[1] = {width_ * 3};
 
     sws_scale(sws_context_.get(), frame_buffer_->data, frame_buffer_->linesize, 0, height_,
               lines_out, stride);
 
     return DecodeStatus::kSuccess;
+}
+
+void H264Decoder::shutdown() {
+    decoder_context_ = std::unique_ptr<AVCodecContext, libav_deleter>(nullptr, delete_decoder_ctx);
+    sws_context_ = std::unique_ptr<SwsContext, libav_deleter>(nullptr, delete_sws);
+    frame_buffer_ = std::unique_ptr<AVFrame, libav_deleter>(nullptr, delete_frame);
+    packet_buffer_ = std::unique_ptr<AVPacket, libav_deleter>(nullptr, delete_packet);
+    pts_ = 0;
+    width_ = height_ = 0;
+}
+
+H264Decoder::DecodeStatus H264Decoder::decode_packet(const std::vector<uint8_t> &packet_in,
+                                                     std::vector<uint8_t> &frame_out) {
+    return decode_packet_internal(const_cast<uint8_t *>(packet_in.data()), packet_in.size(),
+                                  frame_out);
+}
+
+H264Decoder::DecodeStatus H264Decoder::decode_packet(const std::string &packet_in,
+                                                     std::vector<uint8_t> &frame_out) {
+    return decode_packet_internal(reinterpret_cast<uint8_t *>(const_cast<char *>(packet_in.data())),
+                                  packet_in.size(), frame_out);
 }
 
 }  // namespace decoder

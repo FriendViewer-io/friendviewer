@@ -1,7 +1,5 @@
 #pragma once
 
-#include <WinSock2.h>
-
 #include <string>
 #include <vector>
 
@@ -35,7 +33,7 @@ class ClientSocket {
  private:
     static bool winsock_init_;
 
-    SOCKET socket_;
+    uint64_t socket_;
     std::string remote_addr_;
     uint16_t port_;
 };

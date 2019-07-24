@@ -1,8 +1,8 @@
 package prototype.distributor;
 
 import java.util.ArrayList;
-import prototype.protobuf.Session;
 import prototype.distributor.UsersData;
+import prototype.protobuf.Session;
 
 public class SessionData {
     private String hostUser;
@@ -20,23 +20,23 @@ public class SessionData {
         clientUsers.add(clientUser);
     }
 
-    public String getHostUser(){
+    public String getHostUser() {
         return hostUser;
     }
-    
-    public ArrayList<String> getClientList(){
+
+    public ArrayList<String> getClientList() {
         return clientUsers;
     }
 
-    public void addClientUser(String clientUserName){
+    public void addClientUser(String clientUserName) {
         clientUsers.add(clientUserName);
     }
 
-    public void setVideoParams(Session.VideoParams videoParams){
+    public void setVideoParams(Session.VideoParams videoParams) {
         this.videoParams = videoParams;
     }
 
-    public Session.VideoParams getVideoParams(){
+    public Session.VideoParams getVideoParams() {
         return videoParams;
     }
 }
