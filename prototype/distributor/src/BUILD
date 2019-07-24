@@ -9,7 +9,7 @@ java_binary(
 		"//prototype/network_protocol:message_manager_java",
 		"@com_google_protobuf//:protobuf_java",
 	],
-    main_class = "prototype.distributor.Server"
+    main_class = "prototype.distributor.Server",
 )
 
 java_binary(

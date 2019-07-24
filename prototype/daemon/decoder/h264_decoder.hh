@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include <memory>
 #include <string>
 #include <vector>
@@ -40,8 +41,7 @@ class H264Decoder {
                                std::vector<uint8_t> &frame_out);
     DecodeStatus decode_packet(const std::string &packet_in, std::vector<uint8_t> &frame_out);
     // Gets the apparent PTS of the last received frame
-    int32_t get_pts() const;
-    void set_pts(int32_t pts) { pts_ = pts; }
+    std::atomic_int pts_;
 
     void shutdown();
 
@@ -54,7 +54,6 @@ class H264Decoder {
     std::unique_ptr<AVFrame, libav_deleter> frame_buffer_;
     std::unique_ptr<AVPacket, libav_deleter> packet_buffer_;
 
-    int32_t pts_ = 0;
     int32_t width_, height_;
 };
 

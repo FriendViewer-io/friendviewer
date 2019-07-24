@@ -40,6 +40,8 @@ class DaemonBackendController {
     void enqueue_msg(protobuf::FvPacketType type, std::string &&inner_msg);
 
     void handle_encode();
+    void handle_decode();
+
     void handle_cli();
     void handle_render(uint32_t w, uint32_t h);
     void send_initial_hs();
@@ -66,6 +68,7 @@ class DaemonBackendController {
     // All task-based requests will throw results into a ChunkBuffer
     ChunkBuffer<std::vector<uint8_t>> decode_buffer_;
     ChunkBuffer<std::string> send_buffer_;
+    ChunkBuffer<protobuf::Data> encoded_buffer_;
 
     networking::NetworkManager net_mgr_;
     std::string connect_address_;
@@ -81,15 +84,20 @@ class DaemonBackendController {
     SessionState state_;
 
     uint32_t width_, height_;
-    
+
     renderer::GlWindow window_;
+    std::atomic_bool got_pps_sps_ = true;
+
     decoder::H264Decoder decoder_;
     decoder::H264Encoder encoder_;
     capture::DxgiCapture screen_cap_;
     std::atomic_bool encoder_running_;
     std::atomic_bool renderer_running_;
+    std::atomic_bool decoder_running_;
     std::thread *encoding_thread_;
     std::thread *rendering_thread_;
+    std::thread *decoding_thread_;
+    std::mutex first_data_mux_;
 };
 
 }  // namespace daemon

@@ -76,7 +76,7 @@ bool H264Encoder::init(const H264Params &params) {
     encoder_context_->framerate = {params.framerate_num, params.framerate_den};
 
     // 1 I-frame per 10 P-frames, should be tuned
-    encoder_context_->gop_size = 10;
+    encoder_context_->gop_size = 40;
     // Standard h264 format
     encoder_context_->pix_fmt = AV_PIX_FMT_YUV420P;
     // Disable B-frames to get zerolatency

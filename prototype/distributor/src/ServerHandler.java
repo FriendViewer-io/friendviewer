@@ -329,7 +329,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                 onVideoParams(vp);
                 break;
             case DATA:
-                System.out.println("Data packet");
+                Session.Data dp = Session.Data.parseFrom(outer_packet.getInnerPacket());
                 for (SessionData session : UsersData.getSessionList()) {
                     if (session.getHostUser().equals(selfName)) { //
                         for (String user : session.getClientList()) { // send to all users
@@ -357,8 +357,11 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         ByteBuf buffer = (ByteBuf) msg;
         byte[] raw_packet = new byte[buffer.readableBytes()];
+        // System.out.println("Received raw packet size " + raw_packet.length);
         buffer.readBytes(raw_packet);
+        long ctm = System.currentTimeMillis();
         mgr.parseData(raw_packet);
+        long elapsed = System.currentTimeMillis() - ctm;
         buffer.release();
 
         while (mgr.hasPacket()) {
@@ -420,6 +423,13 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                 }
 
                 toRemove = session;
+                break;
+            } else if (session.getClientList().contains(selfName)) {
+                session.getClientList().remove(selfName);
+                if (session.getClientList().size() == 0) {
+                    toRemove = session;
+                }
+                break;
             }
         }
 
@@ -433,7 +443,6 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         removeSelf();
-        cause.printStackTrace();
         ctx.close();
     }
 }

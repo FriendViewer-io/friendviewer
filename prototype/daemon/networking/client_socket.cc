@@ -2,6 +2,9 @@
 
 #include <WinSock2.h>
 
+#include <array>
+#include <iostream>
+
 namespace prototype {
 namespace daemon {
 namespace networking {
@@ -52,31 +55,46 @@ bool ClientSocket::send_data(const std::vector<uint8_t> &data) {
     return ((r1 != SOCKET_ERROR) && (r2 != SOCKET_ERROR));
 }
 
+bool send_block(SOCKET socket, const char *data, int len) {
+    int amt_sent, offset = 0;
+    do {
+        amt_sent = ::send(socket, data + offset, len, 0);
+        if (amt_sent == SOCKET_ERROR && WSAGetLastError() != 10035) {
+            return false;
+        } else if (amt_sent != SOCKET_ERROR) {
+            offset += amt_sent;
+            len -= amt_sent;
+        }
+    } while (len > 0);
+    return true;
+}
+
+// FIXME
 bool ClientSocket::send_data(const std::string &data) {
     uint32_t len = data.length();
-    int r1 = ::send(socket_, reinterpret_cast<const char *>(&len), sizeof(uint32_t), 0);
-    int r2 = ::send(socket_, data.data(), data.size(), 0);
+    bool r1, r2;
+    r1 = send_block(socket_, reinterpret_cast<const char *>(&len), sizeof(uint32_t));
+    r2 = send_block(socket_, data.data(), data.size());
 
-    return ((r1 != SOCKET_ERROR) && (r2 != SOCKET_ERROR));
+    return r1 && r2;
 }
 
 ClientSocket::ReceiveStatus ClientSocket::receive_data(std::vector<uint8_t> &data_out) {
-    u_long readable_bytes;
-    ioctlsocket(socket_, FIONREAD, &readable_bytes);
-
-    if (readable_bytes > 0) {
-        data_out.resize(static_cast<size_t>(readable_bytes));
-        int status = ::recv(socket_, reinterpret_cast<char *>(&data_out[0]),
-                            static_cast<int>(data_out.size()), 0);
-        if (status == SOCKET_ERROR) {
-            if (WSAGetLastError() == WSAEWOULDBLOCK) {
-                return kContinue;
-            }
-            return kFailure;
+    std::array<uint8_t, 4096> data;
+    data_out.clear();
+    bool received = false;
+    int status;
+    do {
+        status = ::recv(socket_, reinterpret_cast<char *>(&data[0]), 4096, 0);
+        if (status != SOCKET_ERROR) {
+            data_out.insert(data_out.end(), data.begin(), data.begin() + status);
+            received = true;
         }
-        if (status != data_out.size()) {
-            data_out.resize(status);
-        }
+    } while (status != SOCKET_ERROR);
+    if (WSAGetLastError() != WSAEWOULDBLOCK) {
+        return kFailure;
+    }
+    if (received) {
         return kSuccess;
     }
     return kContinue;

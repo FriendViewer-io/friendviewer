@@ -5,14 +5,11 @@ import java.nio.ByteOrder;
 import java.util.LinkedList;
 
 public class MessageManager {
-
     LinkedList<byte[]> packets = new LinkedList<byte[]>();
     private ByteBuffer message_buffer = ByteBuffer.allocate(4);
     private boolean reading_length = true;
 
-    public MessageManager() {
-
-    }
+    public MessageManager() {}
 
     public boolean hasPacket() {
         return !packets.isEmpty();
@@ -73,5 +70,4 @@ public class MessageManager {
             }
         }
     }
-
 }

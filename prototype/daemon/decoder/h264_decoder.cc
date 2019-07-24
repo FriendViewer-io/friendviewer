@@ -38,7 +38,7 @@ H264Decoder::H264Decoder()
     : decoder_context_(nullptr, delete_decoder_ctx),
       sws_context_(nullptr, delete_sws),
       frame_buffer_(nullptr, delete_frame),
-      packet_buffer_(nullptr, delete_packet) {}
+      packet_buffer_(nullptr, delete_packet) {pts_ = -2;}
 
 bool H264Decoder::init(const H264Params &params) {
     width_ = params.width;
