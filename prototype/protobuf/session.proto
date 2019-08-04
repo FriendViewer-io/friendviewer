@@ -5,6 +5,13 @@ package prototype.protobuf;
 option java_package = "prototype.protobuf";
 option java_outer_classname = "Session";
 
+enum SampleType {
+	PCM_8BIT = 1;
+	PCM_16BIT = 2;
+	PCM_24BIT = 3;
+	FLOAT_32BIT = 4;
+}
+
 // Host to server to client(s)
 // Host to client(s)
 // Host stores a copy of this
@@ -17,19 +24,36 @@ message VideoParams {
 }
 
 // Host to server to client(s)
+message AudioParams {
+	required int32 sampling_rate = 1;
+	required SampleType sample_type = 2;
+	required int32 channels = 3;
+	required int32 bitrate = 4;
+}
+
+// Host to server to client(s)
 message Data {
-	required int32 pts = 1;
-	required int32 dts = 2;
-	required bytes encoded_frame = 3;
+	//True - Video, False - Audio
+	required bool type = 1;
+
+	required int32 pts = 2;
+	required int32 dts = 3;
+	required bytes encoded_frame = 4;
 }
 
 // Client to server to host
 // Specifies inputs 
 message ControlInput {
-	required float abs_x = 1;
-	required float abs_y = 2;
+	required string sender = 1;
+
+	required float abs_x = 2;
+	required float abs_y = 3;
 	// Based on windows virtual key codes
-	required int32 mouse_bitfield = 3;
+	required int32 mouse_bitfield = 4;
 	// Based on windows virtual key codes
-	required int32 virtual_key = 4;
+	required int32 virtual_key = 5;
+	required int32 state_key = 6;
+
+	required int32 mouse_state = 7;
+	required int32 key_state = 8;
 }
