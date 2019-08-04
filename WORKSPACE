@@ -71,7 +71,7 @@ cc_library(
 
 http_archive(
     name = "glew",
-    urls = ["https://pilotfiber.dl.sourceforge.net/project/glew/glew/2.1.0/glew-2.1.0-win32.zip"],
+    urls = ["http://pilotfiber.dl.sourceforge.net/project/glew/glew/2.1.0/glew-2.1.0-win32.zip"],
     sha256 = "80cfc88fd295426b49001a9dc521da793f8547ac10aebfc8bdc91ddc06c5566c",
     strip_prefix = "glew-2.1.0",
     build_file_content =
