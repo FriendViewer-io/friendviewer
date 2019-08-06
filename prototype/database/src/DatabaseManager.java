@@ -21,6 +21,23 @@ public class DatabaseManager {
            - Improve Query Data (Pass Lambdas as the conditions)
      */
 
+    /* Read Me
+        - There were issues with retrieving hashed values to be used as part of a "condition" for a query or a modify
+        - To use "_Hash" column as a condition, the data will be sent unhashed, and the manager is responsible for
+            hashing it using the saved salt value. However, there was some difficulty retrieving the salt
+        - The problem lied in that the salt should be completely separate from the hash, but still be retrievable when the
+        hash needed to be computed.
+        - The solution implemented restricts the usage of "_Hash" columns as conditions. Hash columns must be accompanied
+            by a primary key column value as that the salt can be easily connected to this unique key value
+            This is because hashed values are suppose to be secure information, and to pass along a hash column value
+            as a conition to a query or a modify should mean that the command is meant to target one row, not multiple
+
+        - This functionality also REQUIRES the query to have a TRUE (satisfy all conditions). The method will fail otherwise
+
+        - This functionality is not at all apparent or explained anywhere else, and so here it shall reside until it is
+            needed, which is hopefully never.
+     */
+
     enum Type {
         INTEGER, TEXT, REAL;
     }
@@ -262,7 +279,73 @@ public class DatabaseManager {
         return true;
     }
 
+    //Helper method that retrieves the Salt for a hash column
+    //Returns null upon failure
+    private String getSalt(String table, String hashCol, HashMap<String, Object> conditions){
+        String salt_col = (String) hashCol.substring(0, hashCol.length() - 5) + "_Salt"; //Column name + "_Salt"
+
+        //Query the table for the corresponding hash. Return false if failure
+        //Create a clone of the conditions map and remove all of the "_Hash" columns
+        HashMap<String, Object> newMap = (HashMap<String, Object>) conditions.clone();
+        for (String innerCol : conditions.keySet()){
+            if (innerCol.endsWith("_Hash")){
+                newMap.remove(innerCol);
+            }
+        }
+        //Query for the salt
+        ArrayList<String> queryCols = new ArrayList<>();
+        queryCols.add(salt_col);
+        ArrayList<HashMap<String, Object>> queryResults = queryElements(table, queryCols, newMap, true);
+        if (queryResults.size() > 1){
+            return null;
+        }
+        String salt = (String) queryResults.get(0).get(salt_col);
+
+        return salt;
+    }
+
+    //Helper method that creates the 'conditions (WHERE)' portion of a SQL query
+    //Returns null upon failure
+    private String getConditionString(String table, HashMap<String, Object> conditions, boolean all){
+        String conditionVals = " WHERE ";
+        for (String col : conditions.keySet()){
+            if (col.endsWith("_Hash")){
+                if (!all){ return null; } //Requires all conditions to be satisfied
+
+                String salt = getSalt(table, col, conditions);
+                if (salt == null) { return null; }  //Salt not found
+
+                String newVal = SaltHasher.hash((String) conditions.get(col), salt);
+
+                conditionVals += col + " = " + "'" + newVal + "'";
+            }else if (conditions.get(col).getClass() == String.class){
+                conditionVals += col + " = " + "'" + conditions.get(col) + "'";
+            }else{
+                conditionVals += col + " = " + conditions.get(col);
+            }
+
+            if (all){
+                conditionVals += " AND ";
+            }else{
+                conditionVals += " OR ";
+            }
+        }
+
+        if (conditionVals.length() > 7){
+            if (all){
+                conditionVals = conditionVals.substring(0, conditionVals.length() - 5);
+            }else{
+                conditionVals = conditionVals.substring(0, conditionVals.length() - 4);
+            }
+        }else{
+            return "";
+        }
+
+        return conditionVals;
+    }
+
     //Removes row(s) from the table that match a specific column value (Ex: ID = X)
+    //Does not currently support "_Hash" col support (Identifying value should be unique key, not a hash col)
     public boolean removeRow(String table, String colID, Object colValue){
         Statement stmt = null;
 
@@ -274,6 +357,31 @@ public class DatabaseManager {
             }else{
                 sql += colValue;
             }
+            stmt.executeUpdate(sql);
+        }catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+    //Removes row(s) from the table that match the conditions given
+    //If the conditions map is empty, all rows are removed from the table
+    //Returns null upon failure
+    public boolean removeRow(String table, HashMap<String, Object> conditions, boolean all){
+        Statement stmt = null;
+
+        try{
+            stmt = c.createStatement();
+            String sql = "DELETE FROM " + table;
+
+            String conditionsVals = getConditionString(table, conditions, all);
+            if (conditionsVals == null){
+                return false;
+            }
+            sql += conditionsVals;
+
             stmt.executeUpdate(sql);
         }catch (SQLException e){
             e.printStackTrace();
@@ -308,28 +416,11 @@ public class DatabaseManager {
             }
             sql += newVals.substring(0, newVals.length() - 2);
 
-            String conditionVals = " WHERE ";
-            for (String col : conditions.keySet()){
-                if (conditions.get(col).getClass() == String.class){
-                    conditionVals += col + " = " + "'" + conditions.get(col) + "'";
-                }else{
-                    conditionVals += col + " = " + conditions.get(col);
-                }
-
-                if (all){
-                    conditionVals += " AND ";
-                }else{
-                    conditionVals += " OR ";
-                }
+            String conditionsVals = getConditionString(table, conditions, all);
+            if (conditionsVals == null){
+                return false;
             }
-
-            if (conditionVals.length() > 7){
-                if (all){
-                    sql += conditionVals.substring(0, conditionVals.length() - 5);
-                }else{
-                    sql += conditionVals.substring(0, conditionVals.length() - 4);
-                }
-            }
+            sql += conditionsVals;
 
             stmt.executeUpdate(sql);
         }catch (SQLException e){
@@ -356,41 +447,12 @@ public class DatabaseManager {
     //Return format is an Arraylist whose values represents the rows.
     //Inside in the Hashmap are the column values that were specifically requested for
     public ArrayList<HashMap<String, Object>> queryElements(String table, ArrayList<String> targetCols){
-        Statement stmt = null;
-        ResultSet rs = null;
-
-        ArrayList<HashMap<String, Object>> result = new ArrayList<HashMap<String, Object>>();
-        try{
-            stmt = c.createStatement();
-            String sql = "SELECT  ";
-            String columns = "";
-            for (String col : targetCols){
-                if (getColumns(table).contains(col)){
-                    columns += col + ", ";
-                }else{
-                    columns += col + "_Hash, ";
-                }
-            }
-            sql += columns.substring(0, columns.length() - 2) + " FROM " + table;
-
-            rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                HashMap<String, Object> rowData = new HashMap<String, Object>();
-                for (String col : targetCols){
-                    rowData.put(col, rs.getObject(col));
-                }
-                result.add(rowData);
-            }
-
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-
-        return result;
+        return queryElements(table, targetCols, new HashMap<String, Object>(), true);
     }
 
     //Returns all elements in the target columns that match the specifed conditions
     //The 'all' parameter represents the AND/OR for the WHERE clause. True = and, False = or
+    //Returns null upon failure
     public ArrayList<HashMap<String, Object>> queryElements(String table, ArrayList<String> targetCols, HashMap<String, Object> conditions, boolean all){
         Statement stmt = null;
         ResultSet rs = null;
@@ -405,25 +467,11 @@ public class DatabaseManager {
             }
             sql += columns.substring(0, columns.length() - 2) + " FROM " + table;
 
-            String conditionVals = " WHERE ";
-            for (String col : conditions.keySet()){
-                if (conditions.get(col).getClass() == String.class){
-                    conditionVals += col + " = " + "'" + conditions.get(col) + "'";
-                }else{
-                    conditionVals += col + " = " + conditions.get(col);
-                }
-
-                if (all){
-                    conditionVals += " AND ";
-                }else{
-                    conditionVals += " OR ";
-                }
+            String conditionsVals = getConditionString(table, conditions, all);
+            if (conditionsVals == null){
+                return null;
             }
-            if (all){
-                sql += conditionVals.substring(0, conditionVals.length() - 5);
-            }else{
-                sql += conditionVals.substring(0, conditionVals.length() - 4);
-            }
+            sql += conditionsVals;
 
             rs = stmt.executeQuery(sql);
             while (rs.next()) {

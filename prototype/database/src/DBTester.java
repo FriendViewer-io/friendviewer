@@ -190,6 +190,8 @@ public class DBTester {
         conditions.put("Role", "Apostle of Armadyl");
         conditions.put("Role", "Queen of Freljord");
         printAll(manager.queryElements("Characters", manager.getColumns("Characters"), conditions, false));
+
+        manager.removeRow("Characters", conditions, false);
     }
 
     public static void passwordDatabase() throws NoSuchFieldException {
@@ -207,44 +209,47 @@ public class DBTester {
 
         HashMap<String, Object> newRow = new HashMap<String, Object>();
         newRow.put("ID", 1);
-        newRow.put("Username", "Rin");
-        newRow.put("Password_Hash", "password");
-        newRow.put("Backup_Hash", "asdfjkl");
+        newRow.put("Username", "Miku");
+        newRow.put("Password_Hash", "aaaa");
+        newRow.put("Backup_Hash", "bbbbb");
         manager.addRow("UserInfo", newRow);
 
+        printAll(manager.queryElements("UserInfo", manager.getColumns("UserInfo")));
+
+        //Modify the element throguh a blanket table modify
+        HashMap<String, Object> newVals = new HashMap<String, Object>();
+        newVals.put("ID", 1);
+        newVals.put("Username", "Rin");
+        newVals.put("Password_Hash", "password");
+        newVals.put("Backup_Hash", "asdfjkl");
+        manager.modifyRows("UserInfo", newVals);
+
+        printAll(manager.queryElements("UserInfo", manager.getColumns("UserInfo")));
+
+        //Add User 2
         newRow.put("ID", 2);
         newRow.put("Username", "Len");
         newRow.put("Password_Hash", "pennies");
         newRow.put("Backup_Hash", "dimes");
         manager.addRow("UserInfo", newRow);
 
+        printAll(manager.queryElements("UserInfo", manager.getColumns("UserInfo")));
+
         //Modifying rows
-        HashMap<String, Object>  newVals = new HashMap<String, Object>();
-        newVals.put("ID", 1);
+        newVals = new HashMap<String, Object>();
         newVals.put("Username", "Miku");
-        newVals.put("Password_Hash", "vocaloid");
-        newVals.put("Backup_Hash", "Hello");
-        manager.modifyRows("UserInfo", newVals, "ID", 1);
+
+        HashMap<String, Object> conditions = new HashMap<>();
+        conditions.put("Password_Hash", "password");
+        conditions.put("Username", "Rin");
+        manager.modifyRows("UserInfo", newVals, conditions, true);
 
         printAll(manager.queryElements("UserInfo", manager.getColumns("UserInfo")));
-    }
 
-    public static void passwordDatabaseAux(){
-        DatabaseManager manager = new DatabaseManager("C:\\Users\\nickz\\Desktop\\TFT Wins\\hash.db");
-
-        //Modifying rows
-        HashMap<String, Object>  newVals = new HashMap<String, Object>();
-        newVals.put("ID", 1);
-        newVals.put("Username", "Miku");
-        newVals.put("Password_Hash", "vocaloid");
-        newVals.put("Backup_Hash", "Hello");
-
-        HashMap<String, Object> conditions = new HashMap<String, Object>();
-        conditions.put("ID", 1);
-        conditions.put("Username", "Rin");
-        conditions.put("Password_Hash", "fd756c71e3d139f3a0792ece9cab8d8c6f5c8bc1172a72bf3745bd9a3ff2cc19");
-        conditions.put("Backup_Hash", "09d0a504715ed6bb9f9a9f6638ea08a1f5ee2323707dc81110c6571a1794e6d8");
-        manager.modifyRows("UserInfo", newVals, conditions, true);
+        //Querying for rows
+        conditions.put("Password_Hash", "pennies");
+        conditions.put("Username", "Len");
+        printAll(manager.queryElements("UserInfo", manager.getColumns("UserInfo"), conditions, true));
     }
 
     private static void printAll( ArrayList<HashMap<String, Object>> results){
@@ -259,8 +264,7 @@ public class DBTester {
 
     public static void main(String[]args) throws NoSuchFieldException {
         //oldCode();
-        //Test2();
-        passwordDatabase();
-        //passwordDatabaseAux();
+        Test2();
+        //passwordDatabase();
     }
 }
