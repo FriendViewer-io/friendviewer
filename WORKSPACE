@@ -92,8 +92,6 @@ cc_library(
 # Search DX11 in windows sdk (version 10.0.17134.0 only)
 winsdk_library(
     name = "directx_11",
-    sdk_lib_subfolder = "um",
-    sdk_include_subfolder = "um",
     headers = ["d3d11.h"],
     static_libraries = ["d3d11.lib"],
 )
@@ -101,32 +99,24 @@ winsdk_library(
 # Search DXGI in windows sdk (version 10.0.17134.0 only)
 winsdk_library(
     name = "dxgi_11",
-    sdk_lib_subfolder = "um",
-    sdk_include_subfolder = "shared",
     headers = ["dxgi.h", "dxgi1_2.h"],
     static_libraries = ["dxgi.lib"],
 )
 
 winsdk_library(
     name = "user32",
-    sdk_lib_subfolder = "um",
-    sdk_include_subfolder = "um",
     headers = ["Windows.h"],
     static_libraries = ["User32.lib"],
 )
 
 winsdk_library(
     name = "winsock2",
-    sdk_lib_subfolder = "um",
-    sdk_include_subfolder = "um",
     headers = ["WinSock2.h"],
     static_libraries = ["ws2_32.lib"],
 )
 
 winsdk_library(
     name = "opengl",
-    sdk_lib_subfolder = "um",
-    sdk_include_subfolder = "um",
     headers = [
         "gl/GL.h",
         "gl/GLU.h",
@@ -136,8 +126,6 @@ winsdk_library(
 
 winsdk_library(
     name = "user32",
-    sdk_lib_subfolder = "um",
-    sdk_include_subfolder = "um",
     headers = ["Windows.h"],
     static_libraries = ["User32.lib"],
 )
