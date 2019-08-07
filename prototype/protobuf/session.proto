@@ -31,14 +31,33 @@ message AudioParams {
 	required int32 bitrate = 4;
 }
 
+enum DataType {
+	INVALID = 0;
+	H264_VIDEO = 1;
+	OPUS_AUDIO = 2;
+}
+
 // Host to server to client(s)
 message Data {
-	//True - Video, False - Audio
-	required bool type = 1;
+	// True - Video, False - Audio
+	required DataType type = 1;
 
 	required int32 pts = 2;
 	required int32 dts = 3;
 	required bytes encoded_frame = 4;
+}
+
+enum SpecialKeyBits {
+	CTRL = 1;
+	ALT = 2;
+	SHIFT = 4;
+}
+
+enum ControlState {
+	OFF = 0;
+	PRESSED = 1;
+	HOLD = 2;
+	RELEASED = 3;
 }
 
 // Client to server to host
@@ -49,11 +68,13 @@ message ControlInput {
 	required float abs_x = 2;
 	required float abs_y = 3;
 	// Based on windows virtual key codes
-	required int32 mouse_bitfield = 4;
-	// Based on windows virtual key codes
-	required int32 virtual_key = 5;
-	required int32 state_key = 6;
+	required int32 mouse_button = 4;
+	// Based on windows virtual key codes, indices here align with key_states
+	repeated int32 virtual_keys = 5;
+	// Bitfield of special keys
+	required int32 state_keys = 6;
 
-	required int32 mouse_state = 7;
-	required int32 key_state = 8;
+	// State of specified mouse & keyboard buttons
+	required ControlState mouse_state = 7;
+	repeated ControlState key_states = 8;
 }
