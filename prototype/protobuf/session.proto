@@ -5,6 +5,13 @@ package prototype.protobuf;
 option java_package = "prototype.protobuf";
 option java_outer_classname = "Session";
 
+enum SampleType {
+	PCM_8BIT = 1;
+	PCM_16BIT = 2;
+	PCM_24BIT = 3;
+	FLOAT_32BIT = 4;
+}
+
 // Host to server to client(s)
 // Host to client(s)
 // Host stores a copy of this
@@ -17,19 +24,57 @@ message VideoParams {
 }
 
 // Host to server to client(s)
+message AudioParams {
+	required int32 sampling_rate = 1;
+	required SampleType sample_type = 2;
+	required int32 channels = 3;
+	required int32 bitrate = 4;
+}
+
+enum DataType {
+	INVALID = 0;
+	H264_VIDEO = 1;
+	OPUS_AUDIO = 2;
+}
+
+// Host to server to client(s)
 message Data {
-	required int32 pts = 1;
-	required int32 dts = 2;
-	required bytes encoded_frame = 3;
+	// True - Video, False - Audio
+	required DataType type = 1;
+
+	required int32 pts = 2;
+	required int32 dts = 3;
+	required bytes encoded_frame = 4;
+}
+
+enum SpecialKeyBits {
+	CTRL = 1;
+	ALT = 2;
+	SHIFT = 4;
+}
+
+enum ControlState {
+	OFF = 0;
+	PRESSED = 1;
+	HOLD = 2;
+	RELEASED = 3;
 }
 
 // Client to server to host
 // Specifies inputs 
 message ControlInput {
-	required float abs_x = 1;
-	required float abs_y = 2;
+	required string sender = 1;
+
+	required float abs_x = 2;
+	required float abs_y = 3;
 	// Based on windows virtual key codes
-	required int32 mouse_bitfield = 3;
-	// Based on windows virtual key codes
-	required int32 virtual_key = 4;
+	required int32 mouse_button = 4;
+	// Based on windows virtual key codes, indices here align with key_states
+	repeated int32 virtual_keys = 5;
+	// Bitfield of special keys
+	required int32 state_keys = 6;
+
+	// State of specified mouse & keyboard buttons
+	required ControlState mouse_state = 7;
+	repeated ControlState key_states = 8;
 }

@@ -16,6 +16,8 @@ enum ServerMessageType {
     USER_NOT_FOUND = 2;
     SESSION_STARTING = 3;
     USER_ALREADY_IN_SESSION = 4;
+    SESSION_REJECTED = 5;
+    LOGIN_FAILED = 6;
 }
 
 // Server to client
@@ -27,8 +29,11 @@ message ServerMessage {
 }
 
 // Client to server
-message NewUser {
+message Login {
     required string username = 1;
+    required string password = 2;
+
+    optional bool new_user = 3;
 }
 
 // Server to client
@@ -36,9 +41,15 @@ message UserList {
     repeated string users = 1;
 }
 
-// Client to server
+// Client to server to client
 message SessionRequest {
     required string name = 1;
+}
+
+// Client to server
+message SessionResponse {
+    required string name = 1;
+    required bool response = 2;
 }
 
 // Bidirectional
