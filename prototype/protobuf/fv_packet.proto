@@ -11,16 +11,18 @@ enum FvPacketType {
 	// Control packet types
 	HANDSHAKE = 1;
 	SERVER_MESSAGE = 2;
-	NEW_USER = 3;
+	LOGIN = 3;
 	USER_LIST = 4;
 	SESSION_REQUEST = 5;
-	SESSION_CLOSE = 6;
-	HEARTBEAT = 7;
+	SESSION_RESPONSE = 6;
+	SESSION_CLOSE = 7;
+	HEARTBEAT = 8;
 
 	// Session packet types
-	VIDEO_PARAMS = 8;
-	DATA = 9;
-	CONTROL_INPUT = 10;
+	VIDEO_PARAMS = 9;
+	AUDIO_PARAMS = 10;
+	DATA = 11;
+	CONTROL_INPUT = 12;
 }
 
 // Wrapper for all packets, where inner_packet is a serialized packet, and type
