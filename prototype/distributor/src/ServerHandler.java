@@ -97,12 +97,14 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                     .build();
             sendProto(ByteString.copyFrom(reply.toByteArray()), General.FvPacketType.SERVER_MESSAGE);
 
+            //Sends out an updated user list to all connected clients
             Control.UserList userListProto =
                     Control.UserList.newBuilder().addAllUsers(UsersData.keySet()).build();
 
             for (Channel target : UsersData.values()) {
                 sendProto(ByteString.copyFrom(userListProto.toByteArray()), General.FvPacketType.USER_LIST, target);
             }
+
             selfName = user_packet.getUsername();
         } else {
             loginFailure();
@@ -140,7 +142,6 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
     public void onSessionRequest(Control.SessionRequest sr) {
         Control.ServerMessage reply;
-        General.FvPacket replyOuter;
 
         System.out.println("Session Request packet");
 
@@ -153,25 +154,10 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
             sendProto(ByteString.copyFrom(reply.toByteArray()), General.FvPacketType.SERVER_MESSAGE);
             return;
         }
-        for (SessionData session : UsersData.getSessionList()) {
-            // if user is already hosting a session
-            if (session.getHostUser().equals(sr.getName())) {
-                // add current user to requested user's session
-                session.addClientUser(selfName);
 
-                // user is available: send session starting to requester
-                reply = Control.ServerMessage.newBuilder()
-                        .setType(Control.ServerMessageType.SESSION_STARTING)
-                        .setSuccess(true)
-                        .build();
-                sendProto(ByteString.copyFrom(reply.toByteArray()), General.FvPacketType.SERVER_MESSAGE);
-
-                // send new user video params
-                sendProto(ByteString.copyFrom(session.getVideoParams().toByteArray()), General.FvPacketType.VIDEO_PARAMS);
-                return;
-
-                // if user is unavailable
-            } else if (session.getClientList().contains(sr.getName())) {
+        //If the user is already in a session
+        for (SessionData session : UsersData.getSessionList()){
+             if (session.getClientList().contains(sr.getName())) {
                 reply = Control.ServerMessage.newBuilder()
                         .setType(Control.ServerMessageType.USER_ALREADY_IN_SESSION)
                         .setSuccess(false)
@@ -182,22 +168,61 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
             }
         }
 
-        UsersData.getSessionList().add(new SessionData(sr.getName(), selfName));
+        //Sends a SESSION_REQUEST packet to the host containing the name of the user trying to connect
+        Control.SessionRequest.Builder srbuilder = Control.SessionRequest.newBuilder();
+        srbuilder.setName(selfName);
+        Control.SessionRequest newRequest = srbuilder.build();
+        sendProto(newRequest.toByteString(), General.FvPacketType.SESSION_REQUEST, UsersData.getUser(sr.getName()));
+    }
 
-        // user is available: send session starting to requester
+    public void onSessionResponse(Control.SessionResponse sr) {
+        Control.ServerMessage reply;
+
+        System.out.println("Session Response packet");
+
+        //Connection refused by host
+        if (!sr.getResponse()){
+            reply = Control.ServerMessage.newBuilder()
+                    .setType(Control.ServerMessageType.SESSION_REJECTED)
+                    .setSuccess(false)
+                    .build();
+            sendProto(ByteString.copyFrom(reply.toByteArray()), General.FvPacketType.SERVER_MESSAGE);
+            return;
+        }
+
+        for (SessionData session : UsersData.getSessionList()) {
+            // if user is already hosting a session
+            if (session.getHostUser().equals(selfName)) {
+                // add requesting user to current user's session
+                session.addClientUser(sr.getName());
+
+                // user is available: send session starting to requester
+                reply = Control.ServerMessage.newBuilder()
+                        .setType(Control.ServerMessageType.SESSION_STARTING)
+                        .setSuccess(true)
+                        .build();
+                sendProto(ByteString.copyFrom(reply.toByteArray()), General.FvPacketType.SERVER_MESSAGE, UsersData.getUser(sr.getName()));
+
+                // send new user video params
+                sendProto(ByteString.copyFrom(session.getVideoParams().toByteArray()), General.FvPacketType.VIDEO_PARAMS, UsersData.getUser(sr.getName()));
+                return;
+
+            }
+        }
+
+        //User is not hosting a session, a new session is crated
+        UsersData.getSessionList().add(new SessionData(selfName, sr.getName()));
+
+        // user is available: send session starting to requester    (Does not send to the host client)
         reply = Control.ServerMessage.newBuilder()
                 .setType(Control.ServerMessageType.SESSION_STARTING)
                 .setSuccess(true)
                 .build();
-        sendProto(ByteString.copyFrom(reply.toByteArray()), General.FvPacketType.SERVER_MESSAGE);
-
-        // send to host
-        sendProto(ByteString.copyFrom(sr.toByteArray()), General.FvPacketType.SESSION_REQUEST, UsersData.getUser(sr.getName()));
+        sendProto(ByteString.copyFrom(reply.toByteArray()), General.FvPacketType.SERVER_MESSAGE, UsersData.getUser(sr.getName()));
     }
 
     public void onSessionClose(Control.SessionClose sc) {
         Control.ServerMessage reply;
-        General.FvPacket replyOuter;
         SessionData toRemove = null;
 
         for (SessionData session : UsersData.getSessionList()) {
@@ -215,11 +240,12 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
             } else if (session.getClientList().contains(selfName)) { // if from client
                 session.getClientList().remove(selfName);
 
-                // send success message (Never gets sent?)
-                reply = Control.ServerMessage.newBuilder()              //Type: SERVER_MESSAGE
+                // send success message
+                reply = Control.ServerMessage.newBuilder()
                         .setType(Control.ServerMessageType.SUCCESS)
                         .setSuccess(true)
                         .build();
+                sendProto(reply.toByteString(), General.FvPacketType.SERVER_MESSAGE);
 
                 return;
             }
@@ -260,16 +286,17 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                     channel.close();
                 }
                 break;
-            case LOGIN:                             //Needs to be changed
+            case LOGIN:
                 Control.Login user_packet =
                         Control.Login.parseFrom(outer_packet.getInnerPacket());
                 System.out.println("New User/Login Attempt: " + user_packet.getUsername());
                 onLogin(user_packet);
                 break;
-            case SESSION_REQUEST:                   //Needs to be changed
+            case SESSION_REQUEST:
                 onSessionRequest(Control.SessionRequest.parseFrom(outer_packet.getInnerPacket()));
                 break;
             case SESSION_RESPONSE:
+                onSessionResponse(Control.SessionResponse.parseFrom(outer_packet.getInnerPacket()));
                 break;
             case SESSION_CLOSE:
                 Control.SessionClose sc =
@@ -291,7 +318,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
                 onVideoParams(vp);
                 break;
-            case AUDIO_PARAMS:
+            case AUDIO_PARAMS:                             //Empty
                 Session.AudioParams ap = Session.AudioParams.parseFrom(outer_packet.getInnerPacket());
                 break;
             case DATA:
@@ -370,7 +397,6 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         }
 
         // if host loses connection
-        General.FvPacket replyOuter;
         SessionData toRemove = null;
 
         for (SessionData session : UsersData.getSessionList()) {
@@ -401,6 +427,14 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         }
 
         UsersData.remove(selfName);
+
+        //Sends out an updated user list to all connected clients
+        Control.UserList userListProto =
+                Control.UserList.newBuilder().addAllUsers(UsersData.keySet()).build();
+
+        for (Channel target : UsersData.values()) {
+            sendProto(ByteString.copyFrom(userListProto.toByteArray()), General.FvPacketType.USER_LIST, target);
+        }
     }
 
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
