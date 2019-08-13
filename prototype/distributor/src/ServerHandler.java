@@ -2,25 +2,30 @@ package prototype.distributor;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.google.protobuf.Message;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Map;
-import prototype.distributor.SessionData;
-import prototype.distributor.UsersData;
-import prototype.networkProtocol.MessageManager;
+import network_protocol.MessageManager;
 import prototype.protobuf.Control;
 import prototype.protobuf.General;
 import prototype.protobuf.Session;
 
+import java.util.Date;
+
+/* Things I did that perhaps I shouldn't have
+    - Updated the proto methods (Seemed way redundant to create the outer packet manually every time - wastes space)
+*/
+
+/*Questions I have
+    - why do we do Bytestring.copyFrom instead of just converting to bytestring directly
+*/
+
 public class ServerHandler extends ChannelInboundHandlerAdapter {
     private Channel channel;
     private String selfName = "";
-    private MessageManager mgr = new MessageManager();
+    private MessageManager msgmgr = new MessageManager();
+    private DatabaseHandler dbmgr = new DatabaseHandler("Users.db");     //Can change where the database is stored later
     private long lastHeartbeat;
     // TODO: THIS
     private Thread heartbeatThread;
@@ -34,16 +39,29 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         lastHeartbeat = hb;
     }
 
-    public void sendProto(Message proto) {
-        byte[] bytes = proto.toByteArray();
+    //Updated to do the outer packet 'packaging' inside of the sendProto methods for ease of use
+    public void sendProto(ByteString inner, General.FvPacketType type) {
+        //Create outer packet
+        General.FvPacket outerPacket = General.FvPacket.newBuilder()
+                .setType(type)
+                .setInnerPacket(inner)
+                .build();
+
+        byte[] bytes = outerPacket.toByteArray();
         ByteBuf buf = channel.alloc().buffer(bytes.length + 4);
         buf.writeIntLE(bytes.length);
         buf.writeBytes(bytes);
         channel.writeAndFlush(buf);
     }
 
-    public void sendProto(Message proto, Channel c) {
-        byte[] bytes = proto.toByteArray();
+    public void sendProto(ByteString inner, General.FvPacketType type, Channel c) {
+        //Create outer packet
+        General.FvPacket outerPacket = General.FvPacket.newBuilder()
+                .setType(type)
+                .setInnerPacket(inner)
+                .build();
+
+        byte[] bytes = outerPacket.toByteArray();
         ByteBuf buf = channel.alloc().buffer(bytes.length + 4);
         buf.writeIntLE(bytes.length);
         buf.writeBytes(bytes);
@@ -55,68 +73,69 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
             return false;
         }
         Control.Handshake reply =
-            Control.Handshake.newBuilder().setMagicNumber(0xABCDABCABA123456l).build();
+                Control.Handshake.newBuilder().setMagicNumber(0xABCDABCABA123456l).build();
 
-        // set outer packet
-        General.FvPacket replyOuter = General.FvPacket.newBuilder()
-                                          .setType(General.FvPacketType.HANDSHAKE)
-                                          .setInnerPacket(ByteString.copyFrom(reply.toByteArray()))
-                                          .build();
-        sendProto(replyOuter);
+        sendProto(ByteString.copyFrom(reply.toByteArray()), General.FvPacketType.HANDSHAKE);
         return true;
     }
 
-    public void onNewUser(Control.NewUser user_packet) {
+    private void loginFailure(){
+        Control.ServerMessage reply = Control.ServerMessage.newBuilder()
+                .setType(Control.ServerMessageType.LOGIN_FAILED)
+                .setSuccess(false)
+                .build();
+
+        sendProto(ByteString.copyFrom(reply.toByteArray()), General.FvPacketType.SERVER_MESSAGE);
+    }
+
+    private void onLoginAux(Control.Login user_packet){
         if (UsersData.getUser(user_packet.getUsername()) == null) {
             UsersData.addUser(user_packet.getUsername(), channel);
             Control.ServerMessage reply = Control.ServerMessage.newBuilder()
-                                              .setType(Control.ServerMessageType.SUCCESS)
-                                              .setSuccess(true)
-                                              .build();
-            General.FvPacket replyOuter =
-                General.FvPacket.newBuilder()
-                    .setType(General.FvPacketType.SERVER_MESSAGE)
-                    .setInnerPacket(ByteString.copyFrom(reply.toByteArray()))
+                    .setType(Control.ServerMessageType.SUCCESS)
+                    .setSuccess(true)
                     .build();
-            sendProto(replyOuter);
+            sendProto(ByteString.copyFrom(reply.toByteArray()), General.FvPacketType.SERVER_MESSAGE);
+
             Control.UserList userListProto =
-                Control.UserList.newBuilder().addAllUsers(UsersData.keySet()).build();
-            General.FvPacket listOuter =
-                General.FvPacket.newBuilder()
-                    .setType(General.FvPacketType.USER_LIST)
-                    .setInnerPacket(ByteString.copyFrom(userListProto.toByteArray()))
-                    .build();
+                    Control.UserList.newBuilder().addAllUsers(UsersData.keySet()).build();
 
             for (Channel target : UsersData.values()) {
-                sendProto(listOuter, target);
+                sendProto(ByteString.copyFrom(userListProto.toByteArray()), General.FvPacketType.USER_LIST, target);
             }
             selfName = user_packet.getUsername();
         } else {
-            Control.ServerMessage reply = Control.ServerMessage.newBuilder()
-                                              .setType(Control.ServerMessageType.NAME_TAKEN)
-                                              .setSuccess(false)
-                                              .build();
-            General.FvPacket replyOuter =
-                General.FvPacket.newBuilder()
-                    .setType(General.FvPacketType.SERVER_MESSAGE)
-                    .setInnerPacket(ByteString.copyFrom(reply.toByteArray()))
-                    .build();
-            sendProto(replyOuter);
+            loginFailure();
+        }
+    }
+
+    //Handles the database to check whether the user exists/can be created
+    //Old code handling handling the new user has been moved to the auxiliary method
+    public void onLogin(Control.Login user_packet) {
+        if (user_packet.getNewUser()){
+            //Is username already taken?
+            if (dbmgr.hasUser(user_packet.getUsername())){
+                loginFailure();
+                return;
+            }
+            //Add the user to the databse
+            dbmgr.addUser(user_packet.getUsername(), user_packet.getPassword());
+            onLoginAux(user_packet);
+        }else {
+            if (!dbmgr.checkCredentials(user_packet.getUsername(), user_packet.getPassword())){
+                loginFailure();
+                return;
+            }
+            onLoginAux(user_packet);
         }
     }
 
     public void onHeartbeat(Control.Heartbeat heartbeat_in) {
         lastHeartbeat = new Date().getTime();
         Control.Heartbeat heartbeat =
-            Control.Heartbeat.newBuilder().setUtcTime(lastHeartbeat).build();
+                Control.Heartbeat.newBuilder().setUtcTime(lastHeartbeat).build();
 
-        General.FvPacket replyOuter =
-            General.FvPacket.newBuilder()
-                .setType(General.FvPacketType.HEARTBEAT)
-                .setInnerPacket(ByteString.copyFrom(heartbeat.toByteArray()))
-                .build();
-
-        sendProto(replyOuter);
+        sendProto(ByteString.copyFrom(heartbeat.toByteArray()), General.FvPacketType.HEARTBEAT);
     }
 
     public void onSessionRequest(Control.SessionRequest sr) {
@@ -128,18 +147,10 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         // if user not found
         if (!UsersData.keySet().contains(sr.getName())) {
             reply = Control.ServerMessage.newBuilder()
-                        .setType(Control.ServerMessageType.USER_NOT_FOUND)
-                        .setSuccess(false)
-                        .build();
-
-            // set outer packet
-            replyOuter = General.FvPacket.newBuilder()
-                             .setType(General.FvPacketType.SERVER_MESSAGE)
-                             .setInnerPacket(ByteString.copyFrom(reply.toByteArray()))
-                             .build();
-
-            sendProto(replyOuter);
-
+                    .setType(Control.ServerMessageType.USER_NOT_FOUND)
+                    .setSuccess(false)
+                    .build();
+            sendProto(ByteString.copyFrom(reply.toByteArray()), General.FvPacketType.SERVER_MESSAGE);
             return;
         }
         for (SessionData session : UsersData.getSessionList()) {
@@ -150,43 +161,22 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
                 // user is available: send session starting to requester
                 reply = Control.ServerMessage.newBuilder()
-                            .setType(Control.ServerMessageType.SESSION_STARTING)
-                            .setSuccess(true)
-                            .build();
-
-                // set outer packet
-                replyOuter = General.FvPacket.newBuilder()
-                                 .setType(General.FvPacketType.SERVER_MESSAGE)
-                                 .setInnerPacket(ByteString.copyFrom(reply.toByteArray()))
-                                 .build();
-
-                sendProto(replyOuter);
+                        .setType(Control.ServerMessageType.SESSION_STARTING)
+                        .setSuccess(true)
+                        .build();
+                sendProto(ByteString.copyFrom(reply.toByteArray()), General.FvPacketType.SERVER_MESSAGE);
 
                 // send new user video params
-                replyOuter =
-                    General.FvPacket.newBuilder()
-                        .setType(General.FvPacketType.VIDEO_PARAMS)
-                        .setInnerPacket(ByteString.copyFrom(session.getVideoParams().toByteArray()))
-                        .build();
-
-                sendProto(replyOuter);
-
+                sendProto(ByteString.copyFrom(session.getVideoParams().toByteArray()), General.FvPacketType.VIDEO_PARAMS);
                 return;
 
                 // if user is unavailable
             } else if (session.getClientList().contains(sr.getName())) {
                 reply = Control.ServerMessage.newBuilder()
-                            .setType(Control.ServerMessageType.USER_ALREADY_IN_SESSION)
-                            .setSuccess(false)
-                            .build();
-
-                // set outer packet
-                replyOuter = General.FvPacket.newBuilder()
-                                 .setType(General.FvPacketType.SERVER_MESSAGE)
-                                 .setInnerPacket(ByteString.copyFrom(reply.toByteArray()))
-                                 .build();
-
-                sendProto(replyOuter);
+                        .setType(Control.ServerMessageType.USER_ALREADY_IN_SESSION)
+                        .setSuccess(false)
+                        .build();
+                sendProto(ByteString.copyFrom(reply.toByteArray()), General.FvPacketType.SERVER_MESSAGE);
 
                 return;
             }
@@ -196,26 +186,13 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
         // user is available: send session starting to requester
         reply = Control.ServerMessage.newBuilder()
-                    .setType(Control.ServerMessageType.SESSION_STARTING)
-                    .setSuccess(true)
-                    .build();
-
-        // set outer packet
-        replyOuter = General.FvPacket.newBuilder()
-                         .setType(General.FvPacketType.SERVER_MESSAGE)
-                         .setInnerPacket(ByteString.copyFrom(reply.toByteArray()))
-                         .build();
-
-        sendProto(replyOuter);
-
-        // set outer packet
-        replyOuter = General.FvPacket.newBuilder()
-                         .setType(General.FvPacketType.SESSION_REQUEST)
-                         .setInnerPacket(ByteString.copyFrom(sr.toByteArray()))
-                         .build();
+                .setType(Control.ServerMessageType.SESSION_STARTING)
+                .setSuccess(true)
+                .build();
+        sendProto(ByteString.copyFrom(reply.toByteArray()), General.FvPacketType.SERVER_MESSAGE);
 
         // send to host
-        sendProto(replyOuter, UsersData.getUser(sr.getName()));
+        sendProto(ByteString.copyFrom(sr.toByteArray()), General.FvPacketType.SESSION_REQUEST, UsersData.getUser(sr.getName()));
     }
 
     public void onSessionClose(Control.SessionClose sc) {
@@ -227,32 +204,22 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
             // if from host
             if (session.getHostUser().equals(selfName)) {
                 // send sessionclose to all clients
-                replyOuter = General.FvPacket.newBuilder()
-                                 .setType(General.FvPacketType.SESSION_CLOSE)
-                                 .setInnerPacket(ByteString.copyFrom(sc.toByteArray()))
-                                 .build();
-
                 for (String user : session.getClientList()) {
-                    sendProto(replyOuter, UsersData.getUser(user));
+                    sendProto(ByteString.copyFrom(sc.toByteArray()), General.FvPacketType.SESSION_CLOSE, UsersData.getUser(user));
                 }
 
-                // ica n just get rid of the session right dw about client list cuz
+                // it can just get rid of the session right dw about client list cuz
                 // that garbo is only known about in the sessiondata
                 toRemove = session;
 
             } else if (session.getClientList().contains(selfName)) { // if from client
                 session.getClientList().remove(selfName);
 
-                // send success message
-                reply = Control.ServerMessage.newBuilder()
-                            .setType(Control.ServerMessageType.SUCCESS)
-                            .setSuccess(true)
-                            .build();
-
-                replyOuter = General.FvPacket.newBuilder()
-                                 .setType(General.FvPacketType.SERVER_MESSAGE)
-                                 .setInnerPacket(ByteString.copyFrom(sc.toByteArray()))
-                                 .build();
+                // send success message (Never gets sent?)
+                reply = Control.ServerMessage.newBuilder()              //Type: SERVER_MESSAGE
+                        .setType(Control.ServerMessageType.SUCCESS)
+                        .setSuccess(true)
+                        .build();
 
                 return;
             }
@@ -271,14 +238,8 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                 session.setVideoParams(vp);
 
                 // must send clients the params, normally should be just 1
-                General.FvPacket replyOuter =
-                    General.FvPacket.newBuilder()
-                        .setType(General.FvPacketType.VIDEO_PARAMS)
-                        .setInnerPacket(ByteString.copyFrom(vp.toByteArray()))
-                        .build();
-
                 for (String user : session.getClientList()) {
-                    sendProto(replyOuter, UsersData.getUser(user));
+                    sendProto(ByteString.copyFrom(vp.toByteArray()), General.FvPacketType.VIDEO_PARAMS, UsersData.getUser(user));
                 }
             }
         }
@@ -299,18 +260,20 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                     channel.close();
                 }
                 break;
-            case NEW_USER:
-                Control.NewUser user_packet =
-                    Control.NewUser.parseFrom(outer_packet.getInnerPacket());
-                System.out.println("New User requested name: " + user_packet.getUsername());
-                onNewUser(user_packet);
+            case LOGIN:                             //Needs to be changed
+                Control.Login user_packet =
+                        Control.Login.parseFrom(outer_packet.getInnerPacket());
+                System.out.println("New User/Login Attempt: " + user_packet.getUsername());
+                onLogin(user_packet);
                 break;
-            case SESSION_REQUEST:
+            case SESSION_REQUEST:                   //Needs to be changed
                 onSessionRequest(Control.SessionRequest.parseFrom(outer_packet.getInnerPacket()));
+                break;
+            case SESSION_RESPONSE:
                 break;
             case SESSION_CLOSE:
                 Control.SessionClose sc =
-                    Control.SessionClose.parseFrom(outer_packet.getInnerPacket());
+                        Control.SessionClose.parseFrom(outer_packet.getInnerPacket());
 
                 System.out.println("Session Close packet");
 
@@ -324,31 +287,35 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                 break;
             case VIDEO_PARAMS:
                 Session.VideoParams vp =
-                    Session.VideoParams.parseFrom(outer_packet.getInnerPacket());
+                        Session.VideoParams.parseFrom(outer_packet.getInnerPacket());
 
                 onVideoParams(vp);
+                break;
+            case AUDIO_PARAMS:
+                Session.AudioParams ap = Session.AudioParams.parseFrom(outer_packet.getInnerPacket());
                 break;
             case DATA:
                 Session.Data dp = Session.Data.parseFrom(outer_packet.getInnerPacket());
                 for (SessionData session : UsersData.getSessionList()) {
                     if (session.getHostUser().equals(selfName)) { //
                         for (String user : session.getClientList()) { // send to all users
-                            sendProto(outer_packet, UsersData.getUser(user));
+                            sendProto(dp.toByteString(), type, UsersData.getUser(user));
                         }
                     }
                 }
 
                 break;
             case CONTROL_INPUT:
+                Session.ControlInput input = Session.ControlInput.parseFrom(outer_packet.getInnerPacket());
                 for (SessionData session : UsersData.getSessionList()) {
                     if (session.getClientList().contains(
                             selfName)) { // find session that sender is in
-                        sendProto(outer_packet, UsersData.getUser(session.getHostUser()));
+                        sendProto(input.toByteString(), type, UsersData.getUser(session.getHostUser()));
                     }
                 }
 
                 break;
-            default:
+            default:                                //Need to add new packet types
                 System.out.println("Protocol not defined");
                 break;
         }
@@ -360,13 +327,13 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         // System.out.println("Received raw packet size " + raw_packet.length);
         buffer.readBytes(raw_packet);
         long ctm = System.currentTimeMillis();
-        mgr.parseData(raw_packet);
+        msgmgr.parseData(raw_packet);
         long elapsed = System.currentTimeMillis() - ctm;
         buffer.release();
 
-        while (mgr.hasPacket()) {
+        while (msgmgr.hasPacket()) {
             try {
-                handlePacket(mgr.nextPacket());
+                handlePacket(msgmgr.nextPacket());
             } catch (InvalidProtocolBufferException e) {
                 e.printStackTrace();
             }
@@ -410,16 +377,11 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
             // from host
             if (session.getHostUser().equals(selfName)) {
                 Control.SessionClose sc =
-                    Control.SessionClose.newBuilder().setReason("Host Disconnected").build();
+                        Control.SessionClose.newBuilder().setReason("Host Disconnected").build();
 
                 // send sessionclose to all clients
-                replyOuter = General.FvPacket.newBuilder()
-                                 .setType(General.FvPacketType.SESSION_CLOSE)
-                                 .setInnerPacket(ByteString.copyFrom(sc.toByteArray()))
-                                 .build();
-
                 for (String user : session.getClientList()) {
-                    sendProto(replyOuter, UsersData.getUser(user));
+                    sendProto(ByteString.copyFrom(sc.toByteArray()), General.FvPacketType.SESSION_CLOSE, UsersData.getUser(user));
                 }
 
                 toRemove = session;

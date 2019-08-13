@@ -1,5 +1,7 @@
 package prototype.database;
 
+import org.sqlite.SQLiteException;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,11 +40,11 @@ public class DatabaseManager {
             needed, which is hopefully never.
      */
 
-    enum Type {
+    public enum Type {
         INTEGER, TEXT, REAL;
     }
 
-    static class Column {
+    public static class Column {
         public String name;
         //The name of the column is used as a key of sorts. Currently, adding _Hash to the end of the name indicates
         //that columns as a 'hash column', where all of its values are salted and hashed before stored in the database
@@ -154,8 +156,9 @@ public class DatabaseManager {
 
             stmt.executeUpdate(sql);
             stmt.close();
+        } catch (SQLiteException e){
+            return false;
         } catch (SQLException e) {
-            e.printStackTrace();
             return false;
         }
 
@@ -296,7 +299,7 @@ public class DatabaseManager {
         ArrayList<String> queryCols = new ArrayList<>();
         queryCols.add(salt_col);
         ArrayList<HashMap<String, Object>> queryResults = queryElements(table, queryCols, newMap, true);
-        if (queryResults.size() > 1){
+        if (queryResults.size() != 1){
             return null;
         }
         String salt = (String) queryResults.get(0).get(salt_col);
