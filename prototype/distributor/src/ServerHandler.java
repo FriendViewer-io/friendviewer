@@ -30,7 +30,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     private String selfName = "";
     private MessageManager msgmgr = new MessageManager();
     private DatabaseHandler dbmgr = new DatabaseHandler("Users.db");     //Can change where the database is stored later
-    private long lastHeartbeat;         //This variable isn't shared with the heartbeat thread
+    private long lastHeartbeat;
     // TODO: THIS
     private Thread heartbeatThread;
     private boolean running = true;
@@ -208,10 +208,11 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                         .build();
                 sendProto(ByteString.copyFrom(reply.toByteArray()), General.FvPacketType.SERVER_MESSAGE, UsersData.getUser(sr.getName()));
 
-                // send new user video params
+                // send new user audio and video params
                 sendProto(ByteString.copyFrom(session.getVideoParams().toByteArray()), General.FvPacketType.VIDEO_PARAMS, UsersData.getUser(sr.getName()));
-                return;
+                sendProto(ByteString.copyFrom(session.getAudioParams().toByteArray()), General.FvPacketType.AUDIO_PARAMS, UsersData.getUser(sr.getName()));
 
+                return;
             }
         }
 
@@ -276,6 +277,21 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         }
     }
 
+    public void onAudioParams(Session.AudioParams ap) {
+        System.out.println("Got AudioParams");
+        for (SessionData session : UsersData.getSessionList()) {
+            if (session.getHostUser().equals(selfName)) {
+                // store params
+                session.setAudioParams(ap);
+
+                // must send clients the params, normally should be just 1
+                for (String user : session.getClientList()) {
+                    sendProto(ByteString.copyFrom(ap.toByteArray()), General.FvPacketType.AUDIO_PARAMS, UsersData.getUser(user));
+                }
+            }
+        }
+    }
+
     public void handlePacket(byte[] data) throws InvalidProtocolBufferException {
         General.FvPacket outer_packet = General.FvPacket.parseFrom(data);
         General.FvPacketType type = outer_packet.getType();
@@ -306,7 +322,6 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
             case SESSION_CLOSE:
                 Control.SessionClose sc =
                         Control.SessionClose.parseFrom(outer_packet.getInnerPacket());
-
                 System.out.println("Session Close packet");
 
                 onSessionClose(sc);
@@ -325,6 +340,8 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                 break;
             case AUDIO_PARAMS:                             //Empty
                 Session.AudioParams ap = Session.AudioParams.parseFrom(outer_packet.getInnerPacket());
+
+                onAudioParams(ap);
                 break;
             case DATA:
                 Session.Data dp = Session.Data.parseFrom(outer_packet.getInnerPacket());
@@ -447,4 +464,3 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
         removeSelf();
         ctx.close();
     }
-}

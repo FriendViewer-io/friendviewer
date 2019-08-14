@@ -1,8 +1,8 @@
 package prototype.distributor;
 
-import java.util.ArrayList;
-import prototype.distributor.UsersData;
 import prototype.protobuf.Session;
+
+import java.util.ArrayList;
 
 public class SessionData {
     private String hostUser;
@@ -10,6 +10,7 @@ public class SessionData {
     /*private int videoWidth, videoHeight, frameNum, frameDenom; // numerator, denominator
     private byte[] ppsSps;*/
     private Session.VideoParams videoParams;
+    private Session.AudioParams audioParams;
 
     // might not want to require a client user? seems ok for prototype
     public SessionData(String hostUser, String clientUser) {
@@ -39,4 +40,11 @@ public class SessionData {
     public Session.VideoParams getVideoParams() {
         return videoParams;
     }
-}
+
+    public void setAudioParams(Session.AudioParams audioParams) {
+        this.audioParams = audioParams;
+    }
+
+    public Session.AudioParams getAudioParams() {
+        return audioParams;
+    }
