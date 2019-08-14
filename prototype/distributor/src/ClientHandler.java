@@ -11,6 +11,7 @@ import prototype.protobuf.Control;
 import prototype.protobuf.General;
 
 import java.util.Date;
+import java.util.Scanner;
 
 public class ClientHandler extends ChannelInboundHandlerAdapter {
 
@@ -54,9 +55,32 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
                 System.out.println("Unspecified packet");
                 break;
             case SERVER_MESSAGE:
-                Control.ServerMessage inner = Control.ServerMessage.parseFrom(outer_packet.getInnerPacket());
-                System.out.println(inner.getSuccess());
-                System.out.println(inner.getType());
+                Control.ServerMessage msg = Control.ServerMessage.parseFrom(outer_packet.getInnerPacket());
+                System.out.println(msg.getSuccess());
+                System.out.println(msg.getType());
+                break;
+            case USER_LIST:
+                Control.UserList userList = Control.UserList.parseFrom(outer_packet.getInnerPacket());
+                for (String user : userList.getUsersList()){
+                    System.out.print(user + ", ");
+                }
+                System.out.println();
+                break;
+            case SESSION_REQUEST:
+                Control.SessionRequest sessrq = Control.SessionRequest.parseFrom(outer_packet.getInnerPacket());
+                System.out.println(sessrq.getName());
+
+                //Send a "confirmation packet
+                Control.SessionResponse.Builder sessrsbuilder = Control.SessionResponse.newBuilder();
+                sessrsbuilder.setResponse(true);
+                sessrsbuilder.setName(sessrq.getName());
+                sendProto(sessrsbuilder.build().toByteString(), General.FvPacketType.SESSION_RESPONSE);
+                break;
+            case SESSION_RESPONSE:
+                Control.SessionResponse sessrs = Control.SessionResponse.parseFrom(outer_packet.getInnerPacket());
+                System.out.println(sessrs.getName());
+                System.out.println(sessrs.getResponse());
+                break;
             default:
                 break;
         }
@@ -81,6 +105,16 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
 
     //Sends a Heartbeat packet
     public void channelActive(final ChannelHandlerContext ctx) {
+        Scanner input = new Scanner(System.in);
+        String username = input.nextLine();
+        String password = input.nextLine();
+        boolean newUser = false;
+
+        Control.Login.Builder login = Control.Login.newBuilder();
+        login.setNewUser(newUser);
+        login.setUsername(username);
+        login.setPassword(password);
+
         channel = ctx.channel();
 
         lastHeartbeat = (new Date()).getTime();
@@ -97,8 +131,24 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         });
         heartbeatThread.start();
 
-        Control.Login.Builder login = Control.Login.newBuilder();
+        sendProto(login.build().toByteString(), General.FvPacketType.LOGIN);
+        //onLoginTester();
 
+        if (username.equals("a")){
+            Control.SessionRequest.Builder sessrq = Control.SessionRequest.newBuilder();
+            sessrq.setName("User4");
+            sendProto(sessrq.build().toByteString(), General.FvPacketType.SESSION_REQUEST);
+        }
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        cause.printStackTrace();
+        ctx.close();
+    }
+
+    private void onLoginTester(){
+        Control.Login.Builder login = Control.Login.newBuilder();
 
         //Login packet 1            (Success)
         login.setNewUser(true);
@@ -134,12 +184,5 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         login.setUsername("Saaapling");
         login.setPassword("AHHHaaaAAAHHHhhhAAA");
         sendProto(login.build().toByteString(), General.FvPacketType.LOGIN);
-
-    }
-
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        cause.printStackTrace();
-        ctx.close();
     }
 }

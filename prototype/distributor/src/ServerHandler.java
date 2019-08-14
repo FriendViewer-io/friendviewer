@@ -18,7 +18,11 @@ import java.util.Date;
 */
 
 /*Questions I have
-    - why do we do Bytestring.copyFrom instead of just converting to bytestring directly
+    - why do we do ByteString.copyFrom instead of just converting to bytestring directly
+    - ChannelActive is called twice when I run my testing client
+        - The things the client sends are only handled by one instance, so it is not *Currently* a problem
+        - Why does this happen?
+        - Will this have any future consequences?
 */
 
 public class ServerHandler extends ChannelInboundHandlerAdapter {
@@ -26,10 +30,11 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     private String selfName = "";
     private MessageManager msgmgr = new MessageManager();
     private DatabaseHandler dbmgr = new DatabaseHandler("Users.db");     //Can change where the database is stored later
-    private long lastHeartbeat;
+    private long lastHeartbeat;         //This variable isn't shared with the heartbeat thread
     // TODO: THIS
     private Thread heartbeatThread;
     private boolean running = true;
+
 
     private synchronized long getLastHeartbeat() {
         return lastHeartbeat;
@@ -133,7 +138,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     }
 
     public void onHeartbeat(Control.Heartbeat heartbeat_in) {
-        lastHeartbeat = new Date().getTime();
+        setLastHeartbeat(new Date().getTime());
         Control.Heartbeat heartbeat =
                 Control.Heartbeat.newBuilder().setUtcTime(lastHeartbeat).build();
 
@@ -307,9 +312,9 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
                 onSessionClose(sc);
                 break;
             case HEARTBEAT:
-                System.out.println("Heartbeat packet");
+                //System.out.println("Heartbeat packet");
                 Control.Heartbeat hb = Control.Heartbeat.parseFrom(outer_packet.getInnerPacket());
-                System.out.println("Timestamp: " + hb.getUtcTime());
+                //System.out.println("Timestamp: " + hb.getUtcTime());
                 onHeartbeat(hb);
                 break;
             case VIDEO_PARAMS:
@@ -351,7 +356,7 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         ByteBuf buffer = (ByteBuf) msg;
         byte[] raw_packet = new byte[buffer.readableBytes()];
-        // System.out.println("Received raw packet size " + raw_packet.length);
+        //System.out.println("Received raw packet size " + raw_packet.length);
         buffer.readBytes(raw_packet);
         long ctm = System.currentTimeMillis();
         msgmgr.parseData(raw_packet);
@@ -370,12 +375,13 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     public void channelActive(final ChannelHandlerContext ctx) {
         channel = ctx.channel();
         lastHeartbeat = (new Date()).getTime();
+        //System.out.println("Channel Active: " + lastHeartbeat);
         heartbeatThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (running) {
                     long timeMs = (new Date()).getTime();
-                    if (timeMs - getLastHeartbeat() > 7000) {
+                    if (timeMs - getLastHeartbeat() > 70000) {
                         removeSelf();
                         channel.close();
                         return;
