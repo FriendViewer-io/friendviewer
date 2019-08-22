@@ -125,6 +125,15 @@ winsdk_library(
 )
 
 winsdk_library(
+    name = "wasapi",
+    headers = [
+        "audioclient.h",
+        "mmdeviceapi.h",
+    ],
+    static_libraries = ["Ole32.lib"],
+)
+
+winsdk_library(
     name = "user32",
     headers = ["Windows.h"],
     static_libraries = ["User32.lib"],

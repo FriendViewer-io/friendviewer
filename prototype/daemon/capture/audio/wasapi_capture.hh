@@ -18,7 +18,7 @@ namespace capture {
 
 class WasapiCapture {
  public:
-    WASAPICapture();
+    WasapiCapture();
     bool init();
 
     uint32_t sample_rate() const { return samples_per_sec_; }
@@ -30,8 +30,8 @@ class WasapiCapture {
 
     void stop();
 
-    uint32_t copy_buffers(uint8_t *data_out, uint32_t desired);
-    uint32_t buffer_size() const { return sound_buffer.usage; }
+    bool copy_buffers(std::vector<uint8_t> &data_out);
+    //    uint32_t buffer_size() const { return sound_buffer.usage; }
 
  private:
     IMMDevice *device_;
@@ -48,13 +48,13 @@ class WasapiCapture {
     HANDLE receive_signal_;
     HANDLE stop_signal_;
 
-    ChunkBuffer sound_buffer_;
+    ChunkBuffer<std::vector<uint8_t>> sound_buffer_;
     std::atomic_char copying_;
     static DWORD WINAPI capture_thread(LPVOID param);
 
     void process_data();
 
-    void init_render();
+    bool init_render();
 };
 
 }  // namespace capture
