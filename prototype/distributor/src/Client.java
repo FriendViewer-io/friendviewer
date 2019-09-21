@@ -1,45 +1,42 @@
 package prototype.distributor;
 
-import prototype.protobuf.Control;
-import prototype.protobuf.General;
+import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.nio.ByteBuffer;
 
 public class Client {
 
-    public static void main(String[] args) throws IOException {
-        Socket clientSocket = new Socket("127.0.0.1", 8080);
-        DataInputStream in = new DataInputStream(clientSocket.getInputStream());
-        DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
+    public static void main(String[] args) throws IOException, InterruptedException {
+        Socket clientSocket = new Socket("127.0.0.1", 61235);
 
-        General.FvPacket.Builder packet_Builder = General.FvPacket.newBuilder();
-        packet_Builder.setType(General.FvPacketType.UNSPECIFIED);
+        String host = "localhost";
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
 
-        //Inner Packer
-        Control.ServerMessage.Builder message_builder = Control.ServerMessage.newBuilder();
-        message_builder.setType(Control.ServerMessageType.SUCCESS);
-        message_builder.setSuccess(true);
-        message_builder.setMessage("This is a message");
+        try {
+            Bootstrap b = new Bootstrap();
+            b.group(workerGroup);
+            b.channel(NioSocketChannel.class);
+            b.option(ChannelOption.SO_KEEPALIVE, true);
+            b.handler(new ChannelInitializer<SocketChannel>() {
+                public void initChannel(SocketChannel ch)
+                        throws Exception {
+                    ch.pipeline().addLast(new ClientHandler());
+                }
+            });
 
-        packet_Builder.setInnerPacket(message_builder.build().toByteString());
+            ChannelFuture f = b.connect(host, 61235).sync();
 
-        //Deconstructing the packet and retrieving data
-        General.FvPacket outer_packer = packet_Builder.build();
-        System.out.println(outer_packer.getType());
-
-        Control.ServerMessage inner_packer = Control.ServerMessage.parseFrom(outer_packer.getInnerPacket());
-        System.out.println(inner_packer.getMessage());
-
-        //Sending the packet
-        byte[] data = outer_packer.toByteArray();
-        System.out.println(data.length);
-        ByteBuffer buf = ByteBuffer.allocate(data.length + 4);
-        buf.putInt(data.length);
-        buf.put(data);
-        out.write(buf.array());
+            f.channel().closeFuture().sync();
+        } finally {
+            workerGroup.shutdownGracefully();
+        }
     }
 }
