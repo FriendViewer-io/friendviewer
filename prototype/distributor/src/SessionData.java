@@ -1,7 +1,6 @@
 package prototype.distributor;
 
 import prototype.protobuf.Session;
-
 import java.util.ArrayList;
 
 public class SessionData {
@@ -29,9 +28,7 @@ public class SessionData {
         return clientUsers;
     }
 
-    public void addClientUser(String clientUserName) {
-        clientUsers.add(clientUserName);
-    }
+    public synchronized void addClientUser(String clientUserName) { clientUsers.add(clientUserName); }
 
     public void setVideoParams(Session.VideoParams videoParams) {
         this.videoParams = videoParams;
@@ -48,3 +45,4 @@ public class SessionData {
     public Session.AudioParams getAudioParams() {
         return audioParams;
     }
+}
